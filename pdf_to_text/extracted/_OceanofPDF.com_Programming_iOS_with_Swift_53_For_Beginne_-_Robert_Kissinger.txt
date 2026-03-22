@@ -1,0 +1,4242 @@
+--- Page 3 ---
+Programming iOS with
+Swift 5.3
+For Beginners to Pro
+In 1 Hour
+(2021 Edition)
+A Crash Course on Developing iOS and Mac Apps Using Swift 5.3 and
+Xcode 12.3
+Robert Kissinger
+
+--- Page 4 ---
+Copyright
+Copyright©2021 Robert Kissinger
+All rights reserved. No part of this book may be reproduced or used in any
+manner without the prior written permission of the copyright owner, except
+for the use of brief quotations in a book review.
+While the advice and information in this book are believed to be true and accurate at the date of
+publication, neither the authors nor the editors nor the publisher can accept any legal responsibility
+for any errors or omissions that may be made. The publisher makes no warranty, express or implied,
+with respect to the material contained herein.
+Printed in the United States of America
+© 2021 by Robert Kissinger
+
+--- Page 5 ---
+Table of Contents
+Copyright
+INTRODUCTION
+Ground of Being
+Object
+Object type
+Variables
+Functions
+The Swift file
+Lifetime and scope
+Object members
+Namespaces
+Modules
+Instances
+Why the use of instances?
+Keyword shelf
+Privacy
+Design
+CHAPTER ONE
+Getting Familiar with the essentials of Xcode
+Technical requirements
+Downloading/installing Xcode from App Store
+Understanding the Xcode user interface
+Using the iOS simulator to run the app
+Summary
+CHAPTER TWO
+Simple Values and Types
+Technical requirements
+Understanding Swift Playgrounds
+Exploring Data Types
+Using Constants and Variables
+Understanding Type Interface and Types Safety
+Exploring Operators
+Using the print () instruction
+Summary
+CHAPTER THREE
+Conditionals and Optional
+
+--- Page 6 ---
+Technical Requirements
+Introducing Conditionals
+Introducing Optional
+Summary
+CHAPTER FOUR
+Range Operators and Loops
+Technical Requirements
+CHAPTER FIVE
+Collection types
+Technical Requirements
+Understanding arrays
+Understanding dictionaries
+Understanding sets
+Summary
+CHAPTER SIX
+Functions and Closures
+Technical Requirements
+Understanding Functions
+Understanding Closures
+Summary
+CHAPTER SEVEN
+Classes, Structures, and Enumerations
+Technical Requirements
+Understanding Classes
+Understanding Structures
+Understanding Enumerations
+Summary
+CHAPTER EIGHT
+Protocols, Extensions, and Error Handling
+Technical Requirements
+Understanding Protocols
+Understanding Extensions
+Exploring Error Handling
+Summary
+CHAPTER NINE
+Setting up the user interface
+Technical requirements
+Learning useful terms in iOS development
+
+--- Page 7 ---
+Touring the Let’s Eat app
+Creating a new Xcode project
+Setting up the Launch screen
+Summary
+CHAPTER TEN
+Building your user interface
+Adding a collection view to the explore screen
+Connecting storyboard element to outlets in a view controller
+Configuring data source methods for the collection view
+Adding a section header to the collection view
+Configuring storyboard element sizes
+Presenting a view modally
+Summary
+CHAPTER ELEVEN
+Finishing up your User Interface
+Technical requirement
+Adding a table view
+Implementing the Restaurant list screen
+Implementing the Restaurant detail screen
+Implementing the Map screen
+Summary
+CHAPTER TWELVE
+Modifying and Configuring Cells
+Technical requirements
+Modifying the Explore screen header
+Modifying the exploreCell collection view cell
+Modifying the restaurantCell collection view cell
+Configuring the locationCell table view cell
+Summary
+CHAPTER THIRTEEN
+Getting started with MVC and Collection Views
+Technical requirements
+Controller design pattern
+Exploring controllers and classes
+Summary
+CHAPTER FOURTEEN
+Bringing Data into Views Collection
+Technical Prerequisite
+
+--- Page 8 ---
+Comprehending Model Objects
+Comprehending .plist files
+Building a Pattern to Represent a Cuisine
+Enforcing a Data Manager Group to Read Data from a .plist file
+Exhibiting Data in a View Collection
+Summary
+CHAPTER FIFTEEN
+Introduction to Views Table
+Technical Prerequisite
+Comprehending Views Table
+Building the Location View Controller Group
+Including the Delegate and Data Source
+Including Location Data for the View Table
+Building the Location Data Manager Group
+Summary
+CHAPTER SIXTEEN
+Introduction To MapKit
+Comprehending and Building Annotations
+Creating and Including Annotations
+Moving from the Screen Map to the Restaurant Detail Screen
+Arranging Your Code
+Restructuring the MapViewController class
+Summary
+CHAPTER SEVENTEEN
+Introduction to JSON files
+Technical Prerequisite
+Sourcing Data from JSON files
+Producing the Restaurant Data Manager Class
+Utilizing Data from JSON files in your Application
+Summary
+CHAPTER EIGHTEEN
+Showing Data in a Stationary View Table
+Technical Prerequisite
+Creating Outlets for the Restaurant Detail View Managing Group
+Showing Data in a Stationary View Table
+Moving Data to the Restaurant Detail View Controller Instance
+Summary
+CHAPTER NINETEEN
+
+--- Page 9 ---
+Introduction to Custom UIControls
+Technical Prerequisite
+Building a Conventional UIControl Subclass
+Giving Support for Tinge Events
+Using an Unwind Option for the Cancel button
+Building the Review Form View Managing Group
+Summary
+CHAPTER TWENTY
+Introduction to Image Libraries and Cameras
+Technical Prerequisite
+Comprehending Filters
+Building Pattern Items for the Photo Filter Screen
+Building the Image Filtering Procedure
+Building View Controller for the Image Filter Screen
+Creating a View Controller for the View Collection cells
+Obtaining Permission to Use the Photo Library or Camera
+Summary
+CHAPTER TWENTY ONE
+Comprehending Core Data
+Technical Prerequisite
+Getting Started with Core Data
+Enforcing Core Data Parts for your Application
+Generating a Data Model
+Comprehending how Loading and Saving works
+Revamping the Photo Filter View Controller group to keep photos
+Showing photos and reviews saved on the Restaurant Detail screen
+Computing a Restaurant's Overall Performance
+Summary
+CHAPTER TWENTY TWO
+Introduction to Apple Silicon Macs
+Technical Prerequisite
+Repairing User Interface Problems
+Enabling your Application work
+Upgrading the App to run on macOS
+Summary
+CHAPTER TWENTY THREE
+Introduction to SwiftUI
+Technical Prerequisite
+
+--- Page 10 ---
+SwiftUI Xcode Project Creation
+Restaurant List Screen Building
+Including Configuring Navigation and Model Objects
+Utilizing SwiftUI and UIKit Views Jointly
+Finishing the Restaurant Detail Screen
+Summary
+CHAPTER TWENTY FOUR
+Introduction to Widgets
+Technical Prerequisite
+Getting Started with Widgets
+Including a Widget Object to your App
+Enabling Timeline Access to your Widget
+Configuring a Widget's View
+Including a Widget to the Home Screen
+Summary
+CHAPTER TWENTY FIVE
+Getting Familiar with App Clips
+Technical Prerequisite
+Knowing App Clips
+Including an App Clip to your Project
+Customizing your App Clip
+Transferring Restaurant Data to the Restaurant Detail Screen
+Summary
+CHAPTER TWENTY SIX
+Examining and Presenting your App to the App Store
+Technical Prerequisite
+Obtaining an Apple Developer Account
+Touring your Apple Developer Account
+Presenting your App to the App Store
+Generating your App's Icons
+Generating your App's Screenshots
+Generating an Apple Store Listing
+Examining your App
+Examining your App Internally
+Examining your App Externally
+Summary
+About Author
+
+--- Page 11 ---
+INTRODUCTION
+With the release of iOS 14, users of the Apple device can now perform
+basic to advanced level programming. Thanks to the great programming
+languages that this operating system can support.
+Programming generally involves some simple to complex coding system or
+instructions performed based on machine coding. These instructions are
+created to facilitate a set of actions leading to a specific computing task's
+execution. With good programming, many software and application
+programs that operate successfully are created.
+The Swift language is efficient and fast and can be incorporated into an
+existing Objective-code, saving many developers' time writing codes.  The
+Integrated Development Environment (IDE) is the point of interaction with
+any programming language, and Swift uses the Xcode as its IDE.
+The Xcode has a good interface and autocompletion support; it is utilized
+when programming in JavaScript, HTML, and CSS by turning into a simple
+text editor without the coding facility obtainable using Swift and Objective-
+C.
+The basic design of the Swift programming language involves the
+following.
+Ground of Being
+The normal layout of the Swift program is such that there are only one
+statement and one line. There are several lines in a Swift text file, but a
+statement represents a complete Swift command.
+Example print ( “hello“ )
+
+--- Page 12 ---
+print ( “world” )
+These statements can be combined to make a line by putting semi-colon
+between them,
+ print ( “hello“ ) ; print ( “world” )
+Multiple lines can also be used for a single statement,
+ print (
+ “world” )
+A line with a comment contains two slashes after it, this is a variant of the
+C++ programming,
+ print ( “world” )// (Swift will usually ignore this type of
+comment)
+Comments can also be enclosed in /’*………..*/ in a variant of C
+programming.
+Curly braces are used by many constructs in Swift as delimiters
+ class Dog {
+ func bark ( )  {
+ print ( “woof” )
+ }
+ }
+These curly braces are normally indented for clarity
+Class Dog { func bark ( ) {  print ( “woof” ) } }
+The Swift language codes must pass through the compiler and change from
+text to a language easily understood before running and function. You will
+
+--- Page 13 ---
+often need to fix several running issues flagged by the compiler, but
+sometimes it will just warn you. A warning means your codes can run, but
+it is always necessary that you fix any issues flagged by the compiler
+whether such a program can run or not.
+When the compiler flags any error, you should know that something is
+wrong with your coding line. It is advisable to divide the lines of codes into
+a simpler part, making you know where the problem is coming.
+Object
+An object represents a body that can receive a message or command and
+execute it. For instance, you can tell your toddler to "sit," "dance," etc.
+Here, your toddler represents the object and will execute the
+message/instruction (to sit or dance).
+Swift uses a dot-notation as the syntax to send a message. The object comes
+first, then the dot, followed by the message.
+ fido . bark ( )
+ rover . sit ( )
+This dot-notation can be broken into more lines
+ rover
+ . sit ( )
+Object type
+Structs, classes , and enums are the main object type in Swift. Enum and
+struct exist in Objective-C but not as objects. Enum particularly can be sent
+a message, and struct in Swift are significant for a universal programming.
+
+--- Page 14 ---
+Variables
+A variable refers to an object, and it has a value . Variables are normally
+declared in Swift; if you want to declare, you use var or let.
+ Let one = 1
+ Var two = 2
+Since you have declared your variable, you can now use them. Additionally,
+we can alter the value of two to be the same as that of one.
+ Let one = 1
+ Var two = 2
+ Two = one
+The third line of the above code uses the name one, and the name two
+declared in the first two lines. The name one (on the right of the equal sign)
+is merely used to refer to the value 1. The name two (on the left of the equal
+sign) is used to replace the value. Therefore, when we say two = one, the
+value of two was 2 before it became 1.
+The equal sign used here is an assignment operator, while the states with
+the variable name on the left of the line are the assignment. The equal sign
+is rather a command than the algebraic assertion of equality, translated as
+"replace what's on my right side with the value of what's on my left side."
+The value of a variable declared with let is constant and will not change;
+hence, the lines declaration below will not compile.
+ Let one = 1
+ Var two = 2
+
+--- Page 15 ---
+ One = two // compile error
+Always use let to declare a name that will not change; otherwise, use var for
+better flexibility.
+Functions
+Executable codes like print ( “hello” ) or fido . bark ( ) should be inside the
+body of a function. A function is a set of code that is told to run. A function
+gets its name through function declaration.
+Func go ( ) {
+ Let one = 1
+ Var two = 2
+ Two = one
+}
+The above describes the sequence of tasks to be done, which is a
+declaration of one, declaration of two, changing the value of two for one.
+This sequence can, however, be performed when you call the function.
+The Swift file
+A file on the represents a significant entity. You may have more than one
+file in a Swift package. The Swift file only accept limited things; some of
+these are
+●     Object declaration: This is a declaration for a struct, class, or enum
+●     Variable declaration: A global variable is normally affirmed at the
+highest level of a file. All code can access this variable in any file
+without passing across a message to an object.
+
+--- Page 16 ---
+●     Functions declaration: A global function is stated at the highest
+level of a file.
+●     Module import statements: An import statement is needed for a
+module to interact with another module.
+Below is a case of a Swift file consisting of declarations (variable, object,
+and function), enum, struct, class, and module import statement.
+Import UIKT
+ var one = 1
+ func changeOne ( ) {
+ }
+ class Manny {
+ }
+ struct Moe {
+ }
+ enum Jack {
+ }
+The curling braces can also contain declarations contained by them, but an
+executable code cannot be at the highest level of the file. Only the function
+body can contain an executable code. The statement print ( "hello" ) or one
+= two are executable code but cannot be at the top-level of a file.
+The former example of func changeOne ( ) (which is a function declaration)
+is a function body and can allow executable code within its curly braces.
+ var one = 1
+
+--- Page 17 ---
+ // executable code can’t go here
+ func changeOne ( ) {
+ let two = 2 //executable code
+ one = two // executable code
+ }
+The highest level of a class declaration also has curling braces, which will
+not allow executable code access since it isn’t a function body. However, a
+class declaration can contain executable code that contains a function
+declaration.
+ class Manny {
+ let name = “manny”
+ // executable code can’t go here
+ func sayName ( ) {
+ print ( name ) // executable code
+ }
+Below is a schematic structure of a legal Swift file
+ Import UIKit
+ var one = 1
+ func changeOne ( ) {
+ let two = 2
+ func sayTwo ( ) {
+ print ( two )
+ }
+
+--- Page 18 ---
+ class Klass { }
+ struct Struct { }
+ enum Enum { }
+ one = two
+ }
+ class Manny {
+ let name = “many”
+ func sayName ( ) {
+ print ( name )
+ }
+ Class Klass { }
+ struct Struct { }
+ enum Enum { }
+ }
+struct Moe {
+ let name = “moe”
+ func sayName ( ) {
+ print ( name )
+ }
+ class Klass { }
+ struct Struct { }
+ enum Enum { }
+
+--- Page 19 ---
+ }
+ Enum Jack {
+ var name : String {
+ return “jack”
+ }
+ func sayName ( ) {
+ print ( name )
+ }
+ class Klass { }
+ struct Struct { }
+ enum Enum { }
+ }
+The essence is that a class declaration can contain a class declaration, and
+this could be contained within a class declaration as well, as so on.
+Lifetime and scope
+The scope is the ability to see your coding program. The significant thing is
+that you can see these things at a top level that contains them and at their
+level. These levels of scopes are
+●      Curly braces
+●      File
+●      Module
+The lifetime of things is also corresponding to their scope, consider
+ func silly ( ) {
+
+--- Page 20 ---
+ if true {
+ class Cat { }
+ var one = 1
+ one = one + 1
+ }
+ }
+In this example, the silly function is called before calling variable one and
+class Cat can come into existence.
+Object members
+Special names are given to things declared at the highest level in the object
+types (struct, class and enum). Using the Manny example for instance
+ class Manny {
+ let name = “many”
+ func sayName ( ) {
+ print ( name )
+ }
+ }
+In the above code,
+A name is a variable declared at the top level of the object declaration.
+Name , therefore, is the object's property.
+sayName is a function declared at the top level of the object declaration.
+sayName , therefore, is called a method of the object.
+
+--- Page 21 ---
+Namespaces
+The named program region is referred to as namespaces . Namespaces will
+help to know the implication of declaring an object at the object's top level.
+ Class Manny {
+ Class Klass { }
+ }
+The above is a nested approach used to declare Klass. By doing so, Klass is
+hidden inside Manny.
+Modules
+Namespaces in the highest level of things are called modules. All top-level
+declarations of a module are always visible to your code whenever you
+import a module without referring to its namespaces. The Swift module
+doesn’t need import because your code will implicitly import it.
+Instances
+All object types (struct, enum, and class) may be instantiated . An object
+type declaration means you describe a type, but you instantiate by making a
+thing (an instance).
+ class Dog {
+ func bark ( ) {
+ print ( “woof” )
+ }
+ }
+
+--- Page 22 ---
+The function name is used as the name of the object type to create an
+instance by calling the function name. Doing this involves the use of
+parentheses.
+ let fido = Dog ( )
+In the above example, Dog is instantiated (fido), making fido an instance of
+a Dog.  You may send instant messages to the Dog instances. These
+messages are Dog's properties and methods.
+ let fido = Dog
+ fido . bark ( )
+However, you should know that you cannot use properties and methods as
+messages without an instance.
+ Dog . bark ( ) // compile error
+Although a function of Dog . bark ( ) can be declared but is a static or class
+function.
+Why the use of instances?
+You should know that we define the value of an instance property in
+reverence to a particular instance. Consider the Dog class example again
+and giving it a bark property and name method,
+ class Dog {
+ var name = “ “
+ func bark ( ) {
+ print ( “woof” )
+ }
+
+--- Page 23 ---
+ }
+We have a blank name (empty String) with a Dog instance while the
+property name is var. We can now add a new string value.
+ Let dog1 = Dog ( )
+ Dog1 . name = “Fido”
+We may add the name of the Dog’s instance too
+ Let dog1 = Dog ( )
+ Dog1 . name = “Fido”
+ print ( dog1 . name ) // “Fido”
+This helps us to make two dog instances with different property name value
+ let dog1 = Dog ( )
+ dog1 . name = “Fido”
+ let dog2 = Dog ( )
+ dog2 . name = “Rover”
+ print ( dog1 . name ) // “Fido”
+ print ( dog2 . name ) // “Rover”
+Keyword shelf
+An object is usually the recipient of messages and it also represents an
+instance. The keyword shelf makes it possible for messages to go to an
+instance by itself. Supposing we keep the “bark” of the dog as property , we
+will normally refer to the property when implementing the bark.
+ class Dog {
+ var name = “ “
+
+--- Page 24 ---
+ var whatADogSays = “woof’’
+ func bark ( ) {
+ print ( self . whatADogSays )
+ }
+ }
+Privacy
+Object-based programming usually uses privacy provisions for its object
+member. This privacy means other objects will not see these members.
+ class Dog {
+ var name = “ “
+ var whatADogSays = “woof”
+ func bark ( ) {
+ print ( self . whatADogSays )
+ }
+ func speak ( ) {
+ print ( self . whatADogSays )
+ }
+ }
+We can alter the property of "whatADogSays," like using that of a cat. Even
+though it's undesirable, You can execute it.
+ let dog1 = Dog ( )
+ dog1 . whatADogSays = “meow”
+
+--- Page 25 ---
+ dog1 . bark ( ) // meow
+Design
+You have to instantiate type consistently, and other instances see these
+instances according to the scope of the variables that refer to it. Hence, you
+will give enough lifetime to instances and make them evident to each other.
+Swift will supply much useful object type for you, and real-world interface
+objects will focus on your code when programming with iOS.
+
+--- Page 26 ---
+CHAPTER ONE
+Getting Familiar with the essentials
+of Xcode
+Xcode is the Integrated Development Environment (IDE) and can build
+apps in iOS 14. Building such apps, however, involve some technicalities
+and familiarity with some things. This familiarity will enable you to have
+fore-knowledge about how the programming works.
+Technical requirements
+For your codes to run smoothly and without having any hitch while
+programming, you should ensure that your device has at least 8 GB RAM
+and is 64-bit. The disk space should not be less than 200 GB.
+Downloading/installing Xcode from
+App Store
+You can download Xcode using the app store by launching the app store on
+iOS 14 supporting device and log in. Search for Xcode in the search bar;
+when you find it, press on the install button.
+Understanding the Xcode user
+interface
+After installation, launching the Xcode will bring you to its user interface
+(UI). First-time users will see No Recent Projects on the panel's right side,
+
+--- Page 27 ---
+while returning users will see a list of their recently created projects. You
+can start by clicking on the Create a new Xcode project button on the
+panel's left side. This panel will open up the new project screen to select
+iOS, followed by Single View Application, and then click on Next.
+After this, you can now choose your new project option, which includes
+product name (your app), team, organization name (use the organizer's
+identifier, in reverse, to be your organization name).  Other options are
+language (you use Swift, of course), devices (use iPad and iPhone), and
+checkboxes (uncheck Include Unit Test, Include UI Test, and Use Core
+Data ). The Xcode user interface has six panels.
+●     Utilities panel : This contains the library pane (which assists you in
+input code snippets, objects, and image assets) at the bottom and the
+inspector pane (this allows you to alter the properties of things) at the
+top.
+●     Navigator panel : You use this panel to navigate existing and new
+files.
+●      Debug panel : The debug panel the app’s log messages.
+●     Standard panel : Using the standard editor makes the Swift files,
+view project settings, and Storyboard files visible to you.
+●     Windowpane controls : This contains the View and Editor Mode
+icons.
+●      Toolbars : The toolbar has the Stop and Play Button.
+Using the iOS simulator to run the
+app
+
+--- Page 28 ---
+Building an app involves connecting a device to Xcode or using the
+simulator, you can use the simulator because using a device may be slower.
+●     After connecting your device using USB, select using the list of the
+dropdown menu.
+●     When you see the Ready status, it means that Xcode has indexed your
+selection.
+●     Click on Cmd+R or the Play button to run your project.
+●     Click on Add Account (using the Add Apple ID) when you might
+have Signed in from the Standard editor.
+●     You will see your account after creating your Apple ID.
+However, a dropdown list will appear containing your account if you
+already have one.
+Summary
+The nitty-gritty of Xcode is exploited in this chapter. We have seen the
+technical requirements, how to download the Xcode and its user interfaces,
+and o how to start the app using the iOS simulator. All these will be the
+foundation for more of what we need to learn as we advance.
+
+--- Page 29 ---
+CHAPTER TWO
+Simple Values and Types
+Swift’s Objective-C includes Int used for integer, Bool used for Boolean
+values, String used for textual data, and Double and Float used for floating-
+point values. The collection types used in Swift include Set, Array , and
+Dictionary.
+Swift uses familiar types, such as tuples and optional types that handle
+when a value is absent. The optional type will either say "there is no value
+at all" or “there is a value, but it is equal to X.”
+Technical requirements
+Swift needs some familiarization with types, as cannot be seen in Objective
+C. Swift has type options for its programming. As such, the options for a
+particular program are either "there isn't a value at all" or "there is a value,
+and it equals x." You should know the foundation of such parameters and
+how they are used.
+Understanding Swift Playgrounds
+The Swift Playgrounds comes with the Xcode as a built-in feature to help
+developers experiment with Swift programming. When you might have
+launched your Xcode, you can create a Playground file by going to the
+Xcode menu interface and click on the file, followed by new and the
+playground.
+
+--- Page 30 ---
+Select the iOS blank since we want to use an iOS environment and press on
+Next. Xcode will bring out your Playground coding interface after you
+might have saved the file. There are two code lines in the Swift Playground,
+and you can use this to test your coding skill level.
+Exploring Data Types
+Data is the value that can be stored using a constant or variable. For
+instance, if you want to create a game with the interface showing the high
+score and player's name, you will need two constants or variables to store
+the data.
+ Var highScore : Int = 59
+ Var playerName : String = “Jack”
+Using Constants and Variables
+Constants are variables whose values cannot be changed and are used in
+Swift to provide a safer coding environment.  A type (string or 10) is
+associated with a name (such as welcomeMessage ) using constants and
+variables. As we have seen in the introduction, a variable can be set to
+different values, while you cannot change a constant value.
+Say x = y + 10, and we declare constant with let and variable with var ,
+then,
+ Let constant = 10
+ Var y = 10
+ Var x = y + constant
+
+--- Page 31 ---
+When the Swift Playgrounds is used for the above, you can access your
+result by hitting the Play button.
+Understanding Type Interface and
+Types Safety
+In Swift, you can know the type of value that will not work with your
+codes, and through this, you can detect those that will efficiently work. The
+Swift type-safe language will let you use Int for Int and String for String,
+this type of language will prevent you from using a non-optional string for
+one that requires an optional string.
+Like we have seen, the let is used to declare a constant, while var is used to
+declare a variable. For instance, if we say
+ let
+ maximumNumberOfLoginAttempts
+ = 10
+ Var
+ currentLoginAttempt
+ = 0
+The above code is understood to mean, "Give the value of 10 to a new
+constant, maximumNumberOfLoginAttempt , you have declared. Hence,
+give the first value of 0 to a new variable, currentLoginAttempt , you have
+declared." You can also declare many variables and constants.
+ Var x = 0.0, y = 0.0, z = 0.0
+Exploring Operators
+
+--- Page 32 ---
+Swift’s operators can be divided into two main categories
+1. Operation of an operator: The operation of an operator can be
+classified into the following
+●          Arithmetic operators: These operators perform all
+mathematical functions and include +, -, *, / and % and are
+used for addition, subtraction, multiplication, division, and the
+remainder, respectively.
+●     Assignment operators: You can use these operators to give
+values to a property (either constant or variable). They are
+obtained from different combinations of the arithmetic
+operators and have different functions. Some of these operators
+include = (simple assignment operator), -= (subtract AND
+assignment operator), += (add AND), /= (divide AND), *=
+(multiply AND), &= (bitwise AND), >>= (right shift AND),
+<<= (left shift AND), |= (bitwise inclusive OR and) and ^=
+(bitwise exclusive OR and).
+●     Logical operators: You can use Boolean values with logical
+operators with Boolean values. This operation type is normally
+done when you want to control the program's flow using if,
+while, else, or other statements. These logical operators include
+&& (logical-AND, which is true if every Boolean expression is
+true) and || (logical-OR, which is true if any one of the Boolean
+expressions is true).
+
+--- Page 33 ---
+●     Comparison operators: You use this operator to compare two
+values. The Bool value interprets these values if the statement
+is true or not. These operators include < (less than), > (greater
+than), != (not equal to), == (equal to), <= (less than or equal to)
+and >= (greater than or equal to).
+2. Number of operands : The number of operands has several
+categories of operators, which include;
+●           Binary operator: Binary operators function using two
+operands, e.g
+let result = 20 + 30
+print result
+ The output for the above program is 50
+●      Unary operator: Unary operator functions using one operand,
+e.g.
+Print ( ! true )
+Var a = -5print (-a)
+ The output for the above program will be “false 5.”
+●      Ternary operators: Ternary operators functions using three
+operands, e.g.
+Let result – ( 5 > 10 ) ? “value larger” : “Value Smaller”
+print ( result )
+ The output here is “Value Smaller”.
+Using the print () instruction
+
+--- Page 34 ---
+As a developer, you should know that Swift programming language's print
+instruction is different from the print f (of C) function or echo (of PHP).
+The swift print gives a single line output of the textual representations of
+things. For instance, the output of
+print (1) print (2) print (3)
+will be
+ 1
+ 2
+ 3
+Whereas In the C language, the output is 123
+Generally, any variable or constant is printed in Swift using the print ( )
+function. Having known that variables are declared by var and constants are
+declared by let.  To send your input to the output screen, you can use
+ print (_: separator: terminator : )
+The above function accepts three parameters
+Separator : This is a string to print between items). By default, it is
+represented by a single space ( “  “).
+Items: The console depends on the item to print. It can receive more than
+one item.
+Terminator: When every item has been printed, the terminator serves as
+the String to print. By default, it is represented as a newline( " \ n " ).
+Here is an instance,
+ print ( “Hello, World” )
+
+--- Page 35 ---
+ print ( “I love Swift” )
+The output of the above program will be
+ Hello, World
+ I love Swift
+Summary
+Swift's constants or variables' ability to infer the type from the value's store
+makes it a Type Inference Language. You can create a constant or variable
+without using the type, but it is always good to use type for easy reading.
+
+--- Page 36 ---
+CHAPTER THREE
+Conditionals and Optional
+Conditionals and optional are data types in Swift, which are often utilized to
+make certain programming decisions. The optional is one of the enums in
+Swift programming with two possible values of Some(T) and None, where
+T represents the value of the exact data type.
+Technical Requirements
+For optional, you should note that a value may and may not be contained in
+it. Before accessing such a data type, you should know that you may find or
+may not find what you need.
+Introducing Conditionals
+You make use of conditionals to make decisions in the Swift programming.
+The statements used are else , if , and else if. Because these conditional
+statements involve making a decision, such decisions are called branching
+or control flow . For example,
+ If password == “Open sesame!” {
+ Cave. open ( )
+ Treasure. steal ( )
+From the above program, here are what can be deduced
+●     Boolean logic is used to know whether the variable password
+is equivalent to the string Open Sesame in the expression
+password == “Open sesame”
+
+--- Page 37 ---
+●     The code within the curling bracket will be executed when this
+expression is executed to be true. We call this the conditional
+body.
+You can also combine several conditions if you want to use the else, if , and
+else if statement, an instance is
+Let color = “purple”
+ If color == “green”
+ {
+ Print ( “I love the color \
+ ( color ) ! “ )
+ }
+ Else if color == “blue” ||
+ Color == “purple”
+ {
+ Print  ( “I kinda like the color \ ( color )…” )
+ }
+ Print ( “I absolutely HATE the color \ ( color ) !!! “ )
+ }
+The above statement has combined the use or else, if and else if. Hence,
+expressions in the conditions like this are evaluated one after the other from
+the top to the last statement.
+Introducing Optional
+
+--- Page 38 ---
+The default value of optional in the Swift programming is a null value (nil).
+Hence, optionals are used when you want a constant or variable to contain
+no value. This optional type means that it may and may not contain a value
+(i.e., a null value).
+To declare optionals, you only need to add the ! or ? sign to the data type.
+An optional with a value will return as Optional<value>, if no value is
+contained, it will return as nil. For example,
+ var someValue : Int?var someAnotherValue : Int! print
+(someValue)
+print (someAnotherValue)
+When the above program is run, the results will come back as
+ Nil
+ Nil
+However, our example has initialized an optional type using both! and ?.
+Although you are valid if you use any of these ways to create such optional
+types, some differences exist.
+When you declare an optional type like Int , the variable will either have no
+value or have an integer value. The output for such with no value assigned
+to the variable, both print statement output nil appear on the screen.
+Summary
+You have been introduced to how conditions and optionals work in this
+chapter. Including how to use the else, if, and else if statements. As far as
+we know, optionals may operate without conditionals since it is
+
+--- Page 39 ---
+straightforward. Conditionals may serve a bit more expressive, though. You
+have, however, known how these two operate.
+
+--- Page 40 ---
+CHAPTER FOUR
+Range Operators and Loops
+In Swift, range operators express value ranges since a range represents an
+interval of values. Range values are often sequential so that they always
+follow a regular pattern and easily read. Coding in Swift also requires
+executing some basic statements several times, and the loop statements are
+always used for this.
+Technical Requirements
+You should know that the start of a range must be equal to or less than its
+end, and you may use such a range operator to access some elements of an
+array. You should also know that you can create and combine patterns of
+loops for easier programming.
+Exploring range operators
+There are two range operators used in Swift to express ranges of values
+●     Half-Open Range: (a..<b) is described as a range of values from a to
+b, but this value does not include b. For example, 1…<5 is interpreted
+as 1, 2, 3, and 4. In this Range, 5 is not included.
+Another instance for this is,
+ // 1..<3 defines a range containing values 1, 2 for value in
+1..<3 {
+ print ( value )
+ }
+
+--- Page 41 ---
+The output of the above program when you run it will be
+ 1
+ 2
+●     Closed Range: (a…b) is described as a range of values from a to b
+and includes the values of both a and b. For example, 1…5 is
+interpreted as 1, 2, 3, 4, and 5.
+Another programming instance is
+ // 1…3 defines a range containing values 1, 2, and 3 for
+value in 1…3 {
+ print ( value )
+ }
+The output of the above program when you run it will be
+ 1
+ 2
+ 3
+Exploring loops
+The major types of loop statements occur in the Swift programming
+language include
+●     For-In loops: The For-In loop has its structure as follows
+for <incrementValue> in
+<sequence> { //
+Statements…}
+ An example of this is
+ For I in 1…5
+ print ( “Outer loop iteration”, i )
+
+--- Page 42 ---
+ for j in 1…2 {
+ print ( “Inner loop iteration “, j )
+ print ( “i = \ (i); j = \ (j)” )
+ }
+ }
+ The above code has the following output
+ Outer loop iteration 1
+ Inner loop iteration 1
+ I = 1 ; j = 1
+ Inner loop iteration 2
+ i = 1 ; j = 2
+ Outer loop iteration 2
+ Inner loop iteration 1
+ i = 2 ; j = 1
+ Inner loop iteration 2
+ i = 2 ; j = 2
+ Outer loop iteration 3
+ Inner loop iteration 1
+ i = 3 ; j = 1
+ Inner loop iteration 2
+ i = 3 ; j = 2
+ Outer loop iteration 4
+
+--- Page 43 ---
+ Inner loop iteration 1
+ i = 4 ; j = 1
+ Inner loop iteration 2
+ i = 4 ; j = 2
+ Outer loop iteration 5
+ Inner loop iteration 1
+ i = 5 ; j = 1
+ Inner loop iteration 2
+ i = 5 ; j = 2
+The above programs show that the outer loop iterates 5 times while
+the inner loop iterates 2 times in each of the outer loop.
+●     While-loop: A while loop is contained as a statement in another
+while loop in this type of programming. Several numbers of while
+loops may exist in this case. For example,
+var i = 1while i = <= 5 {
+ print ( “Outer loop iteration ”, I )
+ var j = 1
+ while j <= 2 {
+ print ( “Inner loop iteration ‘, j )
+ print ( “I = \ (i) ; j = \ (j) ‘ )
+ j += 1
+ }
+ I += 1
+
+--- Page 44 ---
+}
+ The output of this program is
+Outer loop iteration 1
+Inner loop iteration 1
+ I = 1 ; j = 1
+ Inner loop iteration 2
+ i = 1 ; j = 2
+ Outer loop iteration 2
+ Inner loop iteration 1
+ i = 2 ; j = 1
+ Inner loop iteration 2
+ i = 2 ; j = 2
+ Outer loop iteration 3
+ Inner loop iteration 1
+ i = 3 ; j = 1
+ Inner loop iteration 2
+ i = 3 ; j = 2
+ Outer loop iteration 4
+ Inner loop iteration 1
+ i = 4 ; j = 1
+ Inner loop iteration 2
+ i = 4 ; j = 2
+
+--- Page 45 ---
+ Outer loop iteration 5
+ Inner loop iteration 1
+ i = 5 ; j = 1
+ Inner loop iteration 2
+ i = 5 ; j = 2
+●     Repeat-while loop: A repeat-while loop is contained as a statement
+in another repeat-while loop. Several repeat-while loops may exist in
+this case. For example,
+var i = 1repeat {
+ print ( “Outer loop iteration “, i )
+ var j = 1
+ repeat {
+ print ( “Inner loop iteration “, j )
+ print ( “ i = \ (i) ; j = \(j) “ )
+ j += 1
+ } while (j <= 2)
+ i += 1
+} while (I <= 5)
+ The output of the above is
+Outer loop iteration 1
+ Inner loop iteration 1
+ I = 1 ; j = 1
+
+--- Page 46 ---
+ Inner loop iteration 2
+ i = 1 ; j = 2
+ Outer loop iteration 2
+ Inner loop iteration 1
+ i = 2 ; j = 1
+ Inner loop iteration 2
+ i = 2 ; j = 2
+ Outer loop iteration 3
+ Inner loop iteration 1
+ i = 3 ; j = 1
+ Inner loop iteration 2
+ i = 3 ; j = 2
+ Outer loop iteration 4
+ Inner loop iteration 1
+ i = 4 ; j = 1
+ Inner loop iteration 2
+ i = 4 ; j = 2
+ Outer loop iteration 5
+ Inner loop iteration 1
+ i = 5 ; j = 1
+ Inner loop iteration 2
+ i = 5 ; j = 2
+
+--- Page 47 ---
+Summary
+In this chapter, we have explored the use of loop and range in programming,
+the different types of range operators and loops. And we have seen that
+loops can be programmed in such a way that any types of nested loops we
+use give us the same result.
+CHAPTER FIVE
+Collection types
+You can store collections of values in different collection types that are
+provided in Swift. These collection types include arrays, dictionaries and
+sets. While collection values of arrays are ordered, sets have an unordered
+type of collection value. Dictionaries also use unordered collections of key-
+value associations.
+Technical Requirements
+You should know that you cannot input a wrong value of any collection
+type in your Swift code. It would be best if you were not mistaken so that
+you can be poised about your codes. This collection is mutable, and you
+should know when to choose to use a mutable item or an immutable one.
+
+--- Page 48 ---
+Understanding arrays
+Unlike a variable, an array can have many values as possible because it
+appears in the form of a numbered list. For instance
+ 1
+ 2
+let names = [ “Arthur”, “Ford”, “Tr:
+print ( names )
+In the above, an array has been created, which was assigned to the constant
+name. This array is printed out as the value of the name.
+Understanding dictionaries
+The Swift programming offers a unique key identifier to save values that
+can later be referenced using the same key.
+To create a dictionary, you can use initializer syntax, e.g.
+ var someDict = [KeyType : ValueType] ( )
+You can create an empty dictionary  using the Int type as key and
+strings as the associated value e.g.
+ var someDict = [Int : String] ( )
+A good example of a program of dictionary is
+ let scores = [
+ “Bob” : 42
+ “Alice” : 10
+ “Diasy” : 33
+
+--- Page 49 ---
+ ]
+ Print ( scores )
+Mutability exists so that when you use the let constant to initialize a
+dictionary, you cannot alter the items again. As such, the collection is
+immutable. A mutable collection is usually started with the var declaration,
+and we can alter items in such collections.
+Understanding sets
+You use a set for a one-dimensional list or collection of items. If we want to
+create a set to be known as a fruit. We say
+ let fruit : Set = [ “apple”, “banana”,
+ print ( fruit )
+We have used the literal syntax to create the fruit set in the above code; we
+can add other items to this set as follows
+ Var fruit = Set<String>( )
+ Fruit . insert ( “pineapple” )
+ print ( fruit )
+There are several empty functions in a set; they include
+●      First, which returns the first item in the set.
+●     isEmpty, which returns true when the set has no item.
+●      First (where:), which returns a satisfying item.
+●      count, which returns the set's number of items.
+●      randomElement (), which returns the set's random item.
+Summary
+
+--- Page 50 ---
+We have seen the use of the different types of collections in Swift
+programming in this chapter. We are exposed to how we can create these
+collection types and how they could be similar or different from each other
+while coding.
+
+--- Page 51 ---
+CHAPTER SIX
+Functions and Closures
+A function is used in Swift for some collections of statements having a
+specific assignment. You may write this function in a complex form, just
+like an Objective C function, or maybe as simple as a C function. You use
+closures as your code's functional blocks; these closures are comparable
+with what is obtained in the C, Objective-C or lambda programming
+languages.
+Technical Requirements
+Expressions involving closures follow crisp, optimization, and lightweight
+syntax styles and are usually identical to many, self-contained functions
+grouped as blocks. Because many variables and constants are captured in
+closures, you should know that they function as a special closure type.
+Understanding Functions
+The function makes us transfer global and local parameters
+●     Function definition: The function definition has to do with the real
+function body.
+●     Function declaration: Function declaration tells the compiler about
+the parameters, name, and type of function.
+In general, a function’s argument should follow the syntax below
+ Func funcname (parameter)
+ -> return type {
+
+--- Page 52 ---
+ Statement1 Statement2
+ --- Statement N
+ Return parameters}
+In the instance below, we declare the program's name as a data string in the
+"program" function. You should note that it will return the name of the
+student if the function is called.
+ Func program ( name: String
+ ) -> String {
+ }
+ print ( program ( name :
+ “Hello” ) )
+ print ( program ( name :
+ “World” ) )
+Understanding Closures
+Closures store several contexts of variables and constants. A special case of
+closure is the nested and global functions. Closure generally fall into three
+divisions
+●     Closure expression: Closure expressions are unnamed lightweight
+syntax codes that capture values from the surroundings.
+●     Global functions: These are named closures which do not capture
+any value.
+●     Nested functions: These closures have a name and also captures
+values from the enclosing functions.
+
+--- Page 53 ---
+The syntax code of closures can be represented by
+ { ( parameters ) -> return
+ Type in statements}
+For example
+ let closureexample = {
+ print ( “Swift Closures ) }
+ closureexample ( ) The below closure example takes two Int
+parameters and returns an integer.
+ { ( Int, Int )
+ -> Int in Statement1
+ Statement2 ---
+ Statement n } let multiply =
+ {
+ Val1 : Int, val2 : Int ) –
+ >Int in
+ Return val1 *val2
+ } let result = multiply (
+ 10 , 20 ) print ( result )
+The output for the above program will be 200
+Summary
+We now have the idea of how Swift functions and closures work in this
+chapter. We will be using functions when we need to group a few
+
+--- Page 54 ---
+statements that perform particular tasks together. Closures are intentional
+codes and may need a lot of practice, especially if you want to manage
+memory.
+
+--- Page 55 ---
+CHAPTER SEVEN
+Classes, Structures, and
+Enumerations
+It is easier to use struct by default when using Swift, but when are you
+supposed to use class or enums. Structs enable codes to be more flexible for
+use. We already know that structs are value types and classes are reference
+types. You do not need to create another interface to implement files for
+classes and structures.
+Technical Requirements
+You need to know that you define both classes and structure using a single
+file. You should know that other codes can use the external interface to that
+structure or class by doing this. You can also define classes' methods and
+properties, only that you will need to implement files and create an
+interface. Enumerations allow you to work with a safe code because it
+defines a common type for corresponding values. Hence, your provision of
+values for any case of enumeration may not be necessary.
+Understanding Classes
+Swift classes are made of flexible constructs of building blocks. These
+classes define properties to store values and initialize methods for improved
+function. From the syntax below
+ Class classname {
+ Definition 1
+
+--- Page 56 ---
+ Definition 2
+ ---
+ Definition N
+ }
+The class definition will follow as
+ Class student {
+ var studname : String
+ var mark : Int
+ var mark2 : Int
+ }
+The syntax to create instances will be
+ Let studrecord = student ( )
+For example
+ Class MarksStruct {
+ Var mark : Int
+ Init ( mark : Int ) {
+ Self : mark = mark
+ } } class studentMarks {
+ var mark = 300 } let marks = studentMarks ( ) print ( “Mark is \
+(marks.mark)”)
+The result for the above program is 300
+Understanding Structures
+
+--- Page 57 ---
+Structs are important for simple data types and value type structs like String
+are easy for coding. You can use and define struct in the sample coding
+below
+ struct NewsItem {
+ var title : String = “ “
+ var url : String = “ “
+ }
+var  item = NewsItem ( )
+item. Title = “Comparing Classes
+vs. Structs in Swift."
+item.
+URL =
+"HTTP : //learnappmaking.com/classes-structs-comparison-swift-
+programming”
+print (item)
+// Output : NewsItem ( title :
+“Comparing Classes vs. Structs in Swift
+," URL :
+"HTTP : //learnappmaking.com/classes-structs-comparison-swift-
+proramming”)
+You will notice that we used the same syntax for defining and using a class
+from the above. We used
+Struct [name] {…. Instead of class [name]…
+
+--- Page 58 ---
+Understanding Enumerations
+You can use enumerations to store different case values using cases
+associated with values of any type. Just like we have seen previously, you
+introduce or declare enumeration using enum. Such declaration allows you
+to put their definition within the pair of curly braces
+ Enum SomeEnumeration {
+ // enumeration
+ Definition goes here
+ }
+For example, we can use enum for different points of a compass as follows
+ Enum CompassPoint {
+ Case north
+ Case south
+ Case east
+ Case west
+ }
+The values of north, south, east, and west defined above are called
+enumeration cases . These cases can appear together on a single line and
+separated by commas
+ Enum Planet {
+ Case mercury, Jupiter, Venus, Saturn, Earth, Uranus, Mars,
+Neptune 
+ }
+
+--- Page 59 ---
+Summary
+We have seen how type-safety is introduced in codes with fewer coding
+errors by using enums. This chapter has also exposed us to how classes and
+structures, though used in similar ways, works when defining specific
+codes.
+
+--- Page 60 ---
+CHAPTER EIGHT
+Protocols, Extensions, and Error
+Handling
+A protocol is used to define properties, the blueprint of methods, and some
+other requirements that suit a function or task. On the other hand,
+extensions allow us to modify types that we don't know by adding
+functionality to structures, classes, etc.
+Technical Requirements
+When using a protocol, you may not know its exact implementation method
+until it is implemented. You should know that extensions would give new
+initializers, add computed properties and functions, add default
+implementations to protocols using protocol extensions, and make an
+existing type to conform to a protocol.
+Understanding Protocols
+Let delve into protocols by considering the following example
+ Protocol Edible
+ {
+ Func eat ( )
+ }
+From the above, the name of the protocol is Edible . It is used for anything
+that can be eaten, such as food. A protocol is designed in similar syntax,
+like how classes work
+
+--- Page 61 ---
+ Protocol name {
+ Body
+ }
+You should know that a protocol will define a function but will not
+implement it. But we can define a protocol and implement it in a class, just
+as below
+ Class Apple: Edible {
+ Func eat ( )
+ {
+ print ( “Omnomnom! Eating the apple…” )
+ }
+ }
+From the above, you observe that the Apple class has used the Edible
+protocol by separating it with a colon and writing it after the class name.
+The Apple class implemented the eat ( ) function by providing a function
+body via repeated function declaration fun eat ( ).
+Understanding Extensions
+We use extensions to organize our codes. An example is if we consider that
+we don’t have access to the code of another developer who already defined
+a class in his code. If his code looks like this
+ Class Airplane {
+ Var altitude : Double = 0
+ Func setAltitude ( feet :
+
+--- Page 62 ---
+ Double ) {
+ Altitude = feet
+ }
+ }
+This developer used feet to measure the altitude of the Airplane. Suppose
+you want to use meters, you can use Swift extension since you cannot edit
+the developer's code, and you will also not want to subclass Airplane. Your
+extension will look something like this
+ Extension Airplane {
+ Func setAltitude ( meter :
+ Double ) {
+ Altitude = meter *
+ 3.28084
+ }
+ }
+You can now express an ordinary function by using the function of
+setAltitude(meter : ) on an instance of Airplane just like below
+ let boeing = Airplane ( )
+ boeing . setAltitude ( meter :
+ 12000)
+ print (boeing . altitude ) //
+ Output : 39370.08
+
+--- Page 63 ---
+Exploring Error Handling
+Coding in Swift may come with its errors, but these errors can be handled
+and given response to appropriately.
+●      Throwing Error: Let's consider the code below
+If fuel < 1000 {
+throw
+RocketError . InsufficientFuel
+}
+ The above means that the code is used to throw an error type
+RocketError.insufficientfuel if the fuel variable is not up to 1000. If we
+want to fire a rocket, then,
+ Func
+ igniteRockets ( fuel : Int,
+ astronauts : Int ) throws {
+ if fuel < 1000 {
+ throw
+ RocketError . insufficientduel
+ }
+ Else if astronauts < 3 {
+ Throw
+ RocketError . insuffiecientAstronauts ( needed : 3)
+ }
+ Print ( “3….2…1…Ignition !!!LIFTOFF!!!!” )
+
+--- Page 64 ---
+ }
+The above code means that the function igniteRockets(fuel:astronauts: ) can
+only ignite if there are at least 3 astronauts on board and the fuel is more
+than or equivalent to 1000.
+●         The Initial Approach-try!: Consider the code below, which
+produces an error from the Swift compiler
+Let urls =
+FileManager. default . URLs (for :
+. applicationSupportDirectory, in : .userDomianMask)
+try
+FileManager . default . create
+Directory (at :
+URLs [0], withIntermediateDirectories : true ,
+Attributes : nil )
+We can fix the error above by using the try! approach, which forces
+unwrapping
+ try
+FileManager . default . create
+Directory (at :
+URLs [0], withIntermediateDirectories : true ,
+Attributes : nil )
+Meanwhile, this approach is used when you are sure that the error will not
+occur.
+●     The optional try-try?: We can also make use of Try? To ignore any
+error such as below
+
+--- Page 65 ---
+try?
+FileManager. Default.create
+Directory (at :
+URLs [0], withIntermediateDirectories : true,
+Attributes : nil )
+●     Do-try-catch: It is also possible for us to catch errors
+Do {
+try FileManager . default
+. createDirectory
+} catch let err {
+print ( err ) // or do something different?
+}
+The above method sees us creating the directory. We can simply go directly
+to the second block, where we can handle the problems.
+Summary
+You now know that extensions cannot replace the functionality or alter a
+class's main structure or other declarations; they can only add functionality.
+You can now use the protocol to define rules to conform to an adopting
+class.
+CHAPTER NINE
+Setting up the user interface
+
+--- Page 66 ---
+The Swift user interface will help us to use our codes to build an app we
+want. In this chapter, we will look at how to create the Let’s Eat app. We are
+going to review the already finished product and see how we can build ours.
+Technical requirements
+You must set up your storyboard for the Let's Eat app you want to create.
+You will also need to know the locations of the Tab bar buttons and the
+Navigation controllers. You will need to know how to build the app from
+scratch by deleting any existing project using the ViewController.swift file
+and add the app assets using the Assets.xcassets folder.
+Learning useful terms in iOS
+development
+As we further our knowledge in Swift programming, here are few terms we
+should know
+●     View Controller: All view controllers have view property, and they
+determine what happens when a user interacts with a view because
+they are an instance of UIStackView.
+●     View: Whatever is displayed on your screen is known as a view. It is
+an instance of UIView class or subclasses.
+●     Stack View: The UIView is a subclass of UIStackView, which the
+Stack view takes to be its instance.
+●     Argument: You pass an argument (value) to a method, function, or
+initializer to satisfy one of its parameters.
+●     Class: A code that provides the blueprint or function for an object.
+
+--- Page 67 ---
+●     Tab bar controller: We use this Controller to manage an array of the
+view controller.
+●        Console: Console serves as a tool used to log information for
+debugging processes or for debugging especially.
+●     Function: Function helps you to navigate to a particular declaration
+easily.
+●     Storyboard: The storyboard shows the visual representation of your
+app.
+●     Global: A global is defined at the highest level of a program and is
+usually a variable, function, or constant.
+●     Segue: Segue connects controllers and allows you to transit from one
+screen to another without much programming.
+●      Iterate: To do some task repeatedly.
+●         Local: Local describes the limited definition of a variable or
+constant.
+●     Auto Layout: This tool allows you to set different constraints on UI
+elements so that you can use a single storyboard for all devices.
+●     Playground: This file enables you to alter Swift programs in Xcode
+and see the output.
+●     Property: Property is what is encapsulated within an enum, class, or
+struct.
+●     Simulator: The simulator is an Xcode app that mimics how an app
+runs on the device.
+●      Tuple: Tuple represents when values are grouped.
+Touring the Let’s Eat app
+
+--- Page 68 ---
+We want to build the Let’s Eat app, which is a restaurant reservation app.
+We can find, within this app, several options like
+●     Explore: The explore tab comes first whenever you launch the Let's
+Eat app, and it shows the list of cuisines available for you to pick.
+●     Locations: We can get access to this from the explore tab, and it
+shows several cities from which the user can select so that the app
+loads the list of restaurants.
+●        Restaurant Listings: Restaurant listings shows the numbers of
+restaurants within an area based on their cuisines
+●     Restaurant details: We are going to build this using the static cells
+of the UITableView. The restaurant details will have the information
+about the restaurants.
+●     Map tab: This is a View Controller on the Let's Eat app showing the
+restaurants' location.
+Creating a new Xcode project
+We are now going to try to create our project for the Let’s Eat app.
+●     First, we will launch the Xcode and press the Create a new Xcode
+project button
+●      Choose the Single View App and press Next
+●     An option screen will appear; add the following to it
+Product Name: Let’s Eat
+Team: Leave it blank or use your account for it
+Organization Name: Use your name or company
+Language: Swift
+
+--- Page 69 ---
+Devices: Universal
+Use Core Data: Unchecked
+Include Units Tests: Unchecked
+Include UI Tests: Unchecked
+●     Select the folder to save your project and click on Create.
+Setting up a tab bar controller scene
+Having created our new project, we can now familiarize ourselves with the
+tab bar controller scene. We need to set up our storyboard; first, this
+storyboard will access the tab bar controller scene. We do this by updating
+the Main.storyboard .
+●      First, choose the Main.storyboard file from the Navigator panel.
+●      Choose the View Controller scene from the Outline View.
+●     Press the Backspace/Delete key so that the Main.storyboard becomes
+empty.
+●     Go to the utilities panel and choose the object library from the library
+selector bar.
+●     View more of the object library by pulling up the library selector bar.
+●      Look for the tab bar controller.
+●      Drag the tab bar controller into the canvas.
+With the above steps, we have set up the tab bar controller, which has two
+tabs.
+Setting up the Launch screen
+We need to set up the launch screen; this is particularly important because it
+will help us set up one asset for all orientations and devices. By doing this,
+
+--- Page 70 ---
+we will not need to build images for every device orientation.
+●        Choose the LaunchScreen.storyboard file. Ensure that the View
+Controller and View Controller Scene's disclosure arrows face down
+in the Outline View. Then, choose View under View Controller.
+●     Choose the Attributes inspector in the utilities panel and click on the
+Background bar.
+●     Select the Color Slider on the second tab of the Color panel.
+●     Update the value of FFFFFF to 4A4A4A under the RBG Sliders, Hex
+color #. The background color will change from white to dark grey.
+●         If you need to select the background color again, choose the
+background bar in the Attributes inspector to change the Hex color #
+to FFFFFF. Then, change it back to 4A4A4A. The background color
+update will appear in the Standard Editor panel.
+●     We now need to bring the app logo by selecting the Media Library
+that can be seen under the Library selector bar in the utilities panel.
+All these are to be done while still in the Launch.storyboard.
+●     We can now type detail-logo in the filter, which shows at the bottom
+of the Library pane. Then, we can drag and drop the logo into the
+Launch.Screen.storyboard.
+●     If you observe that, the logo did not drag out to size, select the logo,
+open the size inspector in the utilities panel, and set the height and
+width to 112 and 220.
+●     To let our Let’s Eat app logo appear at the center of any device, we
+select detail-logo and the Pin icon near the Filter bar. All these are
+done by applying the auto-layout.
+
+--- Page 71 ---
+●     We can now adjust as preferable by selecting the Align icon and
+checking Vertically's boxes in the container and Horizontally.
+With all the above steps, we have now set up our launch screen for any
+device. When we launch this program, it will show the Let’s Eat logo and
+the new background color.
+Summary
+This chapter has exposed us to how we can create a basic app called Let's
+Eat. So far, we have set up the logo and background color using the
+stepwise methods of setting up the tab bar controller scene and launching
+the screen.
+CHAPTER TEN
+Building your user interface
+You have been exposed to the creation of Tab bar controller in the previous
+chapter; this chapter will deal with how to create some other View
+controller that we need so that we will be able to navigate across the
+different sections of the app.
+For this app we are building, we will need to add the
+RestaurantViewController and ExploreViewController. We can download
+this at GitHub (although we can create this for quick use, let's use the
+downloaded format first).
+Adding a collection view to the
+explore screen
+
+--- Page 72 ---
+●     You will want to display elements in a grid format; this is done using
+the Collection View. To set up our Collection View.
+●     Choose the Main.storyboard file and select the object library tab
+from the utilities panel.
+●     You can now type “collection view” in the filter field.
+●      Drag the collection view into the explore view controller.
+●     Choose the Pin icon around the collection view component and enter
+the values.
+●      Press Add 4 constraints .
+Connecting storyboard element to
+outlets in a view controller
+We can now link our UIViewController in the storyboard with the
+ExploreViewController.
+●          Go to the left icon at the Controller's top and choose the
+UIViewController in the Collection View.
+●     Choose the Identity Inspector (third icon from left) from the utilities
+panel.
+●     Select the ExploreViewController in the Class menu of dropdown
+and click Enter.
+●     Select the Connections Inspector (last icon on the right hand) from
+the utilities panel.
+Configuring data source methods for
+the collection view
+
+--- Page 73 ---
+To configure data source methods for collection view.
+●     Click on the Collection View (empty) circle seen under outlets and
+drag it from the circle to the added UIViewController.
+●      Release it and ensure that the circle is filled.
+●        We can now hook up the delegate and data source by selecting
+Collection View from the screen and Connection Inspector from the
+utilities panel.
+●     Select and drag datasource property to the Explore View Controller
+in the Outline view, then release it.
+●     Do the same step above for the delegate property under the outlet
+section.
+Adding a section header to the
+collection view
+The section header for the collection view will include the selected location,
+page title, and a button for the selected location. The following steps can
+add this header.
+●     Go to the Main.storyboard outline and select the Collection View.
+●     Select Attributes inspector from the utilities panel and click on the
+checkbox next to the section header under the Collection View
+Accessories.
+●     Select the new header by checking the box that appears above our
+Demo Grey cell.
+●     Update the Identifier to Header from the Utilities panel’s Attributes
+inspector.
+
+--- Page 74 ---
+Configuring storyboard element sizes
+You can change the size of the storyboard based on the type of device you
+use. We need to follow the steps below
+●     Use Cmd + Shift + O and type Main.storyboard in the Open Quickly
+window, then press Enter.
+●        Select the Collection View and choose Size Inspector from the
+Utilities panel.
+●     Update the values as appropriate based on the current simulator you
+are using. These values will allow you to alter the width, height, and
+other things.
+Presenting a view modally
+To present a view modally, you will notice that we have to add the +
+location button from our Let's Eat app, which is necessary to display several
+restaurants' locations. We can now present the modal by the following steps.
+●        Select the object library from the Mian.storyboard file and type
+button in the filter field at the Library pane's bottom.
+●     You can now go ahead and drag the Button into the section header
+that is created in the previous Explore View Controller.
+After the above steps, we can now add another View Controller to the
+storyboard.
+●     Type viewcontroller in the filter and drag the ViewController in the
+Main.
+●        Navigate to Editor | EmbedIn | NavigationController using the
+selected View Controller.
+
+--- Page 75 ---
+●     Press Ctrl + drag where you have Button under the Explore tab in the
+View Controller to the Navigation Controller just created.
+●      Select the Present Modally from the menu that appears.
+Summary
+With all that is done in this chapter, we are almost done with our app. We
+have been able to create a dummy cell Collection View, which will enable
+us to create the rest of the app's structure. Then, we can simulate the design
+of the app.
+CHAPTER ELEVEN
+Finishing up your User Interface
+We will try to finish our app in this chapter so that we will now be able to
+get the basic structure of our app. This structure will allow us to get ready
+for any asset we need before there is any additional coding so that the app's
+design will just be the perfect one.
+Technical requirement
+You will need to be accustomed to integrating the Main.storyboard with the
+UITableView, UIViewController, and others for the optimal function of the
+app being built. Choosing values is also very important in this chapter, and
+you must master the act.
+
+--- Page 76 ---
+Adding a table view
+We can add the UITableView into our UIViewController by the following
+steps
+●         Type tableview in the filter field of the utilities panel of the
+Main.storyboard and drag the Table View into the scene.
+●      Choose the Pin icon and input the following values
+You should set all values under Add New Constraints to 0.
+Uncheck the Constraint to margins checkbox.
+Click on Add 4 Constraints.
+Implementing the Restaurant list
+screen
+We can set up and implement our restaurant list screen by doing the
+following
+●     Select the Main.storyboard file and make sure that the object library
+is chosen from the utilities panel.
+●     Type viewcontroller in the filter field and drag it next to the Explore
+View Controller.
+●      Type collection view in the filter field.
+●        Drag the Collection View into the new View Controller near the
+Explore View Controller.
+●     Select the Pin icon and input the following values after dropping it
+onto the scene.
+
+--- Page 77 ---
+Set all values under Add New Constraints to 0.
+Ensure you uncheck Constraints to margins .
+●      Click Add 4 Constraints.
+Implementing the Restaurant detail
+screen
+We can now connect the UIViewController with our
+RestaurantViewController by doing the following.
+●      Use the Collection view just created with the UIViewController.
+●      Select the Identity inspector from the utilities panel.
+●     Select RestaurantViewController from the Class dropdown menu of
+the Custom Class and press Enter.
+●      From the utilities panel, select the Connections Inspector.
+●     Click the CollectionView circle under the Outlets and drag it to the
+Collection View just added to the UIviewController.
+●     Select the Collection View from the scene and Connection Inspector
+from the Utilities panel.
+●     Drag the data source property to the Restaurant View Controller via
+the Outline view.
+●     Drag the delegate property to the Outline view’s Restaurant View
+Controller.
+Implementing the Map screen
+We will now connect the View Controller to the Map tab by selecting the
+Main.storyboard so that we will be able to implement our Map screen.
+
+--- Page 78 ---
+●     Navigate to Editor, Embed In, and Navigation Controller with the
+selected View Controller.
+●     Type map in the filter field in the utilities panel while the object
+library is selected.
+●     Drag the Map Kit View into the Map View Controller.
+●      Choose the Pin icon and input the following values.
+Uncheck the checkbox of Constraints to margins.
+Set all values under Add New Constraints to 0.
+Click Add 4 Constraints.
+You can now run the project by using the cmd + R or by hitting the play
+button
+Summary
+We are done with the basic structure of the app in this chapter. You may
+want to create the app again for perfection because we will be dealing with
+the other general aspect of the app in the subsequent chapter.
+CHAPTER TWELVE
+
+--- Page 79 ---
+Modifying and Configuring Cells
+We are trying to let our app be very similar to the designs and other
+specifics of the Let’s Eat app. We will be modifying and configuring the
+cells in this chapter. We will work with the table view cells, collection view
+cells, etc.
+Technical requirements
+What we will be doing here involves a series of technical repeated actions
+which will give us the exact app we are developing. You should know how
+to use the several update methods involving the Size inspector and the
+Attributes inspector.
+Modifying the Explore screen header
+The explore screen header of the Let's Eat app has four elements: a button, a
+gray line, and two UILabels (subtitle and title). We only need to add the
+UILabels because we have created the Button from the previous chapter.
+●     Select the prototype header in the Main.storyboard and put width as 0
+and height as 100 in the Size inspector.
+●     Type view in the filter field of the object library and drag the View
+into the prototype header.
+●     Select View and update X as 0, Y as 0, width as 375, and height as 90
+in the Size inspector.
+●     Type label using the filter field of the object library
+●     Drag out the two labels into the prototype header’s View
+●     Add a new color to the Assets.xcassets file and name it LetsEat Light
+Grey. Then, set the Hex Color # to AFAFB2.
+
+--- Page 80 ---
+●      Rename the Demo Grey to LetsEat Dark Grey.
+●     Use one of the labels as a subtitle and update Color as LetsEat Light
+Grey and Font as System Semibold 13 into the Attributes inspector.
+●     Update X as 8, Y as 24, width as 350, and height as 21 into the Size
+inspector.
+●     Select the other label to be used as the title and update the value Font
+of the Attributes inspector to System Heavy 40.0.
+●     Update X as 8, Y as 45, width as 255, and height as 37 in the Size
+inspector.
+●     Choose Button in the Attributes and update Type as Custom, Image
+as btn-location and then, remove the text button.
+●     Update X as 271, Y as 50, width as 96, and height as 25 in the Size
+inspector.
+●      Type view in the object library’s filter field.
+●      Drag the View into the prototype’s header.
+●     Select the View and update X as 8, Y as 89, width as 359, and height
+as 1 in the Size inspector.
+●     Select the Button and update the value of Background to LetsEat
+Light Grey in the Attributes inspector.
+Modifying the exploreCell collection
+view cell
+To work on the Explore Collection View cell
+●     Select, from the Attributes inspector, the exploreCell prototype and
+update the background color to white.
+
+--- Page 81 ---
+●        Update the value of width as 164 and height as 195 in the Size
+inspector and Explore View Controller.
+●     Type view in the filter field of the object library.
+●      Drag a view into the prototype.
+●     Select View and update X as 0, Y as 0, width as 164, and height as
+164 in the Size inspector.
+●      Type image in the filter field.
+●      Drag the Image view to the View just added
+●     Update X as 0, Y as 0, width as 164, and height as 164 while the
+Image view is selected.
+●      Type label in the filter field.
+●         Update Font to Avenir Next Condensed Demibold 20 in the
+Attributes inspector while the label is selected.
+●     Update X as 6, Y as 169, width as 152, and height as 21 in the Size
+inspector.
+Modifying the restaurantCell
+collection view cell
+There are several elements in the restaurant cell that we are going to
+modify. We go through the Restaurant View Controller and follow the steps
+below.
+●      Update the background color in the Attributes inspector.
+●        Select the restaurant list prototype cell and update width as 375,
+height as 312 in the Size inspector.
+●     Type view in the filter field of the object library.
+
+--- Page 82 ---
+●      Drag view into the prototype cell.
+●     Update X as 75.5, Y as 245, width as 224, and height as 56 in the
+Size inspector while View is selected.
+●      Type label in the filter field.
+●      Drag label to the View that is just added.
+●     Update X as 0, Y as 2, width as 224, and height as 21 in the Size
+inspector while the label is selected.
+●     Update Text as Add Available Times , Color as Black , alignment as
+center , and font as Avenir Next Condensed Bold 17 in the Attributes
+inspector.
+●      Type button in the filter field.
+●     Update Type as System, title as Plain, font as Avenir Next Condensed
+Regular 17, text color as white color and background as time-bg in
+the Attributes inspector while Button is selected.
+●     Update width as 68 and height as 27 in the Size inspector.
+●     Press cmd + C to copy after you might have selected the Button in
+the Outline.
+●     Press cmd + V twice to paste. You can now have three Buttons after
+you have done this.
+●     Press cmd + each created Button and click on the Embed in Stack.
+●        Update axis as horizontal, alignment as fill, distribution as equal
+spacing, and spacing as 10 in the Attributes inspector while the
+Outline View's stack view is selected.
+●     Set X as 0 in the Size inspector and type view in the object library's
+filter field.
+
+--- Page 83 ---
+●     Drag view into the prototype cell and update X as 11, y as 42, width
+as 353, and height as 200 in the Size inspector while View is selected.
+●     Type Image in the filter field and drag the Image view into the View
+just created.
+●     Update the Image’s value in the Attributes inspector as American
+while the Image view of the outline view is selected and update X as
+0, Y as 0, width as 353, and height as 200.
+●     Type label in the filter field and drag two labels into the prototype
+cell.
+●     Update one of the label’s fonts as Avenir Next Condensed Demi Bold
+17. Update X as 10, Y as 8, width as 355, and height as 19.
+●         Update color as LetsEat Dark Grey and font as Avenir Next
+Condensed Regular 14 for the second label in the Attributes inspector.
+●     Update X as 10, Y as 32, width as 355, and height as 19 in the Size
+inspector.
+Configuring the locationCell table
+view cell
+We need to look out for the Location View Controller to set the Location
+cell. We will be using the predefined cell provided by Apple for this.
+●      Update Prototype Cells as 1 in the Table View.
+●     Input the Style as Basic and Identifier as locationCell in the selected
+prototype cell.
+Summary
+
+--- Page 84 ---
+We have been able to mimic the LetsEat app by formatting cells to match
+our design. Although you may write some of the layouts with code, the
+method we have used here is easier, especially when dealing with the
+storyboard.
+
+--- Page 85 ---
+CHAPTER THIRTEEN
+Getting started with MVC and
+Collection Views
+The Model View Controller (MVC) is a software design pattern that
+proffers solutions to common errors in the software design. Because the iOS
+app is built using the MVC design pattern, we have three divisions known
+as Model, View, and Controller. The Controller has a lot of responsibility
+because of the MVC architecture, but we can tweak this pattern to be less
+pressure on the MVC.
+Technical requirements
+You should know that you might find it a little bit difficult when using the
+MCV architecture since it makes you uncertain about where to put some
+things. The nature of the MCV is such that a lot of responsibility is on the
+Controller camp.
+You should know that the Controller camp's fundamental importance is to
+respond to user's interactions and pass them over to the View or Model
+camp. In such a way, any task completed by the Model is passed back to the
+Controller. The Controller can now interact with the View. As such, some
+technicalities are needed because we will alter the pattern so that less
+responsibility will be on the Controller.
+Controller design pattern
+
+--- Page 86 ---
+You structure an app in your code using the architectural pattern provided
+by Apple's MVC. This pattern decides our app to include
+●     Model: The app's business logic and data are built upon the Model
+camp. The Model is used to store data; several operations performed
+on it, and handle several data representations.
+●     View: Everything that appears on the screen is the responsibility of
+the View camp. Because of the user's interaction, the View camp will
+format and present every data result.
+●     Controller: The Controller camp serves as an intermediary between
+the View camp and the Model camp. The Controller camp works on
+several setups and connections from the Model camp to the View
+camp. The View camp and the Model camp do not know about any
+operation going on with each other. These operations and exchanges
+are being taken care of by the Controller camp.
+Exploring controllers and classes
+The Controllers and classes work hand-in-hand. You will need to create the
+class file for each Controller's element (UIViewController,
+UICollectionViewController , and UITableViewController ). The class file is
+responsible for handling the numerous interactions and logic that the
+Controller receives and sends across. The class file will also receive any
+form of data.
+Summary
+We have learned about how Controllers and classes work and the basic
+architecture of the MVC. These structures are paramount to the subsequent
+
+--- Page 87 ---
+knowledge gained in the following chapters of this book.
+CHAPTER FOURTEEN
+Bringing Data into Views
+Collection
+You have learned about collection views in the previous chapter, and you've
+seen and probably now understand how collection views work on two
+different screens. In this chapter, you will be implementing the Explore
+screen's model objects to make the screen show a record of cuisines and so
+on.
+Technical Prerequisite
+In this chapter, you will need the previous chapter's knowledge to learn
+more about the collection view and how to implement it.
+Comprehending Model Objects
+From Chapter 13, Introduction to MVC and Collection Views , MVC is a
+regular design model for iOS apps. Recapping, MVC segment apps into
+three individual parts:
+* Model : This takes care of data processing, representation, and data
+storage tasks.
+* View : This refers to anything that the user can relate to on the screen.
+* Controller : This handles the channel or communication between the first
+two - Model and View.
+
+--- Page 88 ---
+The Explore screen exhibits a specific format when you build and execute
+your app. You will see empty cells. That is because you have concluded the
+execution of views (collection view and section header) as well as the
+controller (class ExploreViewController ). Next, attach model objects that
+will give the data to be exhibited.
+Combine a property list - ExploreData.plist first to your project, containing
+the image filename and name for individual cuisine. However, you already
+have the cuisine images in your Assets.xcassets folder. Next, create or
+devise a model object, ExploreItem , which is a design with two qualities.
+One of the qualities will be utilized to file names of cuisine, while the other
+will be used for reserving image filenames. Subsequently, you will set up a
+data manager class ExploreDataManager , which will run the data from
+ExploreData.plist , enter it into an arrangement of ExploreItem instances,
+and give the arrangement to the instance of the ExploreViewController .
+Conclusively, you will alter the ExploreViewController class to enable it
+to supply data for the collection view to show.
+Comprehending .plist files
+Property lists were developed to store object states or data structures for
+later recreation and transference. Property list files employ the filename
+extension .plist, and therefore are commonly called p-list files . These files
+are frequently used to save users’ settings. They are also used to reserve
+information about applications and bundles, a function the resource fork
+serves out in the previous Mac OS.
+Project lists are also utilized for localization strings for advancement. The
+files make use of the .stringsdict or .strings filename extensions. The former
+is a developed plist, while the latter is a ‘reduced’ out-of-date plist, which
+contains solely one dictionary minus the braces.
+Building a Pattern to Represent a
+Cuisine
+To build a model object to represent or depict a cuisine in your app, add a
+recently created file to your project, ExploreItem.swift , then declare or
+
+--- Page 89 ---
+state an ExploreItem pattern with attributes for a cuisine’s image and
+name. Use the steps below:
+Right-click on the ‘Model’ folder, then hit ‘New File.'
+iOS is selected already. Select ‘Swift File’ and click on ‘Next.'
+Title the file ExploreItem.swift , and then click on ‘Create.' It becomes
+visible in the Project Navigator. Click on it, and its contents will become
+visible in the Editor area. An import statement is the sole line in the file.
+Add the code below to the file to pronounce or declare a pattern titled
+ExploreItem :
+struct ExploreItem {}
+Add the code below before the final curly brace to attach two properties of
+String to the ExploreItem pattern:
+var name: String
+var image: String
+The property, name will save the cuisine name, and the image will save an
+image’s filename from Assets.xcassets . Your pattern should resemble:
+struct ExploreItem {
+var name: String
+var image: String
+}
+Dictionaries are discussed in Chapter 5, Set Categories , Structures in
+Chapter 7, and Extensions in Chapter 8, Procedures, Tracts, and Error
+Handling .
+Enforcing a Data Manager Group to
+Read Data from a .plist file
+After adding ExploreData.plist to your work, which contains the cuisine
+data, and creating a pattern, ExploreItem that saves individual cuisine’s
+details, it is necessary to set up a new class, ExploreDataManager . The
+class can peruse and interpret the .plist file’s data and keep it in an
+
+--- Page 90 ---
+arrangement of ExploreItem instances. This class or group will be termed a
+data manager group. Use the steps below:
+1. Right-click on the ‘Model’ folder, then hit ‘New File.'
+2. iOS is selected already. Select ‘Swift File’ and click on ‘Next.'
+3. Title the file ExploreDataManager.swift , and then click on ‘Create.'
+Click on the file to show its content in the Editor’s area.
+4. In the file, input the code below to declare the class,
+ExploreDataManager :
+class ExploreDataManager {}
+Input the code below in the curly braces. This executes the loadData()
+method, which will interpret the ExploreData.plist file’s contents and give
+back a range of dictionaries.
+fileprivate func loadData()  -> [[String:  AnyObject]]  {    
+guard let path =
+Bundle.main.path(forResource:      “ExploreData”,
+ofType:  “plist”),  let items
+=       NSArray(contentsOfFile:  path) else  {
+return  [[ : ]]
+}
+return items as!  [[String:AnyObject]]
+}
+Breaking down the method above:
+1. fileprivate
+The keyword, fileprivate means that the method is private and can only be
+employed within the class.
+2. func loadData()  ->  [[String:   AnyObject]]
+The declared method, loadData(), has zero arguments and returns an
+arrangement of dictionaries. Each dictionary contains elements with a value
+of the type, AnyObject , and a String key.
+3. guard
+
+--- Page 91 ---
+The guard statement tries to execute two statements - let path =
+Bundle.main.path(forResource:      “ExploreData”,  ofType:  “plist”) and let
+items =       NSArray(contentsOfFile:  path). If one statement or the other
+fails, it returns an empty group of dictionaries.
+4. let path =
+Bundle.main.path(forResource:      “ExploreData”,  ofType:  “plist”)
+When you build or create your app, a folder containing all the app’s
+resources, known as the application bundle, is the outcome.
+ExploreData.plist is contained in this bundle. The above statement
+acquires the path to the file, ExploreData.plist and allocates it to a path
+constant.
+5. let items =       NSArray(contentsOfFile:  path)
+If you use ExploreData.plist in your work or project, keep in mind that the
+base level object is an array, and each element in the array is a dictionary.
+This statement tries to produce an array from the ExploreData.plist file’s
+contents and allocates it to constant items.
+return items as!
+[[String:AnyObject]]
+The last statement returns items as a group of dictionaries, and each
+dictionary is of the type, [String: AnyObject] .
+Here, you have a data manager group or class, ExploreDataManager ,
+which contains a method that runs data from ExploreData.plist and
+appoints it to the items array.
+Exhibiting Data in a View Collection
+Presently, the Explore screen's view collection exhibits twenty collection
+view cells, each containing a label and an empty image view. You need a
+method to set the image view’s values and the label inside the cells; so for
+this purpose, you will be creating a view controller, ExploreCell.
+Afterward, you can structure the view controller for the view collection,
+ExploreViewController , to get details for the cuisine from the
+ExploreDataManager instance and give it to the collection view for an
+exhibition. To set up ExploreCell , follow the steps below:
+
+--- Page 92 ---
+1. In the Project navigator, right-click on the ‘Explore’ folder, then select
+‘New Group.'
+2. Retitle the new group ‘View.'
+3. Right-click on the ‘View’ and choose ‘New File.'
+4. ‘iOS should be chosen already. Select ‘Cocoa Touch Class’ and hit
+‘Next.'
+5. Structure the class as displayed below:
+* Class: ExploreCell
+* Subclass: UICollectionViewCell
+* Also create XIB: Unchecked
+* Language: Swift
+Click on ‘Next’.
+Then ‘Create.'
+A new file, ExploreCell, will be combined with your project. Click on it,
+and it will show the following:
+import  UIKit
+class  ExploreCell: UICollectionViewCell  {
+}
+Set the ExploreCell class as the status of the exploreCell view collection
+cell. In the Project navigator, select Main.storyboard and choose
+exploreCell within Explore View Controller Scene in the document draft.
+Click on the Identity inspector tab.
+Set ‘Class’ to ExploreCell under the section, Custom Class . This places
+an ‘ExploreCell’ instance as the controller view for exploreCell . When
+done, tap Return.
+To control what is being exhibited on the Explore screen by the view
+collection cells, you will link the label and image view in the exploreCell
+view collection cell to the ExploreCell class’ outlets. You will utilize the
+assistant editor to achieve this.
+Summary
+
+--- Page 93 ---
+In this chapter, you learned how to add a property list file to your project.
+You also executed the ExploreItem pattern, the Explore screen’s model
+objects. You learned how to set up a data manager group,
+ExploreDataManager, to interpret data from ExploreData.plist, enter the
+data into a group of ExploreItem instances, and give it to
+ExploreViewController. You got how to create a controller view for the
+exploreCell view collection cell. Lastly, structuring data source methods in
+the class, ExploreViewController to utilize data from ExploreItem
+instances.
+CHAPTER FIFTEEN
+Introduction to Views Table
+In this chapter, we will be looking at how to effect table view controllers,
+which will enable you to execute a views table that employs .plist files for a
+data source for your apps.
+Technical Prerequisite
+We will start by learning about how table views work by effecting a view
+controller that runs a table view in a code playground. Set up a new
+playground and title it ViewTableBasics . You can input and run all the
+programs or code demonstrated under the upcoming subheadings as you
+move on.
+Comprehending Views Table
+A view table (UITableView) is a scrolling UIScrollView in a vertical
+direction that contains a sole column of rectangular cells. Each rectangular
+cell is a UITableViewCell, a subclass of UIView . A view table has three
+principal functions - Navigation, Information, and Choice.
+A view table can exhibit a few other features asides from its column of
+cells:
+
+--- Page 94 ---
+* A table can include a header and footer view at the top and bottom,
+respectively.
+* The cells can be clustered into segments. Each segment can include a
+header and a footer, explaining the segment and informing the user of the
+location within the table.
+* Tables can be adjustable: a user might have the permission to delete,
+reorder and insert cells, and edit or modify data within a cell.
+* Cells can include menus: a user can swat a cell sideways to disclose
+buttons that function concerning that cell.
+* Cells can include menus: a user can press a cell for long to show a menu
+with clickable menu items.
+* A table can feature a clustered format, where the cells are rooted into a
+regular background that encompasses the segment header and footer details.
+To comprehend how the views table works, you will execute a controller
+view subclass that manages a view table in your ViewTableBasics
+playground. Follow the steps below:
+Open the ViewTableBasics playground you created earlier. At the
+playground’s top, delete the ‘var’ statement and put in a different statement,
+import PlaygroundSupport. Now, your playground should have the
+following:
+import UIKit
+import PlaygroundSupport
+The initial import statement imports or brings in the API for developing
+iOS apps. The second permits the playground to exhibit a live view, which
+you will employ to show the table view.
+Input the code below after the ‘import’ statements to affirm or declare your
+class.
+class TableViewExampleController: UIViewController {}
+This declares the TableViewExampleController class. This class or group
+is a subgroup of UIViewController, a group that manages on-screen views.
+Input the code below inside the braces to declare an array property and a
+view table property to the TableViewExampleController class:
+
+--- Page 95 ---
+var tableView:UITableView?
+var names: [String] = [“April”, “Raj”, “Jimmy”]
+The initial line adds a view table property, tableView, an elective property
+allotted a UITableView instance. The second line produces an array labeled
+names .
+Confirm that your program looks like the following:
+class TableViewExampleController: UIViewController {
+var tableView: UITableView?
+var names: [String] = [“April”, “Raj”, “Jimmy”]
+}
+Building the Location View
+Controller Group   
+You will produce the class, LocationViewController as the Locations
+screen’s view controller, add the table view’s outlet to it, and align it as the
+data source for the table view and delegate. First, inside the location folders,
+open three new folders - View, Model, and Controller. To perform this,
+right-click on the ‘Location’ folder and select ‘New Group’ to produce a
+new folder.
+Right-click on the Locations folder inside ‘Controllers’ and choose ‘New
+File.'
+In the ‘Choose a template for your new file’ area, choose iOS at the top and
+‘Cocoa Touch Class’ next. Then click on ‘Next.'
+Input the following after ‘New File’ in the ‘Options’ screen that pops up:
+Class : LocationViewController
+Subclass : UIViewController
+Also create XIB : Unchecked
+Language : Swift
+Click ‘Next’, then ‘Create’.
+
+--- Page 96 ---
+You need to connect your Table view to your LocationViewController
+class to communicate with both. Follow the steps below to connect both:
+1. Add the code below to the LocationViewController.swift file after the
+class has been declared:
+@IBOutlet weak var tableView: UITableView!
+2. Saving the file using command + S. Your file should contain or include
+the following:
+class LocationViewController: UIViewController {
+@IBOutlet weak var tableView:UITableView!
+Before we begin, clean up your LocationViewController class file. Erase
+everything after viewDidLoad():
+Now, you can connect your table view to the class file:
+1. Open Locations.storyboard and ensure that Location View Controller is
+selected in the Outline view.
+2. In the Utilities panel, choose the 'Collections' inspector. Under 'Outlets,'
+you will see a table view with an empty circle in front of it.
+Click on and drag the vacant circle to the Table view in the storyboard.
+Now, you have connected your Table view to your
+LocationViewController class.
+Including the Delegate and Data
+Source
+You need to add a delegate and data source to your Table View. Follow the
+steps below to include both:
+In the ‘Outline’ view, choose ‘Table View .' In the ‘Utilities’ panel, select
+‘Connections’ inspector.
+Click on and drag from the delegate and dataSource property to the
+Location View Controller within the Outline view.
+Choose the Table View and select the ‘Attributes’ inspector in the ‘Utilities’
+panel, if not already selected.
+
+--- Page 97 ---
+Next, for you to exhibit anything in Tableview, you need to include the
+UITableViewDataSource protocol and execute the methods required by
+this protocol. Type in the methods below after viewDidLoad():
+func
+tableView(_  tableView:   UITableView,   numberOfRowsInSection  section
+:  Int) ->  Int{
+return 11            }
+func numberOfSections(in  tableView: UITableView)  -> Int {
+return 1
+}
+func tableView(_  tableView:
+UITableView,  cellForRowAt  indexPath:  IndexPath)  -
+>  UITableViewCell  {
+let cell =
+tableView.dequeueReusableCell(withIdentifier:  “locationCell”,  for:  index
+Path)  as UITableViewCell  cell.textLabel?.text  =  “A cell”
+return cell
+}
+Including Location Data for the View
+Table
+Now that your Table View displays data, you need it to show a list of real
+locations. Update your Table View to display locations:
+Add the following directly under the variable, tableView :
+let locations = [“Chicago”, “Aspen”, “Houston”, “New York”, “Los
+Angeles”, “Philadelphia”, “San Francisco”, “San Antonio”]. You can make
+a longer list.
+To update your cell to show the locations, you need to substitute the
+cell.textLabel?.text = “A cell” in the methods above with the following:
+cell.textLabel?.text =  locations[indexPath.item]
+
+--- Page 98 ---
+Structure then run the project by using command + R or clicking on the
+‘Play’ button.
+You should see the list of set locations after clicking on “Select a location in
+your simulator."
+Building the Location Data Manager
+Group
+To create the Location Data Manager Group:
+In the ‘Location’ folder, right-click on the 'Model’ folder, then choose ‘New
+File.'
+iOS should be selected already. Click on ‘Swift File,' then ‘Next.'
+Title this file LocationDataManager , and click on ‘Create.'
+You need to define your class. So, under the import statement, input the
+following:
+class  LocationDataManager {
+}
+Within the class definition, add the variable below to keep your array
+private .
+private  var  locations:[String]  =  []
+Next, add the methods below after your variable:
+init() {
+fetch()
+}
+func fetch() {
+for location in loadData() {
+if let city = location["city"] as? String,
+let state = location["state"] as? String {
+locations.append("\(city), \(state)")
+
+--- Page 99 ---
+}
+}
+}
+func numberOfItems() -> Int {
+return locations.count
+}
+func locationItem(at index:IndexPath)  -> String  { locations[index.item]
+}
+Breaking down:
+loadData() - This loads the location data and returns a group of
+dictionaries. Each dictionary saves the state and city of a location.
+fetch() - This takes the data given by loadData() , strings the state and city
+for each member, and affixes the ensuing string to the array.
+numberOfItems() - This returns the count or number of components in the
+locations array.
+locationItem(at:) - This returns the string reserved in the locations array at
+specified array index.
+Summary
+In this chapter, we looked at table views - how to execute one. Next, we
+created the LocationsViewController class, a view table controller for
+Locations . Lastly, we produced a data manager group,
+LocationsDataManager , to read data from Locations.plist .
+
+--- Page 100 ---
+CHAPTER SIXTEEN
+Introduction To MapKit
+In this chapter, we will be looking at what annotations are and how to
+include them in a map, build personalized annotations, and move from the
+screen map to the restaurant detail screen.
+Comprehending and Building
+Annotations
+In your map, you are going to drop pins at an individual restaurant location.
+These pins are termed annotations, more precisely, MKAnnotation . ‘MK’
+means MapKit and is a segment of the MapKit configuration.
+An MKAnnotation or Annotation is a protocol that gives information
+about a view map. Protocols issue a blueprint for properties, methods, and
+other needed functionalities. MKAnnotation contains information such as
+the heading and subheading of the annotation and coordinates (longitude
+and latitude). To drop a pin on a map, you need to subclass MKAnnotation
+.
+Creating and Including Annotations
+To get the annotations displayed on the map, you need to create Your
+MapViewController file and link it to your map view and
+UIViewController in the storyboard. To create the file:
+Right-click on the ‘Map’ folder and choose ‘New File.'
+iOS should be selected already. Select ‘Cocoa Touch Class,' then ‘Next.'
+In the ‘Options’ screen that pops up, input the following:
+Class : MapViewController
+Subclass : UIViewController
+Also create XIB : Unchecked
+Language : Swift
+
+--- Page 101 ---
+Click on ‘Next,' then ‘Create.'
+Input import MapKit under the statement, import UIKit .
+Modify your class definition to include:
+class MapViewController:
+UIViewController,  MKMapViewDelegate {
+You have just declared or defined the MapViewController class. Follow
+the steps below to link the class to your map view in the storyboard.
+Click on Main.storyboard . Then in ‘View Controller Scene’ for the ‘Map’
+screen, click on the ‘View Controller’ symbol. Set Class to
+MapViewController in the Identity inspector below Custom Class .
+From the document outline, choose ‘Map View.'
+Click on ‘Adjust Editor Options.'
+Select ‘Assistant’ from the menu that appears.
+The assistant editor will come into view, revealing
+MapViewController.swift ’s contents. Tap Ctrl + Drag from the view map
+to the area just below the class definition.
+Add mapView in the ‘Name’ field and hit ‘Connect.'
+Now, you have connected the map view to the MapViewController class.
+Moving from the Screen Map to the
+Restaurant Detail Screen
+To move to the restaurant detail or information from the callout, you need to
+update your app so that your map can also unlock the restaurant detail. To
+achieve this, you need to produce a storyboard reference:
+Open Main.storyboard , and drag ‘Storyboard Reference’ into
+Map.storyboard , in the object library.
+Open the folder and resources downloaded initially and find the storyboard
+files (ReviewForm.storyboard , PhotoFilter.storyboard ,
+RestaurantDetail.storyboard ).
+In the Project navigator, open a new folder, name it RestaurantDetail and
+copy RestaurantDetail.storyboard into it.
+
+--- Page 102 ---
+Create a second new folder, name it ReviewForm and copy
+ReviewForm.storyboard into it. Then create the third folder, name it
+PhotoFilter and copy PhotoFilter.storyboard into it.
+You need to allot RestaurantDetail.storyboard to the storyboard reference
+added earlier. Click on Main.storyboard , choose the storyboard reference
+you included earlier, and then click on the Attributes inspector button. Set
+Storyboard to RestaurantDetail.storyboard under ‘Storyboard
+Reference’.
+Ctrl + Drag from the Map View Controller symbol to the storyboard
+reference and select ‘Show’ from the menu that appears to include a segue
+between the storyboard reference and the Map View Controller Scene
+area.
+Choose the segue linking the Map View Controller Scene area to the
+storyboard reference to set a segue's Identifier.
+In the Attributes inspector, below Storyboard Segue , put Identifier to
+showDetail .
+You have now connected the view controller for the Restaurant Detai l
+screen to the view controller for the Map screen utilizing a segue.
+Arranging Your Code
+Extensions are convenient for including functionality to standard classes,
+structs, or libraries - such as ints, strings, and arrays or to your data types.
+They can help you avoid clutter and make it easier to read. In this part, you
+will organize your program into a class - MapViewController .
+Restructuring the MapViewController
+class
+You will join two extensions to the class to restructure. Follow the steps
+below:
+1. In the Project navigator, click on MapViewController.swift . After the
+closing curly brace, input the following:
+// MARK: Private Extensionprivate extension MapViewController
+
+--- Page 103 ---
+{// code goes here}
+// MARK: MKMapViewDelegateextension MapViewController:
+MKMapViewDelegate
+{// code goes here}
+}
+The first method will include the MapViewController class's private
+methods. The second will include all the methods for
+MKMapViewDelegate .
+2. Erase the MKMapViewDelegate from the class definition or declaration
+at the file's top. Your class declaration should resemble the following:
+class MapViewController: UIViewController  {
+3. Move all the methods for MKMapViewDelegate into extension number
+two. It should resemble:
+// MARK:  MKMapViewDelegate
+extension  MapViewController:  MKMapViewDelegate {   
+func mapView(_ mapView: MKMapView, annotationView      view:
+MKAnnotationView, calloutAccessoryControlTapped      control:
+UIControl)
+{
+guard let annotation = mapView.          selectedAnnotations.first
+else { return }          selectedRestaurant = annotation
+as?          RestaurantItem           self.performSegue(withIdentifier:
+Segue.          showDetail.rawValue, sender: self)     }     func mapView(_
+mapView: MKMapView, viewFor      annotation:MKAnnotation) ->
+MKAnnotationView? {     
+let identifier = "custompin"
+guard !annotation.isKind(of: MKUserLocation.          self)
+else { return nil }          var annotationView:
+MKAnnotationView?    
+if let customAnnotationView
+=           mapView.dequeueReusableAnnotationView           (withIdentifier:
+
+--- Page 104 ---
+identifier) {
+annotationView =
+customAnnotationView                annotationView?.annotation
+=  annotation          }
+else {               let av =
+MKAnnotationView(annotation:               annotation, reuseIdentifier:
+identifier)           
+av.rightCalloutAccessoryView
+=   UIButton(type:.detailDisclosure)               annotationView =
+av          }      
+if let annotationView = annotationView
+{                annotationView.canShowCallout = true             
+annotationView.image = UIImage(named:               "custom-
+annotation")          }         
+return  annotationView     }
+}
+4. Move the showRestaurantDetail(segue:), addMap(_:), and initialize()
+methods into extension one. It should resemble:
+// MARK: Private Extensionprivate extension MapViewController {    
+func initialize() {           mapView.delegate =
+self           manager.fetch { (annotations) in           addMap(annotations)
+}     }  
+func addMap(_ annotations:[RestaurantItem])
+{          mapView.setRegion(manager.         
+currentRegion(latDelta: 0.5, longDelta: 0.5),          animated: true)         
+mapView.addAnnotations(manager.annotations)
+}
+func showRestaurantDetail (segue:UIStoryboardSegue){        
+if let viewController = segue.destination.as?
+RestaurantDetailViewController,
+let           restaurant =
+selectedRestaurant           {    viewController.selectedRestaurant
+
+--- Page 105 ---
+=  restaurant  }
+}
+}
+You have just organized MapViewController using extensions.
+Summary
+In this chapter, we talked about what MKAnnotations represent and how to
+include them to use them on your map. You also learned how to personalize
+your annotations. Your app now moves from hitting on an annotation to a
+restaurant information or detail page. Lastly, you learned that extensions
+help to sort code and include functionality without changing the main struct
+or class with which you are working.
+CHAPTER SEVENTEEN
+Introduction to JSON files
+In this chapter, you will learn how to load and analyze data from JSON files
+to utilize in your apps. We will also look at UITableViewDelegate methods
+and procedures to move data from a controller view to another.
+Technical Prerequisite
+You will use your modified project from the previous chapter and continue
+working on it.
+Sourcing Data from JSON files
+
+--- Page 106 ---
+JSON is a way to arrange data in a format or file that can be simply read by
+people and computers. Several iOS apps work with an online service based
+on the web to gain access to JSON files, which are subsequently used to
+supply data to the app.
+To help you comprehend the JSON template, download some JSON files
+and study one of the files' order. Follow the steps below:
+1. In the Project navigator, open a new group inside the folder, Misc, and
+title it 'JSON.'
+2. Drag the downloaded JSON files into the newly created JSON folder.
+3. Click on 'Finish' on the pop-up screen.
+4. Click on a detail option under the JSON file.
+5. You will see that the file begins with an opening bracket and ends with a
+closing square bracket. Each item within the bracket contains key-value
+pairs containing the file's information, parted by commas and surrounded by
+curly braces. The brackets indicate arrays, and the braces indicate
+dictionaries. Put differently, JSON files consist of a line-up of dictionaries,
+precisely similar to the .plist files you utilized earlier.
+Now, you know what a JSON file resembles. Next, let's produce a data
+manager instance or class to run data from a JSON file into your
+application.
+Producing the Restaurant Data
+Manager Class
+You will create a data manager class, RestaurantDataManager, that loads
+and reads data from the JSON files you added earlier. You will see that
+reading data from JSON files is much like loading from a .plist file.
+Before creating the RestaurantDataManager class, you need to adjust the
+RestaurantItem class to comply with the Decodable convention. Enacting
+this convention or protocol permits you to utilize the JSONDecoder class
+to occupy RestaurantItem instances utilizing JSON files' data.
+To alter the RestaurantItem class so that it complies with the Decodable
+convention, take the steps below:
+
+--- Page 107 ---
+1. In the Project navigator, click on RestaurantItem.swift inside the folder,
+'Model' in the 'Map' folder. Adjust the class definition for RestaurantItem
+as displayed below, to follow the Decodable protocol:
+class RestaurantItem: NSObject, MKAnnotation, Decodable {
+2. Delete the init() method and input the following catalog to make the
+RestaurantItem class comply with the Decodable protocol:
+enum CodingKeys: String, CodingKey {    
+case name   
+case cuisines     
+case lat   
+case long     
+case address    
+case postalCode = "postal_code"     
+case state    
+case imageURL = "image_url"    
+case restaurantID = "id"
+}
+The CodingKeys catalog equals the RestaurantItem class attributes to the
+JSON file's keys. This enables the JSONDecoder instance to obtain figures
+from the JSON file and set them to attributes in the RestaurantItem class.
+If the key title does not equal the property or attribute name, you can assign
+the key name to the attribute name, as shown in the previous code block for
+restaurantID , imageURL , and postalCODE.
+After altering the RestaurantItem class, you'll spot an error in a method -
+fetch(completion:) in MapDataManager.swift. It will be fixed in the next
+section, don't worry.
+You will now produce the RestaurantDataManager class, which will load
+and read the JSON file's data and put it into a line-up of RestaurantItem
+instances. Follow the steps below.
+1. Right-click on the folder, Restaurants , open a new group and name it
+Model . Then, right-click on the Model group and select 'New File.'
+
+--- Page 108 ---
+2. iOS should be selected already. Select 'Swift File,' then click on 'Next.'
+3. Title the file RestaurantDataManager . Hit 'Create.'
+RestaurantDataManager.swift pops up in the Project navigator.
+4. Input the following below the import statement to define the
+RestaurantDataManager class:
+class: class RestaurantDataManager { }
+5. Include the property below between the curly braces to contain a group
+of RestaurantItem i nstances:
+private var items: [RestaurantItem] = [ ]
+The items range will reserve the RestaurantItem instances obtained from
+the JSON file. The private keyword denotes it can only be accessed from
+within the class.
+6. Input the method below after the items attribute to load a JSON file and
+return an arrangement of RestaurantItem instances:
+func fetch(by location:String, with filter:String = "All",
+completionHandler:(_ items:[RestaurantItem]) -> Void) {     
+if let file = Bundle.main.url(forResource:
+location,     withExtension: "json") {
+do {             
+let data = try Data(contentsOf: file)               let
+restaurants = try JSONDecoder().       
+decode([RestaurantItem].self, from: data)
+if filter != "All" {
+items =  restaurants.filter
+({  ($0.                    cuisines.contains(filter))})
+}
+else { items = restaurants }               }
+}
+catch {               print("there was an error \(error)")
+}
+}
+
+--- Page 109 ---
+completionHandler(items)  }
+7. Include a method just below the fetch(by:with:completionHandler:)
+method to get the number of items contained in the items array:
+func numberOfItems() -> Int {     items.count
+}
+8. Input a method just below the numberOfItems() method to get a
+RestaurantItem instance from the items array at the provided index:
+func restaurantItem(at index:IndexPath) -> RestaurantItem{    
+return items[index.item]
+}
+You will request this method to structure each view collection cell's
+contents on the Restaurant List window.
+Utilizing Data from JSON files in
+your Application
+You will be configuring the class, MapDataManager to read data from
+JSON files containing restaurant details rather than .plist files.
+Customizing the MapDataManager class to utilize data from the
+RestaurantDataManager class
+You will now revise the MapDataManager instance to utilize the
+RestaurantDataManager class as a source of data fixing an error in the
+instance's method - "fetch(completion:) " in the process.
+1. In the Project navigator, inside the folder, Model in the Map folder, click
+on MapDataManager.swift.
+2. Amend the fetch(completion:) method as shown below:
+func fetch (completion:(_ annotations:[RestaurantItem]) -> ()){
+let manager =
+RestaurantDataManager()                     manager.fetch(by: "Boston",
+completionHandler: {
+(items) in self.items = items
+
+--- Page 110 ---
+ completion(items)
+       })
+ }
+Summary
+We started this chapter by discussing the JSON format, and you created a
+data manager group, RestaurantDataManager , that can read JSON files.
+Then, you structured the MapViewController class to obtain data from the
+RestaurantDataManager instance to exhibit a record of restaurants on the
+screen Map.
+
+--- Page 111 ---
+CHAPTER EIGHTEEN
+Showing Data in a Stationary View
+Table
+In this chapter, you will learn how to make a views table containing static
+cells exhibit data and how to produce a made-to-order map image.
+Therefore, you will be able to apply these qualities in your apps.
+Technical Prerequisite
+You will work on the modified project from the preceding chapter.
+Creating Outlets for the Restaurant
+Detail View Managing Group
+All of your app's screens except the Restaurant Detail screen have data on
+them. This screen is checked by hitting the restaurant annotation view's
+callout bubble button on the screen Map or hitting a restaurant on the
+Restaurant List window. If you set up and operate your app, selecting a
+restaurant on the Restaurant List window displays the stand-in Restaurant
+Detail screen. Hitting on the button in the restaurant annotation view's
+callout bubble on the screen, Map displays the authentic Restaurant Detail
+screen, but it doesn't include any restaurant data.
+To address this, you will create the outlets for the class,
+RestaurantDetailViewController:
+1. In the Project navigator, click on
+RestaurantDetailViewController.swift.
+2. Input the outlets below before the selectedRestaurant property
+definition and after the class definition:
+// Nav Bar
+@IBOutlet weak var btnHeart: UIBarButtonItem!
+
+--- Page 112 ---
+ // Cell One
+ @IBOutlet weak var lblName: UILabel!
+ @IBOutlet weak var lblCuisine: UILabel!
+ @IBOutlet weak var lblHeaderAddress: UILabel!
+ // Cell Two
+ @IBOutlet weak var lblTableDetails: UILabel!
+ // Cell Three
+ @IBOutlet weak var lblOverallRating: UILabel!
+ // Cell Eight
+@IBOutlet weak var lblAddress: UILabel!
+ // Cell Nine
+ @IBOutlet weak var imgMap: UIImageView!
+The outlets you just created are the following:
+btnHeart - is the heart-shaped button's outlet. The button is located in the
+navigation bar.
+lblName - This is for the label that shows the restaurant's name in the first
+cell.
+lblCuisine - is the outlet for the label that shows the restaurant's cuisines in
+the first cell.
+lblHeaderAddress - This is for the label that shows the restaurant's address
+in the first cell.
+lblTableDetails - is the outlet for the label that shows the restaurant's table
+details in the second cell.
+lblOverallRating - is for the label that shows the restaurant's overall rating
+in the third cell.
+lblAddress - is the outlet for the label that shows the restaurant's address in
+the eighth cell.
+imgMap -  is the outlet for the image view that shows the restaurant's
+location map in the ninth cell.
+
+--- Page 113 ---
+In the Restaurant Detail View Controller section in
+RestaurantDetail.storyboard, connect the outlets to the UI elements after
+setting them up.
+Showing Data in a Stationary View
+Table
+You won't be taking on the UITableViewDataSource convention to inhabit
+the outlets since this is a stationary table view. Instead, you will draft
+methods to achieve that. Follow the steps below:
+1. In the Project navigator, click on
+RestaurantDetailViewController.swift.
+2. Add code as shown below to import the MapKit configuration after the
+current import statement:
+import MapKit
+This is necessary since you will be utilizing the MapKit configuration's
+attributes and methods to produce a map image for the image view
+contained in the last cell.
+3. Include a private extension consisting of code as shown below to place
+the labels in the Restaurant Detail screen subsequent to the final curly
+brace:
+private extension  RestaurantDetailViewController {
+func setupLabels()  {
+guard let restaurant = selectedRestaurant else           { return }
+if let name = restaurant.name  {
+lblName.text = name
+title = name          
+}
+if let cuisine = restaurant.subtitle  {
+lblCuisine.text = cuisine          
+}
+
+--- Page 114 ---
+if let address = restaurant.address  {
+lblAddress.text = address
+lblHeaderAddress.text = address          
+}
+lblTableDetails.text = "Table for 7, tonight at           10:00 PM"
+}
+}
+setupLabels () is quite simple and straightforward; it obtains values from a
+RestaurantItem instance and places them in the
+RestaurantDetailViewController instance's outlets, except for
+lblTableDetails , which is just allotted a string.
+4. In the last cell, you will exhibit a map image. To achieve this, you will
+produce an image from a map zone and adjust the outlet, imgMap , to show
+that image. This image will also exhibit the exact custom annotation image
+you adopted on the screen Map. Include the method below after
+setupLabels() and before the final curly brace:
+func createMap()  {
+guard let annotation = selectedRestaurant,      let long
+=       annotation.long, let lat  = annotation.lat else      { return }
+let location = CLLocationCoordinate2D(latitude: lat,     longitude:
+long)
+takeSnapShot (with: location)
+}
+This method generates a CLLocationCoordinate2D instance utilizing the
+selectedRestaurant property's latitude(lat) and longitude(long) attributes
+and allocates it to location . Then, it summons the takeSnapShot(with:)
+method, passing location as a framework or parameter.
+5. You'll spot an error since takeSnapShot(with:) has not been executed
+yet, so include the code below after the createMap() function to execute it:
+func takeSnapShot(with location: CLLocationCoordinate2D) {    
+let mapSnapshotOptions = MKMapSnapshotter.Options()     
+
+--- Page 115 ---
+var loc = location
+let polyline = MKPolyline(coordinates: &loc,      count: 1 )    
+let region =
+MKCoordinateRegion(polyline.     boundingMapRect)
+mapSnapshotOptions.region = region
+mapSnapshotOptions.scale = UIScreen.main.scale  
+mapSnapshotOptions.size = CGSize(width: 340,      height:
+208)
+mapSnapshotOptions.showsBuildings = true
+mapSnapshotOptions.pointOfInterestFilter =     .includingAll   
+let snapShotter = MKMapSnapshotter(options:
+mapSnapshotOptions)  
+snapShotter.start() { snapshot, error in
+guard let snapshot = snapshot else  { return }
+UIGraphicsBeginImageContextWithOptions
+(mapSnapshotOptions.size, true, 0)       
+snapshot.image.draw(at: .zero)        
+let identifier = "custompin"
+let annotation = MKPointAnnotation()
+annotation.coordinate = location
+let
+pinView  =  MKPinAnnotationView(annotation:          annotation,reuseIdent
+ifier: identifier)
+pinView.image = UIImage(named:
+"custom-          annotation")!                    
+let pinImage = pinView.image
+var point = snapshot.point (for : location)
+let rect = self.imgMap.bounds
+if rect.contains(point) {
+
+--- Page 116 ---
+let pinCenterOffset = pinView.centerOffset
+point.x -= pinView.bounds.size.width/2
+point.y -= pinView.bounds.size.height/ 2
+point.x += pinCenterOffset.x
+point.y += pinCenterOffset.y
+pinImage?.draw (at: point)
+}
+if let image
+=          UIGraphicsGetImageFromCurrentImageContext() {
+UIGraphicsEndImageContext()
+DispatchQueue.main.async {
+self.imgMap.image = image
+}
+}
+}
+}
+Simple explanation : Given a region, the above method takes a photograph
+of the map at that region or location, includes the custom annotation you
+applied earlier in the screen Map, turns it into an image or photograph, and
+sets it to the outlet, imgMap in the RestaurantDetailViewController
+instance.
+6. In the private extension preceding the method, setupLabels() definition,
+include a method, initialize() that calls the createMap() and setupLabels()
+methods as shown below:
+func initialize()  {   
+setupLabels()    
+createMap()
+}
+7. Revise the viewDidLoad() method to summon the initialize() method
+when RestaurantDetailViewController loads its view:
+
+--- Page 117 ---
+override func viewDidLoad()  {
+super.viewDidLoad()    
+initialize()
+}
+Moving Data to the Restaurant Detail
+View Controller Instance
+After adding and connecting the Restaurant Detail screen's outlets inside
+the class, RestaurantDetailViewController and adding code to the class to
+obtain an instance of RestaurantItem and utilize it to occupy its outlets,
+the final thing to do is move the chosen RestaurantItem instance from the
+instance of RestaurantListViewController to the
+RestaurantDetailViewController instance. Follow the steps below:
+1. In the project navigator, click on RestaurantListViewController.swift .
+2. Add the code below after viewDidLoad() to summon a
+showRestaurantDetail(segue:) method if showDetail is the segue
+identifier:
+override func prepare (for segue:UIStoryboardSegue,
+sender:Any?)  {
+if let identifier = segue.identifier  {
+switch identifier {
+case  Segue.showDetail.rawValue:
+showRestaurantDetail (segue : segue)
+default:
+print ("Segue not added")
+}
+}
+}
+Recollect that you included a segue between the Restaurant Detail View
+Controller Scene and the Restaurant List View Controller Scene on the
+
+--- Page 118 ---
+storyboard. Before the instance, RestaurantListViewController converts
+to a different controller view, the segue identifier is examined. If
+showDetail is the segue identifier, then the method, showRestaurantDetail
+is implemented.
+Only the segue between the Restaurant Detail View Controller Scene and
+the Restaurant List View Controller Scene holds the showDetail
+identifier, so the RestaurantDetailViewController instance must be the
+destination view controller.
+3. You will notice a lapse because the method,
+showRestaurantDetail(segue:) hasn't been executed. From the
+RestaurantListViewController instance, this method will move the
+RestaurantItem instance to the RestaurantDetailViewController
+instance. Include it after the private extension's initial curly brace in the
+RestaurantListViewController class:
+func showRestaurantDetail (segue:UIStoryboardSegue) {    
+if let viewController = segue.destination
+as?     RestaurantDetailViewController, let index
+=     collectionView.indexPathsForSelectedItems?.first {  
+selectedRestaurant =
+manager.restaurantItem(at:          index)         
+viewController.selectedRestaurant
+=             selectedRestaurant    
+}
+}
+Firstly, this method inspects whether the segue destination is a
+RestaurantDetailViewController instance, and obtains the index of the
+view collection cell that was exploited. Then, manager gives back the
+RestaurantItem instance reserved at that index, which is set to
+selectedRestauran t. The selectedRestaurant property of the
+RestaurantDetailViewController instance is then assigned to this
+instance.
+Looking at Main.storyboard , the Restaurant List View Controller
+Scene in it is presently linked to View Controller Scene, which is a
+placeholder. You'll revise Main.storyboard to eliminate the placeholder
+
+--- Page 119 ---
+and link the Restaurant List View Controller Scene to the Restaurant
+Detail View Controller Scene in RestaurantDetail.storyboard . Follow
+the steps below:
+1. Click on Main.storyboard . In the document profile, click on
+restaurantCell . Then, Ctrl + Drag to the RestaurantDetail storyboard
+reference (produced in Chapter 16 , Introduction to MapKit) from
+restaurantCell .
+2. Select 'Show' from the menu that appears.
+3. The placeholder scenes are not needed anymore. So, erase them from the
+storyboard by clicking them and hitting 'Delete' on your keyboard.
+4. Assign the segue identifier to showDetai l. As reviewed earlier, this will
+assign the selectedRestaurant property of the
+RestaurantDetailViewController instance. Choose the segue you just
+included.
+5. Click on Attributes inspector. Assign showDetail to identifier, under
+"Storyboard segue."
+Create and execute your project. Choose a type of cuisine and a city. Click
+on a restaurant on the Restaurant List page. The selected restaurant's
+details will come into view on the Restaurant List page.
+Now, you've completed the execution for the Restaurant Detail and Map
+screens.
+Summary
+
+--- Page 120 ---
+CHAPTER NINETEEN
+Introduction to Custom UIControls
+In this chapter, you will learn how to generate custom UIControl groups or
+classes, operate touch or tinge events, and apply review forms for your
+apps.
+Technical Prerequisite
+You will work on the project from the chapter before.
+Building a Conventional UIControl
+Subclass
+You will produce a conventional subclass of the class, UIView, the
+RatingsView class that you will apply in both the Table View Controller
+Scene in ReviewForm.storyboard and the Restaurant Detail View
+Controller Scene in RestaurantDetail.storyboard . UIControl is a
+subclass of UIView, and it is utilized as the superclass for class
+RatingsView because instances of RatingsView have to react when the
+user hits them.
+A RatingsView instance will exhibit ratings as stars. The user will also be
+allowed to choose half-stars. Let's start by building a subclass of the class,
+UIControl . Follow the steps below:
+1. Right-click on the Review Form folder and choose 'New File.'
+2. iOS should be selected already. Select Cocoa Touch Class and hit 'Next.'
+3. Set up the file as shown below:
+Class : RatingsView
+Subclass : UIControl
+Language : Swift
+Hit 'Next'.
+
+--- Page 121 ---
+4. Click on 'Create'. You will see RatingsView.swift in the Project
+navigator.
+Next, you will set the status of the object view immediately after the 0.0
+label located in the Restaurant Detail View Controller Scene to
+RatingsVie w. Follow the steps below:
+1. In the Project navigator, amplify the RestaurantDetail folder. Click on
+RestaurantDetail.storyboard and choose the object view immediately
+after the 0.0 Label.
+2. Hit the Identity inspector tab or button. Set class to RatingsView under
+Custom Class .
+Now, you will reform the RatingsView class to enable it to exhibit stars.
+You'll utilize the graphic assets contained in the Assets.xcassets folder to
+achieve this in the following section.
+Showing stars in your personalized UIControl Subclass
+In the upcoming sections of this chapter, a UIButton class' instance will be
+called a button while a RatingsView class' instance will be called a ratings
+view. You will include a few code lines to the RatingsView class to enable
+a ratings view show stars. Use the steps below:
+1. In the Project navigator, click on RatingsView.swift .
+2. Input the following line of code after the RatingsView class's declaration
+to generate a  property that saves a filled star's image. After typing it, you
+should see the autocomplete list or menu:
+let imgFilledStar = Imag
+3. From the autocomplete list, select Image Literal.
+4. A placeholder graphic will appear. Double-click on it.
+5. You should see the custom visuals in Assets.xcassets in a pop-up box.
+6. Look for and choose the red star.
+7. Input the lines of code below after let imgFilledStar = (picture of a filled
+star), applying Image Literal to allocate the visuals for imgEmptyStar and
+imgHalfStar :
+let imgHalfStar = (picture of a half-filled star)
+let imgEmptyStar = (picture of an empty star)
+
+--- Page 122 ---
+var rating = 0.0
+var totalStars = 5
+The properties - imgEmptyStar , imgFilledStar and imgHalfStar are used
+to save the star images. The 'rating' attribute is used to reserve a restaurant
+rating. The sorts of stars displayed is determined by ratings ' value.
+The property, totalStars, decides the number of stars to be portrayed.
+8. Now, include initializers in this class. Type the code below after
+declaring the property:
+override init(frame: CGRect)  {  
+super.init (frame: frame)
+}
+required init? (coder: NSCoder) {   
+super.init (coder:  coder)
+}
+The above are typical initializers for UIView . Recall that UIControl is a
+subclass of class UIView .
+Giving Support for Tinge Events
+You need to assist touch or tinge events to allow the ratings view react to
+taps. To assist tinge events, you will revise the RatingsView class to trace
+the users' screen touches and employ them to find out the rating: Follow the
+steps below:
+1. In the Project navigator, click on RatingsView.swift and input the
+following after draw(_:) method :
+override var canBecomeFirstResponder: Bool {
+return tru e
+}
+canBecomeFirstResponder is a property of UIControl property that tells
+whether an object can get to be the foremost responder. To react to tinge
+events, the ratings views have to become a foremost responder. By default,
+this method returns false . You will override to make it give back or return
+true so the view ratings can become a first responder.
+
+--- Page 123 ---
+2. To trace the user's screen touches, type the code below after the
+canBecomeFirstResponder attribute you just included:
+override func beginTracking (_ touch:  UITouch, with
+event  UIEvent?) -> Bool  {
+guard self.isEnabled else {
+return false  
+}
+super.beginTracking (touch, with: event)
+handle(with: touch)    
+return true
+}
+3. You'll notice an error because you are yet to execute the handle(with:)
+yet. So, input the code below into the private extension for declaration and
+definition:
+func handle(with touch: UITouch)  {
+let cellWidth = self.bounds.size.width /     CGFloat (totalStars)
+let location = touch.location (in: self)
+var value = location.x / cellWidth
+if ((value + 0.5) < value.rounded(.up))  {
+value = floor(value) + 0.5
+}   else   {          value = value.rounded (.up)
+}
+updateRating (with: Double(value))
+}
+For instance, let's assume the width of the ratings view is 200.
+cellWidth would be assigned to 200/5 = 40. Suppose the user tapped the
+screen at spot x = 130;  y = 19. value would be allotted 130/40 = 3.25. So,
+the if statement would evaluate 3.25 + 0.5 < 3.25.rounded(.up) , which
+becomes (3.75 < 4.0), which gives 'true'. Therefore, value would be
+assigned to floor (3.25) + 0.5, which turns into 3.0 + 0.5, which is 3.5. So, a
+value of '3.5' will be passed to updateRating(with:).
+
+--- Page 124 ---
+4. You will notice an error because you are yet to execute
+updateRating(with:). So, input the code below into the private extension
+below the handle(with:) method:
+func updateRating (with value: Double) {
+if (self.rating != value && value >= 0 && value <=     Double
+(totalStars))  {
+self.rating = value        
+setNeedsDisplay ()
+}
+}
+From the previous example, since 3.5 is between 0 and 5, it will be
+allocated to rating if it is not equivalent to the current rating 's value.
+Now, you need to update the class, RestaurantDetailViewController.swift
+in the Project navigator to assign isEnabled for the view ratings. In the
+Project navigator, click on RestaurantDetailViewController.swift and
+adjust the createRating() method, as shown below:
+func createRating()  {
+ratingsView.rating = 3.5
+ratingsView.isEnabled = true
+}
+Using an Unwind Option for the
+Cancel button
+The Review Form page appears when you hit the Add Review button in
+the Restaurant Detail page. As you did for Locations screen, you will use
+an unwind method to put away the Review Form page. Follow the steps
+below:
+1. In the Project navigator, click on
+RestaurantDetailViewController.swift.
+2. Apply the unwind method in the private extension before
+createRating() as shown below:
+
+--- Page 125 ---
+@IBAction func unwindReviewCancel
+(segue:UIStoryboardSegue)   {}
+This method is summoned when the Review Form page changes to the
+Restaurant Detail page.
+3. Open ReviewForm.storyboard by clicking on it and Ctrl + Drag from
+the Cancel button to the Scene Dock's exit symbol.
+4. Select unwindReviewCancelWithSegue in the menu that appears.
+Now, you can put away the Review Form page or screen by hitting the
+Cancel button.
+Building the Review Form View
+Managing Group
+To process or operate user input, you will produce the
+ReviewFormViewController class as the controller view for the Review
+Form page. For now, you will design this class to take all the values from
+the fields of the Review Form screen and print these values in the Debug
+section. Follow the steps below:
+1. Right-click on the ReviewForm folder and choose 'New File'.
+2. iOS should be selected already. Select Cocoa Touch Class and hit 'Next'.
+3. Structure the file as shown below:
+Class : ReviewFormViewController
+Subclass : UITableViewController
+Also create XIB : Unchecked
+Language : Swift
+Hit 'Next'.
+4. Click on 'Create'. You will see ReviewFormViewController.swift in the
+Project navigator.
+5. Erase all after viewDidLoad() and include the outlets below after
+declaring the class. They correlate with the Review Form page's fields:
+IBOutlet weak var ratingsView: RatingsView!
+
+--- Page 126 ---
+@IBOutlet weak var tfTitle: UITextField!
+@IBOutlet weak var tfName: UITextField!
+@IBOutlet weak var tvReview: UITextView!
+6. You will also align the Save button's action. Add the code below after
+declaring the outlets:
+@IBAction func onSaveTapped (_ sender: Any)  {
+print (ratingsView.rating)
+print (tfTitle.text as Any)  
+print (tfName.text as Any)     
+print (tvReview.text as Any)
+dismiss (animated: true, completion: nil)
+}
+The above method prints the Review Form screen's fields' contents to the
+Debug section and dismisses it.
+Summary
+In this chapter, you produced RatingsView , a new custom subclass of
+UIControl from the beginning and integrated it to the Review Form and
+Restaurant Detail screens. You customized it to react to touches, enabling
+a user to place a restaurant rating on the Review Form page or screen.
+Lastly, you executed the ReviewFormViewController class, a controller
+view for the Review Form page, and customized the Cancel button.
+CHAPTER TWENTY
+Introduction to Image Libraries
+and Cameras
+
+--- Page 127 ---
+In this chapter, you will learn how to import or bring in photos to your apps
+and add filters to them.
+Technical Prerequisite
+You will work on the modified project from the preceding chapter .
+Comprehending Filters
+iOS has a variety of innate filters that you can apply to complement photos.
+You can access these filters via the Core Image repertoire or library. Core
+Image is an analysis and image processing technology that renders high-
+efficiency processing for video and still images. Core Image contains over
+170 filters, offering you the ability to add a wide variety of cool effects to
+your images.
+For this project, you will be applying just ten filters. Download these filters,
+put them in a .plist file, and title the file FilterData.plist. Next, import the
+file into your app using the steps below:
+1. In the Project navigator, produce a new group inside the folder,
+PhotoFilter and title it Model .
+2. Drag the FilterData.plist file to Model . Ensure you tick Copy items if
+needed and hit Finish.
+Building Pattern Items for the Photo
+Filter Screen
+This move the information in FilterData.plist into your app, you will create
+a FilterItem class, that can reserve a filter's details and FilterManage r, a
+data manager class that will load the FilterData.plist file and and create a
+range of FilterItem instances. This is like the method used to load location
+details and cuisine into your app. To start, let's make the FilterItem class:
+1. In the folder, PhotoFilter , right-click on the Model folder and choose
+'New File'.
+2. iOS should be selected already. Select 'Swift File' and hit 'Next.'
+
+--- Page 128 ---
+3. Title this file FilterItem . Hit 'Create'. FilterItem.swift will come into
+view in the Project navigator.
+4. After import , input the code below inside FilterItem.swift for the
+declaration and definition of the FilterItem class:
+class FilterItem:NSObject  {   
+let filter: String  
+let name: String
+init (dict:[String:AnyObject])  {  
+name = dict["name"] as! String    
+filter = dict["filter"] as! String
+}
+}
+This class has an initializer and two properties. The filter property will
+reserve filter names while the name property will save the short filter
+description. The initializer utilizes a dictionary as a parameter to assign the
+filter and name properties when one of this class' instances is created.
+Now, you have produced the FilterItem class. Next, you will create
+FilterManager, the data manager class. Follow the steps below:
+1. In the folder, PhotoFilter , right-click on the Model folder and choose
+'New File'.
+2. iOS should be selected already. Select 'Swift File' and hit 'Next'.
+3. Title this file FilterManager . Hit 'Create'. FilterManager.swift will
+come into view in the Project navigator.
+4. After import , input the code below inside FilterManager.swift for the
+declaration and definition of the FilterManager class:
+class FilterManager: DataManager {
+func fetch (completionHandler:(_ items:[FilterItem]) -
+>      Void)   {
+var items: [FilterItem] = [ ]    
+for data in load (file: "FilterData")   {        
+items.append(FilterItem(dict: data))
+
+--- Page 129 ---
+}
+completionHandler (items)
+}
+}
+The class, FilterManager utilizes the DataManager procedure you
+generated earlier in Chapter 16, Introduction to MapKit .
+Building the Image Filtering
+Procedure
+To add a filter to a photo, you will generate a procedure, ImageFiltering ,
+that executes a method, apply(filter:originalImage:). This method, which
+adds a defined filter to a photo, will be available to any class that follows
+this procedure. Follow the steps below:
+1. Right-click on the PhotoFilter folder and choose 'New File'.
+2. iOS should be selected already. Select 'Swift File' and hit 'Next'.
+3. Title this file ImageFiltering . Hit 'Create'. ImageFiltering.swift will
+come into view in the Project navigator.
+4.  Include the code below to this file for the declaration and definition of
+the ImageFiltering procedure or protocol:
+import UIKi t
+import CoreImage
+protocol ImageFiltering  {  
+func apply (filter:String, originalImage:UIImage) -
+>     UIImage
+}
+extension ImageFiltering {
+func apply (filter:String, originalImage:UIImage) -
+>       UIImage  {
+let initialCIImage = CIImage(image:
+originalImage,      options: nil)  
+
+--- Page 130 ---
+let originalOrientation =       originalImage.imageOrientation
+guard let ciFilter = CIFilter(name: filter) else  {    
+print ("filter not found")    
+return UIImage ()
+}
+ciFilter.setValue(initialCIImage,
+forKey:         kCIInputImageKey)
+let context = CIContext()
+let filteredCIImage = (ciFilter.outputImage)!  
+let filteredCGImage
+=      context.createCGImage(filteredCIImage,
+from:     filteredCIImage.extent)  
+return UIImage(cgImage: filteredCGImage!, scale:
+1.0,     orientation: originalOrientation)
+}
+}
+Building View Controller for the
+Image Filter Screen
+In this section, you will produce and customize a controller view for the
+view collection cells. Each cell will show a thumbnail sample of what an
+image resembles with filters.
+Creating a View Controller for the
+View Collection cells
+The Photo Filter page provides or renders the user interface that permits
+the user to choose a filter to be applied to an image. If you click on
+PhotoFilter.storyboard in the Project navigator, you will notice that the
+view collection is already there in the View Controller Scene , but you
+
+--- Page 131 ---
+can't set the view collection cells' contents as there is no method to do so.
+You will produce a class to handle them by using the steps below:
+1. Right-click on the PhotoFilter folder and choose 'New File'.
+2. iOS should be selected already.
+3. Select Cocoa Touch Class and hit 'Next'.
+4. Structure the file as shown below:
+Class : FilterCell
+Subclass : UICollectionViewCell
+Also create XIB : Unchecked
+Language : Swift
+Hit 'Next'.
+4. Click on 'Create'. FilterCell.swift will come into view in the Project
+navigator.
+5. Add the code below to this file for the declaration and definition of the
+FilterCell class:
+import  UIKit
+class  FilterCell: UICollectionViewCell  {   
+@IBOutlet var lblName: UILabel!   
+@IBOutlet var imgThumb: UIImageView!
+}
+extension FilterCell: ImageFiltering  {
+func set (image:UIImage, item:FilterItem)  {    
+if item.filter != "None" {       
+let filteredImg = apply(filter:
+item.filter,            originalImage: image)
+imgThumb.image = filteredImg       } else
+{           imgThumb.image = image       }     
+lblName.text = item.name
+}        
+
+--- Page 132 ---
+override func awakeFromNib()  {
+super.awakeFromNib()   
+imgThumb.layer.cornerRadius = 9
+imgThumb.layer.masksToBounds = true
+}
+}
+6. In the Project navigator, click on PhotoFilter.storyboard.
+7. Choose Collection View Cell in the View Controller Scene in the
+document outline. Click on the Identity inspector button. Set 'Class' to
+FilterCell , under Custom Class .
+8. Click on the Attributes inspector button. Assign Filter Cell to Identifier.
+9. Click on the Connections inspector button. Link the imgThumb and
+lblName outlets to their similar UI elements.
+Obtaining Permission to Use the
+Photo Library or Camera
+Apple specifies that your app must notify the user if it wants to access the
+photo library or camera. If you fail to do this, your app will be declined and
+not permitted on the App Store. In your project, you will reorganize the
+Info.plist file to make your app show messages when accessing the photo
+library or camera. Follow the steps below:
+1. In the Project navigator, click on Info.plist to show a list of keys. Pass
+your mouse over any current key and hit the + button.
+2. A field should come into view, permitting you to enter an extra key.
+3. Enter the keys below:
+NSPhotoLibraryUsageDescription
+NSCameraUsageDescription
+4. For the value of each key, input a string that explains why you want to
+use the photo library or camera to the user.
+
+--- Page 133 ---
+5. Create and execute your app. Move to the Restaurant Detail page and
+hit the Add Photo button. You should see an alert.
+6. Click on 'OK'. You will see the image picker.
+7. Choose an image, and the Photo Filter page will show the image and a
+record of thumbnails with varying filters added to them. Simply click on a
+filter to apply its effects to the image.
+Summary
+In this chapter, you imported a .plist file, FilterData.plist , holding the
+filters you are applying, created the class, FilterItem to keep filter data, and
+produced a data manager class, FilterManager to read the .plist file and
+inhabit a range of FilterItem instances. Next, you generated a
+ImageFiltering procedure with a method to use filters on photos. Then you
+produced the PhotoFilterViewController and FilterCell classes to manage
+or run the view collection cells and the Photo Filter page or screen. Lastly,
+you included code to PhotoFilterViewController to use a chosen filter on
+an image.
+CHAPTER TWENTY ONE
+Comprehending Core Data
+In this chapter, you will find out and grab how core data functions. You will
+create components of Core Data and authorize an interface between Core
+Data components and your app utilizing a data manager class. You will also
+learn how to load and save photos and reviews employing Core Data.
+Technical Prerequisite
+You will continue using the project from the preceding chapter.
+Getting Started with Core Data
+
+--- Page 134 ---
+Core Data is Apple's technique for storing app data to your gadget or
+device. It gives persistence, background tasks, migration, versioning,
+undo/redo and view synchronization. You can specify your relationships
+and data types utilizing Xcode's data prototype or model editor, and Core
+Data will automatically create class descriptions for your data types. Core
+Data can then generate and handle object instances based on class
+definitions or descriptions.
+Core Data offers a set of groups or classes altogether called the Core Data
+stack to control and carry on object instances, which are the following:
+* NSManagedObjectModel : Defines your app's types, which include their
+relationships and properties.
+* NSManagedObject : Utilizes your app's types' instances based on data
+from NSManagedObjectModel.
+* NSManagedObjectContext : Tracks modifications to your app's types'
+instances.
+* NSPersistentStoreCoordinator: Stores and gets your app's types'
+instances from reserves.
+* NSPersistentContainer : Builds the store coordinator, model and context
+simultaneously.
+Enforcing Core Data Parts for your
+Application
+To enforce Core Data components for your application, you need to
+generate a data model for a photo or review. You can achieve that by
+producing entities in the data model editor for Xcode.
+Generating a Data Model
+You will create entities for photos and reviews utilizing data model editor
+for Xcode and Xcode will automatically generate the class descriptions.
+Let's produce reviews' entity first. Follow the steps below:
+1. In the Project navigator, right-click on the Misc folder and select 'New
+Group'. Title this group 'Core Data'.
+2. Right-click on the 'Core Data' group and select 'New File'.
+
+--- Page 135 ---
+3. iOS should be selected already. Enter data in the filter field, and choose
+'Data Model'. Hit 'Next'.
+4. Title the file and click on 'Create'. You will see the data model in the
+Editor area.
+5. Click on the 'Add Entity' button:
+6. An Entity comes up in the Entities area. This entity's Attributes shows
+up next to the entity.
+7. Click on the Entity and retitle it Review
+8. In the Attributes section, click on the + button to generate an attribute.
+Assign name to the Attribute and String to Type .
+9. Add the Attributes and Types below:
+Attribute Type
+customerReviewString
+date Date
+rating Double
+restaurantID Integer 32
+title String
+date will be set automatically when the Review instance is produced.
+10. Include another attribute, uuid, type String.
+11. Include a second entity, termed RestaurantPhoto , with the attributes
+below. Core Data can't reserve objects of UIImage , so the type of the
+photo attribute is set to Binary Data .
+Attribute Type
+date Date
+photo Binary Data
+restaurantID Integer 32
+uuid String
+12. For attribute uuid , make sure you uncheck Optional in the Data Model
+inspector.
+Now, you have created the entities needed for your app.
+
+--- Page 136 ---
+Comprehending how Loading and
+Saving works
+To save a review with a restaurant identifier, you will update
+ReviewFormViewController. The Save button in the Review Form screen
+presently prints the review when tapped, to the Debug area. To save or store
+reviews, you will alter the method, onSaveTapped(_:) to store a persistent
+store review when you tap the Save button. Follow the steps below:
+1. Click on ReviewFormViewController.swift and include the property
+below to the class ReviewFormViewController before declaring the outlet
+to save the restaurant identifier:
+var  selectedRestaurantID:Int?
+2. Produce a private extension, pass the onSaveTapped(_:) method into it,
+and alter it as shown below:
+private extension ReviewFormViewController   {   
+@IBAction func onSaveTapped(_ sender: Any)  {
+var item = ReviewItem()     
+item.name = tfName.text     
+item.title = tfTitle.text
+item.customerReview = tvReview.text      
+item.restaurantID = selectedRestaurantID      
+item.rating = Double(ratingsView.rating)     
+CoreDataManager.shared.addReview(item)      
+dismiss(animated: true, completion: nil)
+}
+}
+onSaveTapped(_:) will produce an instance of ReviewItem, allocate data
+gotten from the Review Form page to its properties, and summon 
+CoreDataManager.shared.addReview(item) to store the review to the
+resolute or persistent store.
+
+--- Page 137 ---
+Revamping the Photo Filter View
+Controller group to keep photos
+The program that permits the class, PhotoFilterViewController to store
+photos to the persistent store is like the code you executed in the
+ReviewFormViewController class for storing reviews. Now, you will
+update the class PhotoFilterViewController to save images when you tap
+the Save button. Follow the steps below:
+1. In the Project navigator, click on PhotoFilterViewController.swift and
+include the method below after the initialize() method inside the private
+extension:
+func checkSavedPhoto()  {
+if let img = self.imgExample.image  {  
+var item = RestaurantPhotoItem()   
+item.photo = generate(image: img,
+ratio:         CGFloat(102))
+item.date = Date()      
+item.restaurantID = selectedRestaurantID
+CoreDataManager.shared.addPhoto(item)   
+dismiss(animated: true, completion: nil)
+}
+}
+2. You need to set off this method when you tap the Save button. Add the
+method below after the onPhotoTapped(_:) method inside the private
+extension:
+@IBAction func onSaveTapped(_ sender: AnyObject)  {   
+self.checkSavedPhoto()
+}
+3. To allocate the method onSaveTapped(_:) to the Save button, open
+PhotoFilter.storyboard. In the Photo Filter View Controller Scene , click
+
+--- Page 138 ---
+on the Photo Filter View Controller icon. Open the Connections inspector
+and Drag from the onSaveTapped action to the Save button.
+You need to move the restaurant identifier to PhotoFilterViewController ,
+before you can save.
+Showing photos and reviews saved
+on the Restaurant Detail screen
+All you must do is execute the individual view controllers for the view
+collection cells and view. Follow the steps below:
+1. Open a new folder in your project and name it Reviews.
+2. Right-click on the folder and choose 'New File'.
+3. iOS should be selected already. Select Cocoa Touch Class , and click on
+'Next'.
+4. Structure the file as shown below:
+Class : ReviewCell
+Subclass : UICollectionViewCell
+Also create XIB : Unchecked
+Language : Swift
+Hit 'Next'.
+5. Click on 'Create'. You will see ReviewCell.swift in the Project navigator.
+Type the code below between the curly braces:
+import UIKit
+class ReviewCell: UICollectionViewCell  {    
+@IBOutlet weak var lblTitle: UILabel!  
+@IBOutlet weak var lblDate: UILabel!   
+@IBOutlet weak var lblName: UILabel!    
+@IBOutlet weak var lblReview: UILabel!
+@IBOutlet weak var ratingsView: RatingsView!
+}
+
+--- Page 139 ---
+Computing a Restaurant's Overall
+Performance
+The Restaurant Detail screen's overall rating label shows 0.0, and the view
+ratings show 3.5 stars, regardless of the real rating. To include a general
+rating, you will obtain the ratings from all the reviews and compute their
+average. Let's have a new method in CoreDataManager to achieve this.
+Follow the steps below:
+1. In the Project Navigator, click on CoreDataManager.swift (inside the
+folder, Core Data in the Misc folder). Before the addReview(_:) method,
+include the method below:
+func fetchRestaurantRating(by identifier:Int) -> Double  {   
+let reviews = fetchReviews(by: identifier)  
+let sum = reviews.reduce(0, {$0 + ($1.rating ?? 0)})  
+return sum / Double(reviews.count)
+}
+In the above method, all of a particular restaurant's reviews are gotten from
+the persistent or resolute store and allocated to reviews .
+2. In the Project navigator, click on RestaurantDetailViewController.swift
+(inside the folder, RestaurantDetail )
+3. Update the method, createRating() as shown below:
+func createRating()  {
+ratingsView.isEnabled = false  
+if let id = selectedRestaurant?.restaurantID {
+let value = CoreDataManager.shared
+fetchRestaurantRating(by: id)
+ratingsView.rating = Double(value)
+if value.isNaN {          lblOverallRating.text = "0.0"      }
+else {
+
+--- Page 140 ---
+let roundedValue = ((value *
+10).rounded()/10)         
+lblOverallRating.text = "\(roundedValue)"      
+}
+}
+}
+Summary
+In this chapter, we talked about Core Data and it's different parts or
+components. You generated data models, updated the class,
+PhotoFilterViewController to store photos. Then you learned how
+to show saved reviews on the Restaurant Detail screen. Lastly,
+you learned how to compute a restaurant's general rating.
+
+--- Page 141 ---
+CHAPTER TWENTY TWO
+Introduction to Apple Silicon Macs
+In this chapter, you will enable your current iOS apps function well on all
+iOS devices.
+Technical Prerequisite
+You will continue on the modified project from the preceding chapter.
+Repairing User Interface Problems
+An iOS app is never actually done. There are always ways for you to refine
+and improve your app. Upon building and running your app, you all notice
+that some of your app's screens require modifications. The Explore and
+Locations screen are part. Let's make some changes to the Explore screen
+and fix some issues. Follow the steps below:
+1. In the Project navigator, click on ExploreViewController.swift inside
+the folder, Explore.
+2. After the viewDidLoad() method, include a method, viewWillAppear() ,
+and include the code below to conceal the navigation controller's gray
+navigation bar:
+override func viewWillAppear(_ animated: Bool)   {
+super.viewWillAppear(animated)
+navigationController?.setNavigationBarHidden(true,     an
+imated: false)
+}
+3. To round the view collection cells' corners on the Explore screen, click
+on ExploreCell.swift (inside the View folder located in the Explore folder)
+in the Project navigator, and include the code below after the declarations of
+the outlet:
+override func awakeFromNib()  {  
+
+--- Page 142 ---
+super.awakeFromNib()     
+imgExplore.layer.cornerRadius = 9   
+imgExplore.layer.masksToBounds = true
+}
+4. To adjust the colors of the tab bar buttons and tab bar, click on
+AppDelegate.swift in the Project navigator and include a private extension
+encompassing the methods below after the conclusive curly brace:
+private extension AppDelegate  {   
+func initialize()  {        
+setupDefaultColors()     }    
+func setupDefaultColors()  {
+UITabBar.appearance().tintColor = .systemRed        
+UITabBarItem.appearance().          setTitleTextAttribut
+es([NSAttributedString.Key.foregroundColor:
+UIColor.systemRed],for:           UIControl.State.selecte
+d)      
+UINavigationBar.appearance().tintColor
+=          .systemRed       
+UITabBar.appearance().isTranslucent = false     }
+}
+Enabling your Application work
+You need to adjust the user interface to function with the iPad before
+creating a Mac app from your current iOS app. To see what changes will
+need to be made. To know what changes you need to make, you will build
+your app and run it on the iPad simulator. Follow the steps below:
+1. If the simulator is running, close it. From the list of simulators in the
+Scheme menu, select iPad Pro (9.7-inch) and run your app.
+2. The simulator will start and you will see it.
+As can be seen, the view collection on the Explore screen a occupies the
+whole expanse of the screen automatically, and the view collection cells are
+
+--- Page 143 ---
+the same size that they were on the iPhone.
+Upgrading the App to run on macOS
+To make your app run on Mac, you will set the development team for the
+app. This depends on the project files you use. Note that this only works or
+runs if you're using Xcode 12 and either macOS 11.0 Big Sur or macOS
+10.5. You also need a paid or free Apple developer account. Follow the
+steps below:
+1. In the Project navigator, choose your project.
+2. Tick the Mac checkbox in the General pane.
+3. Click on Enable .
+4. Observe that the checkbox for Mac is not ticked.
+Your app will be edited to run on your Mac.
+5. Your Mac is set as the run terminal. Create and run your application.
+6. If it fails to build, click on the Issue navigator button and view the error
+message.7. If it tells you that your project requires a development team, it is
+because you need a paid or free developer account for your app to run on
+real hardware.
+8. Check to confirm that your account has been added to Xcode in the
+following:
+Xcode | Preferences | Accounts
+9. Close the Preferences window. Click on the Signing & Capabilities tab
+and choose your free or paid developer account in the Team's drop-down
+menu.
+10. Build your app again and rerun it. It will run on your Mac.
+Summary
+In this chapter, you learned how to create a Mac app from a current iOS
+app.
+
+--- Page 144 ---
+CHAPTER TWENTY THREE
+Introduction to SwiftUI
+In this chapter, you will learn how to create a SwiftUI app that interprets
+model objects, hands them over in a list, and permits navigation to another
+screen accommodating a map view.
+Technical Prerequisite
+You will produce a new Xcode project for this chapter.
+SwiftUI Xcode Project Creation
+The creation of a SwiftUI Xcode project entails the same steps as a typical
+Xcode project, but you will structure it to utilize SwiftUI instead of
+storyboards. As will be seen, the user interface is developed entirely in
+code, and you will see modifications in the user interface as you adjust your
+code.
+Follow the steps below to create a new SwiftUI Xcode project:
+1. Build a new Xcode project.
+2. Click on 'iOS'. Choose the App template, and click on 'Next'.
+3. You will see the Choose options for your new project: screen. Structure
+this screen as shown below:
+Product Name: LetsEatSwift
+UIInterface: SwiftUILife
+Cycle: SwiftUI App
+The other settings should be set already. Ensure all the checkboxes are
+unchecked. Hit 'Next' when done.
+4. Select a location to store the SwiftUI project and hit 'Create'.
+5. You will see your project on the screen, with ContentView.swift chosen
+in the Project navigator. ContentView.swift holds code that will produce
+your app's initial view.
+
+--- Page 145 ---
+6. On the canvas, click on the Review button to set up the preview.
+7. Confirm that your app's preview is shown on the canvas. If you can't
+view the canvas, choose canvas from the Adjust Editor Options menu to
+display it.
+8. If you want more space to work, click on the Editor and Navigator
+buttons to conceal the Editor and Navigator sections, and drag the Editor
+area's border to increase the canvas size.
+Restaurant List Screen Building
+Let's modify the ContentView structure to show a particular restaurant's
+data. Follow the steps below:
+1. Click on the Library button. Input text in the filter field. Drag a Text
+view or scene to the canvas and place it under the Project's text.
+2. Xcode has included code to this text view's ContentView.swift file
+automatically. Confirm that your code resembles the following:
+struct ContentView: View {  
+var body: some View {     
+VStack {           
+Text("your project name").padding()        
+Text("Placeholder")
+}
+}
+}
+3. You will utilize The Tap Trailhouse's information, a Boston restaurant, as
+sample data. Adjust the views text in the VStack view to display the name
+and cuisines provided at the The Tap Trailhouse:
+struct ContentView: View {   
+var body: some View {      
+VStack {        
+Text ("The Tap Trailhouse ").padding()       
+
+--- Page 146 ---
+Text ("Brewery , Burgers , American ")
+}
+}
+}
+4. Confirm that the modifications are shown in the preview.
+5. You'll employ a SwiftUI image view to show the restaurant's image.
+Adjust your code as shown below to include a photo view to your VStack
+view:
+struct ContentView: View  {   
+var body: some View  {        
+VStack {          
+Text ("The Tap Trailhouse").padding()           
+Text ("Brewery, Burgers, American")        
+Image (systemName: "photo")
+}
+}
+}
+6. Confirm that your canvas now shows two views, texts and an image
+view.
+Including Configuring Navigation
+and Model Objects
+Now, you have a view that can be employed to show a restaurant's details.
+You will utilize this view as a SwiftUI list's cell, a repository that gives out
+data in a single column. Follow the steps below:
+1. Command + click on the HStack view and select Embed in List to show
+a list which contains five cells on the canvas.
+2. Confirm that your code resembles the following :
+struct ContentView: View  {   
+
+--- Page 147 ---
+var body: some View  {     
+List(0 ..<5) { item in             
+Spacer ()           
+VStack {             
+Text ("The Tap Trailhouse")
+.font(.headline)
+Text("Brewery, Burgers,
+American")                    .                            .font(.subheadline)              
+.foregroundColor(.secondary)         
+Image(systemName: "photo")            }      
+Spacer()      
+}   
+}
+}
+As can be seen, the view you generated in the preceding section now
+included a list structured to show five items, and you no longer need the
+HStack view.
+Utilizing SwiftUI and UIKit Views
+Jointly
+SwiftUI doesn't have an indigenous view map but you can employ the same
+view map you utilized on the storyboard to provide the map. You can use
+any SwiftUI's view subclass by enfolding it in a SwiftUI view that complies
+with the UIViewRepresentable convention or protocol. Let's produce a
+personalized view that can demonstrate a map view. Follow the steps
+below:
+1. Select, 'File', 'New', then 'File' in that order to open the template selector.
+2. iOS should be selected already. Click on SwiftUI View in the User
+Interface section and hit 'Next'.
+
+--- Page 148 ---
+3. Title the newly created file MapView.swift and click on 'Create'.
+MapView.swift will come into view in the Project navigator.
+4. In the new file, import MapKit and make the MapView format comply
+with the UIViewRepresentable convention, as shown below. Do not worry
+about the glitch that shows up, you'll rectify that in the upcoming steps:
+import  SwiftUI
+import MapKit
+struct   MapView:  UIViewRepresentable   {
+var body: some View {     
+Text ("Hello World")
+}
+}
+The UIRepresentable convention is a wrapper that permits you to utilize
+any UIKit view in your SwiftUI view ranking or scale.
+5. You need two methods to comply with the UIRepresentable protocol: a
+method updateUIView(_:context:) that structures it and reacts to any
+modifications and a method, makeUIView(context:) that produces an
+MKMapView view.
+Finishing the Restaurant Detail
+Screen
+You will produce a new SwiftUI view to portray the Restaurant Detail
+screen and include the view map. Follow the steps below:
+1. Select 'File', 'New', then 'File' in that order to unlock the template
+selector.
+2. iOS should be selected already. Click on SwiftUI View in the User
+Interface area and hit 'Next'.
+3. Title the newly created file RestaurantDetail.swift and click on 'Create'.
+RestaurantDetail.swift comes into view in the Project navigator.
+4. Declare and define the structures of RestaurantDetail_Previews and
+RestaurantDetail as shown below:
+
+--- Page 149 ---
+import  SwiftUI
+struct RestaurantDetail: View  {     
+var  selectedRestaurant: RestaurantItem
+var body: some View  {    
+VStack {         
+MapView (lat: selectedRestaurant.lat long:           
+selectedRestaurant.long).frame(height:250)
+VStack (alignment: .leading) {
+Text (selectedRestaurant.title)           
+.font (.largeTitle)                   
+.fontWeight (.bold)
+Text(selectedRestaurant.subtitle
+.font(.headline)
+.foregroundColor(.secondary)
+Text(selectedRestaurant.address)                       
+.font(.headline)        
+Text(selectedRestaurant.city)  
+.font(.headline)
+}.padding()         
+Spacer()
+}
+}
+}
+struct RestaurantDetail_Previews: PreviewProvider  {   
+static var previews: some View {      
+NavigationView  {       
+RestaurantDetail(selectedRestaurant: testData[0])   
+}
+
+--- Page 150 ---
+}
+}
+5. The preview shows a view map above the restaurant text views but
+doesn't offer the map. As done prior, click on the Live Preview button.
+6. The canvas now shows the Restaurant Detail screen with an offered
+map.
+Summary
+In this chapter, you were briefly introduced to SwiftUI. You learned how to
+create an uncomplicated version of your app employing SwiftUI.      
+CHAPTER TWENTY FOUR
+Introduction to Widgets
+In this chapter, you will learn how to create and customize a widget and to
+apply widgets for your apps.
+Technical Prerequisite
+You will continue with the modified project from Chapter 22, Introduction
+to Apple Silicon Macs.
+Getting Started with Widgets
+A widget comes into view as a small pane of information on the Home
+Screen for your app. It is meant to give applicable and understandable
+content. For instance, if you are at a specific location, a widget could show
+the restaurants at that point or location. You launch your app by tapping the
+widgets.
+Apple gives templates that make it very easy to include a widget to your
+app.
+
+--- Page 151 ---
+Including a Widget Object to your
+App
+To include a widget to your project, you'll utilize the template for Widget
+Extension . This template holds all the code required to exhibit a widget on
+the Home Screen, establish the widget's initial view, and launch your app
+when you tap the widget. Follow the steps below:
+1. Select 'File', 'New', and 'Target' in that order to unlock the template
+selector.
+2. iOS should be selected already. Click on Widget Extension in the
+Application Extension area then hit 'Next'.
+3. Title the extension, and ensure the Include Configuration Intent
+tickbox is unticked. Click on 'Finish'.
+4. In the dialog box that comes up, click on Activate . This will produce a
+scheme or design for your widget that you can utilize to run it in the
+simulator for iOS.
+5. Confirm that the LetsEatWidgetExtension plot or scheme and the
+iPhone grade you are working on are chosen in the Scheme menu.
+Set up and run your app. You will spot the widget on your screen showing
+the time.
+Enabling Timeline Access to your
+Widget
+To show details in a widget, you'll customize the timeline provider for the
+widget. This produces a timeline containing timeline entries . Each entry
+states the time and date at which to revise the contents of the widget. You
+will use the class, MapDataManager to obtain restaurant details and
+produce timeline entries for each restaurant. Follow the steps below:
+1. If your app is running, stop it. In the project navigator, click on your
+project's swift file inside the widget folder.
+2. Click on the Resume button to sample the widget in the canvas. It
+exhibits the time at the moment.
+
+--- Page 152 ---
+3. Your widget's declaration and definition conforms to the widget
+framework. Adjust it as shown below:
+@main
+struct ProjectNameWidget: Widget  {
+let kind: String = "ProjectNameWidget"  
+var body: some WidgetConfiguration  {
+StaticConfiguration(kind: kind, provider: Provider())  {
+entry in
+ProjectNameWidgetEntryView(entry: entry)
+}
+.configurationDisplayName("ProjectNameWidget")      
+.description("This widget shows you restaurants in your
+area.")   
+}
+}
+4.  You will utilize the class, MapDataManager you generated in Chapter
+16 , Introduction to MapKit to give a particular location's restaurants' list to
+your widget. To get this class to your widget, in the Project navigator, click
+on MapDataManager.swift (situated inside the Model folder in the Map
+folder). Click on the File inspector button. Under Target Membership ,
+check ProjectNameextension .
+Configuring a Widget's View
+You will customize your widget to match your map's appearance more
+closely. In the Project navigator, click on ProjectName.swift and adjust the
+form of ProjectNameEntryView as shown below:
+struct LetsEatWidgetEntryView : View {
+      var entry: Provider.Entry
+      var body: some View {
+           ZStack {
+
+--- Page 153 ---
+                Color(.darkGray)
+                VStack {
+                     Text(entry.restaurantTitle)
+.font(.title)
+                          .foregroundColor(.white)
+                          .bold()
+                          .minimumScaleFactor(0.5)
+                     Text(entry.restaurantSubtitle)
+                          .font(.body)
+.foregroundColor(.gray)
+                          .bold()
+                          .minimumScaleFactor(0.5)
+                }.padding()
+           }
+      }
+ }
+Including a Widget to the Home
+Screen
+You will now utilize your project's scheme and discern how to include
+widgets to your Home Screen. Follow the steps below:
+1. From the Scheme Menu, choose your project's scheme and the iPhone
+grade you're working on.
+2. Set up and run your application. From the Device menu, select 'Home'.
+3. Click on and hold any application icon on the simulator's page and select
+Edit Home Screen from the menu that appears. All the app icons will start
+jiggling.
+4. Hit the + button to show the widgets picker screen.
+5. From the widget picker screen, select your project's widget.
+
+--- Page 154 ---
+6. Select a widget size and hit Add Widget .
+7. Place the widget at your desired position and from the Device menu,
+select Home to depart the jiggle mode.
+You have included a widget to your home screen.
+Summary
+In this chapter, you executed a widget for your project that displays the
+restaurants located in a particular location.
+
+--- Page 155 ---
+CHAPTER TWENTY FIVE
+Getting Familiar with App Clips
+In this chapter, you will learn how to generate, customize and test an
+application clip.
+Technical Prerequisite
+You will continue on the modified project from Chapter 24, Introduction to
+Widgets.
+Knowing App Clips
+An app clip provides a subdivision of your app's practicality when it's
+required. It may be activated in numerous ways, such as website visitation,
+QR Code scanning, or clicking an NFC tag. When activated, the app clip's
+information card comes up, and clicking it launches or starts the app clip
+itself. You can then utilize the app clip to fulfil a duty, and you can decide
+to download the full app. An app clip and the connected app are jointly
+exclusive. After installing the app, the app's app clip will be withdrawn
+from your device.
+Including an App Clip to your Project
+Application clips don't exist individually; each app clip is part of an app. An
+application can include more than a clip, with each executing a sole task. To
+include an app clip to your project, you will utilize the App Clip target or
+mark from the template selector. This produces a new clip for your
+application and customizes a new target for it. Follow the steps below:
+1. Select, 'File', 'New', and 'Target' from Xcode's menu bar in that order to
+open the template selector.
+2. iOS should be selected already. Select App Clip in the Application area
+and hit 'Next'.
+3. Ensure Storyboard is assigned to Interface: and UIKit App Delegate is
+assigned to Life Cycle: . Title the target ProjectNameAppClip and click
+
+--- Page 156 ---
+on 'Finish'.
+4. In the pop-up dialog box, click on Activate . This will generate a scheme
+to run your application clip in the iOS simulator.
+5. Confirm that the iPhone grade you're working on and your project app
+clip's scheme are chosen in the Scheme menu.
+Set up and run your application clip. You will spot your app clip showing an
+empty view on the screen.
+Customizing your App Clip
+You will customize your app clip to show the Restaurant Detail screen
+when called on. To achieve this, you will split your assets between your app
+clip and your app. Use the steps below:
+1. Pause your application clip if it's working. In the Project navigator, click
+on Main.storyboard in your project app clip folder to show the storyboard
+for your app clip in the Editor area.
+2. The storyboard is empty now. Click on the Library button and include a
+Button object to the View Controller Scene 's view. You'll utilize the
+button to show the Restaurant Detail screen.
+3. Click on the Auto Layout Align button with the button chosen.
+Customize the button's constraints as shown below:
+Horizontally in Container : Ticked with the value set to 0
+Vertically in Container : Ticked with the value set to 0
+When done, click on the Add 2 Constraints button. This will place the
+button in the screen's middle.
+4. You'll utilize a storyboard reference to connect to the
+RestaurantDetail.storyboard file. Click on the Library button and include
+an object of Storyboard Reference to the View Controller Scene 's right.
+5. Click on the storyboard reference and click on the Attributes inspector
+button. Assign RestaurantDetail to Storyboard .
+6. Ctrl + Drag from the second button to the storyboard reference, and
+select Present Modally in the menu that appears.
+A segue will come into view between the storyboard reference and the
+button.
+
+--- Page 157 ---
+7. Click on the segue. In the Attributes inspector, assign
+showRestaurantDetail to Identifier and assign Full Screen to
+Presentation .
+Your app clip will crash or fail to build if you try to create and run it now.
+To fix this, make the resources and files needed by the Restaurant Detail
+screen obtainable by the app clip.
+Transferring Restaurant Data to the
+Restaurant Detail Screen
+To imitate getting information from a code for Apple App Clip, you will
+include a connected domain to your application clip target, customize your
+Run scheme to replicate receiving a URL, include code to the clip to
+review the URL for restaurant details, and transfer this information to the
+Restaurant Detail screen. However, to achieve this, a paid Apple developer
+account is required.
+To include a connected domain licence to your application clip, follow the
+steps below:
+1. In the Project navigator, click on the project name. Choose your app
+clip's target. Click on the Signing & Capabilities tab and click on the +
+button.
+2. From the Capabilities menu, double-click on Associated Domains .
+3. The capability, Associated Domains is included in your app clip. In the
+Associated Domains area, click on the + button to input a URL.
+Summary
+In this chapter, you executed an app clip for your app that displays a
+particular restaurant's details.
+
+--- Page 158 ---
+CHAPTER TWENTY SIX
+Examining and Presenting your
+App to the App Store
+In this chapter, you will learn how to set up and present apps to the App
+Store and carry out internal and external examinations for your app.
+Technical Prerequisite
+A paid Apple Developer account and an Apple ID are needed to conclude
+this chapter.
+Obtaining an Apple Developer
+Account
+Follow the steps below to purchase a Sole/Individual Ownership Apple
+Developer account:
+1. Visit https://developer.apple.com/programs and click on Enrol.
+2. Move to the screen's bottom and click on Start Your Enrollment .
+3. Type your Apple ID and password when asked.
+4. Click on Not Now on the Trust this browser? page.
+5. Click on Continue enrolment on the web >.
+6. Input your details on the Confirm your personal information page or
+screen and hit Continue when completed.
+7. Select Individual/Sole Proprietor on the Select your entity typ e page.
+Hit Continue .
+8. Tick the checkbox at the page's bottom on the Review and Accept page
+or screen and hit Continue.
+9. Click on Purchase on the Complete your purchase screen.
+
+--- Page 159 ---
+10. Follow the displayed directions on the screen to conclude your
+purchase. You can now sign in after completing your purchase.
+Touring your Apple Developer
+Account
+Your Apple Developer account includes everything you need to build and
+present applications. You can see your membership status, include and sort
+your development team's members, examine developer record or
+documentation, and more.
+First, you will obtain Apple Developer certificates that you will set up on
+your Mac. These certificates will be employed to sign your app digitally.
+Next, you need to register your application's App ID and the devices you
+will be trying out your app. Subsequently, you will develop equipping
+profiles that permit your apps to run on your try-out devices and permit you
+to present apps to the App Store.
+Presenting your App to the App Store
+Before you present your application, you have to produce your app's icons
+and obtain your app's screenshots. Afterwards, you can set up an Apple
+Store listing, create an archive build to be transferred or uploaded, and
+conclude the App Store Connect information. Then Apple will assess your
+app, and if everything is okay, it will emerge on the App Store.
+Generating your App's Icons
+Before you submit your application to the App Store, you have to produce
+an icon for it. Follow the steps to below create your app's icon:
+1. Create your app's icon that is 1,024 x 1,024 pixels.
+2. Utilize a website such as https://appicon.com to get all the various icon
+sizes and download the icon set.
+3. In the Project navigator, click on Assets.xcassets and click on the
+AppIcon image set. From the icon set, drag in the icons to the right
+positions based on size.
+
+--- Page 160 ---
+Generating your App's Screenshots
+To generate your app's screenshots, run your application in the simulator
+and click on the screenshot button. It will be saved to the desktop.
+Use the iPhone 8 Plus and iPhone 11 Pro Max simulators and obtain some
+screenshots of each displaying all of your app's various features.
+Generating an Apple Store Listing
+Now that you have your app's screenshots and icons, you will generate an
+Apple Store listing. This enables customers to see your app information
+before downloading it. Follow the steps below:
+1. Visit https://appstoreconnect.apple.com and choose My Apps .
+2. In the screen's top-left, hit the + button then choose New App .
+3.  Input your application details:
+Platforms : iOS
+Name : The name of your app
+Primary Language : The language your app uses
+BundleID : The bundleID you created earlier
+SKU : Any reference number or string that you use to refer to your app
+User Access : Full Access
+4. Hit Create when done.
+The application will now be recorded or listed in your account, but you still
+need to upload the app and its information. You need to generate an archive
+build to upload your app.
+Examining your App
+Apple has a service called TestFlight that enables you to give out your apps
+to examiners before submitting it to the App Store. You will need to obtain
+the TestFlight app, to examine your app. Your examiners can be your team
+members (internal examiners or testers) or non-members (external testers).
+Examining your App Internally
+
+--- Page 161 ---
+Internal testing involves only your team members. Follow the steps below
+to test your application internally:
+1. Visit https://appstoreconnect.apple.com and choose My Apps .
+2. Choose the app that you want to try out.
+3. Click on the tab for TestFlight.
+4. Click on App Store Connect Users .
+5. Tick or check all of the users you want to send test builds to and click on
+'Add'. They will get an invitation to test all the builds available.
+6. Confirm that your examiners have been added.
+Examining your App Externally
+External testing is useful if you want many testers for your app and non-
+members of your development team do it. Follow the steps below to test
+your app externally:
+1. Visit https://appstoreconnect.apple.com and choose My Apps .
+2. Choose the app that you want to try out.
+3. Click on the TestFlight tab.
+4. Click on the + button beside Testers & Groups .
+5. Enter the test group's name and hit 'Create'.
+6.  Click on the + button beside Testers and select Add New Testers .
+7. Enter your testers' email addresses and names, and Apple will alert them
+when a build is available for testing.
+8. Click on the + button or Add Build in the Builds area.
+9. Select one of your builds and hit Next.
+10. Input Test Information and hit Next .
+11. Input What to Test and click on Submit for Review .
+You now know how to examine your app builds both internally and
+externally.
+Summary
+
+--- Page 162 ---
+Now, you have concluded the whole process of building an application and
+uploading it to the App Store
+
+--- Page 163 ---
+About Author
+Robert Kissinger is a full stack developer and a tech writer who
+takes active interest in reviewing gadgets and guiding beginner
+programmers. He has also authored several books on gadgets,
+software and websites development.
+Robert has a degree in Computer Science and Engineering from the
+University of Michigan, USA.

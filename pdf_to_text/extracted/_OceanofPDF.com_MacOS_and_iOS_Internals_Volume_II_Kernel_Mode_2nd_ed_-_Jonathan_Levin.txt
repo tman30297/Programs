@@ -1,0 +1,2121 @@
+--- Page 237 ---
+*OS lnternals::Kernel Mode 
+vnodes 
+The chie£ construct in VFS is that of a vnode. A vnode is a representation of a file or special 
+object, indeperi--:::. . · -e underlying file system. Commonly, a vnode would map to the 
+underlying filesystem's index node (inode) object, though filesystem drivers are free to use the 
+vnode's unique identifier in whatever method suits them. For example, table based filesystems 
+(e.g. FATI which do not support inodes can use that value as a table index. HFS+ and APFS use 
+the number as a B-Tree node identifier. 
+The vnode representation is defined as a struct vnode. This is a 248/240-byte structure 
+defined in bsd/sys/vnode_internal.h and allocated from the dedicated vnodes zone. The structure 
+tracks everything the kernel needs to know about the vnode - from its v _ type, through various 
+v_flags, v_lflags and v_listflags, the v_owner (owning thread), and its v_name (the 
+file's basename ( 3) ). The 16-bit v _ type field holds an enum specifying if this is a regular file or 
+directory (VREG/VDIR) or some special case (VLNK, VSOCK, VBLK/VCHR, etc.), which affects the 
+interpretation and usage of other fields. 
+The structure, however, is meant to remain opaque, and accessed through public KPis, all in 
+bsd/sys/vnode.h. These are some 120 or so functions, all well documented, and providing 
+getters/setters to the vnode's private fields, as well as miscellaneous operations. 
+Vnodes are closely linked to each other. All vnodes belonging to the same mounted 
+filesystem can be accessed through the struct mount's mnt_vnodelist, and walked 
+through the vnode's v _mntvnodes. The mounted filesystem can also be quickly accessed 
+through the v_mount field, and is free to hold private data (as it does at the mount level's 
+mnt_data), in an opaque v_data pointer. Each vnode also holds a v_freelist 
+TAILQ_ENTRY for easy access to the vnode freelist, and name cache entry links to child vnodes 
+and links. Further down the structure each vnode also holds a v _parent pointer which, along 
+with the v_name pointer (pointing to its component name), allows for quick full pathname 
+reconstruction. 
+A key field in the structure is the v_ops, a pointer to a vnode operations vector. Not to be 
+confused with the vfstable's vfc_vfsops (which operate at a file system level), the v_ops 
+provide the implementations of the common vnode lifecycle methods. The implementations, are 
+commonly derived from the filesystem the vnode belongs to, but there are a few quasi­ 
+filesystems defining operations as well. These are "quasi", in the sense that they are not 
+mountable, yet define their own vnode operations - even if their vnodes are found in another file 
+system. 
+• fifo vnodeoP- entries (bsdLmiscfsLfifofsLfifo_vno[!s.c).;_ Used for named pipes 
+(FIFOs), as created by mkfifo(2). 
+• dead vnodeoP- entries (bsdLmiscfsLdeadfsLdead vno[!s.c).;_ Used when access to 
+the vnode is revoke ( 2) d. 
+• .~rnec vnodeoP- entries (bsdLmiscfsLsP-ecfsl.lmec_vnops.c)_;_ Used for "special" files 
+(devices) 
+Thus, the v _ op may conveniently change according to vnode type or lifecycle stage. Not all 
+vnode operations are necessarily supported. More detail on this can be found later in this 
+chapter, under "VFS SPis", and in the NFS case study. Another common occurrence during the 
+vnode lifecycle is that its buffered data changes state - as some of it gets "dirtied" (i.e. 
+modified). Each vnode's buffered data is maintained in two struct buflists - 
+v_cleanblkhd and v_dirtyblkhd. 
+The underlying type data is maintained in the v _ un union, which holds one of several 
+pointers. For directory vnodes (i.e. when v_type is VDIR), this points to a struct mount, 
+which is either the containing filesystem or (when the directory is a rnountpoint) another 
+struct mount. For UNIX domain sockets (vsocx), to a struct socket, discussed in 
+Chapter 14. For device files (VCHR/VBLK), to a struct specfs (as discussed in Chapter 6). 
+For most vnodes (VREG), this points to a ubc_info, discussed next. 
+21~ 
+
+
+--- Page 238 ---
+Chapter 7 - Fee, Fi-Fo, File: The Virtual Fl esystem Switch 
+The ubc_info (v_REG vnodes) 
+The Unified Buffer Cache (UBC) is a concept first introduced into NetBSD[11. Its aim is to 
+unify the caching mechanisms of VFS (named mappings) and the VM subsystems (used for 
+anonymous memory), thereby using one cache which can benefit from being central and 
+common to both, reducing duplicate caching. UBC was also adopted by Apple in XNU, although 
+the implementation varies from that of *BSD. 
+A key structure in UBC is the ubc_info. This is a structure pointed to from the vnode's 
+ubc _ info field (in the v _ un union field, which applies for a vtype of VREG, that is regular 
+files). ubc_info structures are allocated from their own dedicated zone (the ubc_info zone). 
+Each ubc_info is created in the context of its vnode (by a call to 
+ubc_info_init_with_size( ), from vnode_create_internal( )), and - if the vnode in 
+question already has one due to vnode reuse, it is reused as well. The ubc_info also points 
+back to the struct vnode which refers to it. Figure 7-4 visualizes the ubc_info structure: 
+Figure 7-4: The struct ubc_info (from bsd/sys/ubc_internal.h) 
+vnode. v_un. ubc_i nfo ---- F~.._;, ..... :~ ..... '--pa_g_er _ 
+, Ui.:..Cb:ntrol 
+ui_vnode 
+· ui.;,.ucr-ed 
+ui_size 
+ui_fl ags fl!!!![] cs_add_gen 
+cl_rahead 
+cLwb<!httid 
+cs_mtime 
+cs_blobs 
+cs_va1 id_bi tmap 
+cs_va 1 i d_bi tmap_si ze 
+The memory pager (vnode_pager_t) responsible for this vnocle 
+The memory pager control of the pager (ubc_getobject) 
+Poinls back to originating vnode 
+Credentials (ubc_[get l set [th read]] cred) 
+File size of the vnode (ubc_(getl set] size) 
+Cluster read ahead context 
+Cluster write behind context 
+Modification lime of file when first cs_blob was loaded (ubc_get_cs_mtime) 
+Linked list of cached code signing blob{s) for vnode 
+(ubc_cs_blob_get for specific arch/offsel or ubc_get_cs_blobs Ior list pointer) 
+Pointer to code signing validation bitmap {#IF CHECK_CS_VAUDATION_BITMAP) 
+Value. UI_., coostant Oescrip.tion 
+OxOOOOOOOO _NONE No flags 
+Ox0000000 1 _HASPAGER Ha$ a pager associated (ui_pager. ul_eonlrot) 
+Ol!;()0000002 _INITED Newly created vnode 
+Ox00000004 _HASOBJREF Holds a reference on object 
+Ox00000008 _WASMAPPEO Vnode was mapped, but is nol at this lim~ (ubc_ i s_,iapped [_writable}) 
+Ox00000010 _ISMAPPED Vnode is currenUy mmapped (ubc_i s....mapped) 
+Ox.00000020 _MAPBUSY Vnode in process of being mapped. or unMepped 
+Ox00000040 _MAPWAlTING Wl!litin,g f(}( a Ul_MAPBUSY 
+Ox.00000080 _MAPPEOWRITE Vnode JS mapped with PROT _ WRITE 
+Most of the UBC information deals with maintaining the vnode content data in memory. The 
+pager and pager control elements point to the Mach memory pager (in particular, a vnode pager, 
+as discussed in Chapter 11). The cluster read-ahead and write-behind handle the fetching and 
+syncing of the vnode contents to disk through maintaining Universal Page Lists (UPLs, also 
+discussed in Chapter 11 ). 
+The rest of the elements are used for the code signing subsystem. The most important of 
+which are the cached cs_blobs, which (as discussed in III/5) are used by XNU to enforce code 
+signatures on individual pages, store entitlements, and report code singing information back to 
+user mode via the csops[_audittoken] system calls (#169, #170). The blob information is 
+added to the ubc_info structure by ubc_cs_blob_add( ), from load_code_signature() 
+(bsd/kern/mach_loader.c), unless a blob already exists for the vnode, as may be retrieved by 
+ubc_cs_blob_get (). More details on code signing, including the specifics of blob validation 
+can be found in III/5. 
+In the interest of preserving opacity, access to the ubc_info fields is performed using 
+ubc _ [get/ set J * functions (all in bsd/sys/ubc_subr.c), which internally call UBCINFOEXISTS, a 
+macro checking the vnode's ubc_info pointer, and then dereferencing it to get the specific 
+field. The ubc_info_t's getters and setters are just one part of the KPI exported by the UBC 
+layer. There are quite a few code signing related functions (ubc_cs_ *, discussed in III/5), and 
+the remaining functions deal with Universal Page Lists (UPLs), discussed in more detail 
+throughout Chapter 11. 
+215 
+
+
+--- Page 239 ---
+*OS lnternals::Kernel Mode 
+Buffers 
+noces :r.aintain buffers, which are used to hold the data of their various I/0 requests. 
+The •mace ..12 -3;ns two struct buflists pointers - one in v _dirtyblkhd (for dirty 
+buffers, i.e. those which may need flushing) and another in v _ c leanblkhd. 
+The :::11.:::.:...:.sts are LIST_HEADS of struct bufs. These (from bsd/sys/buf_internal.h) 
+serve as buffo headers, holding the metadata for individual buffers, which include their linkage, 
+state, and more. The struct buf however, is meant to remain opaque, and accessible through 
+the KPis in the well documented bsd/sys/buf.h. 
+~ruct bu= { 
+LIS~_2~7 be=) b_hash; 
+LIST_E'!'.~Y(bc=) b_vnbufs; 
+TAILQ_r.;:?~ bu=) b_freelist; 
+int b ti.mestamp; 
+struct t:..ieval b_timestamp_tv; 
+int b_whichq; 
+volatile uint32_t b_flags; 
+volatile uint32_t b_lflags; 
+int b_error; 
+int b_bufsize; 
+int b_bcount; 
+int b_resid; 
+dev_t b_dev; 
+uintptr_t b_datap; 
+daddr64_t b_lblkno; 
+daddr64 t b blkno; 
+void -(*b_iodon;)(buf_t, void 
+vnode_t b_vp; 
+kauth_cred_t b_rcred; 
+kauth cred t b wcred; 
+void* b_~pl;- 
+buf t b real bp; 
+TAILQ ENTRY(buf) b act; 
+void* b drvdata; - 
+void* b=fsprivate; 
+void* b transaction; 
+int b-dirtyoff; 
+int b-dirtyend; 
+int b-validoff; 
+int b=validend; 
+.bifili.ng.2:.Sl The struct buf (from bsd/sys/buf_internal.h) 
+/* Hash chain. */ 
+/* Buffer's associated vnode. *I 
+/* Free list position if not active. •! 
+/• timestamp for queuing operation•! 
+/·• microuptime for disk conditioner */ 
+/• the free list the buffer belongs to•! 
+I* B * flags. *I 
+I* BL_BUSY I BL_WANTED flags ... protected by buf mtx •/ 
+/• errno value. */ 
+I* Allocated buffer size. *I 
+/* Valid bytes in buffer. •/ 
+/* Remaining 1/0. •! 
+I* Device associated with buffer. */ 
+I* Memory, superblocks, indirect etc.*/ 
+!• Logical block numbez , *I 
+/* Underlying physical block number. •/ 
+*); /* Function to call upon completion. * / 
+I* File vnode for data, device vnode for metadata. •/ 
+I* Read credentials reference. */ 
+/* Write credentials reference. *I 
+/* Pointer to UPL */ 
+I* used to track bp generated through cluster_bp */ 
+I* Device driver queue when active*/ 
+I* Device driver private use*/ 
+I* filesystem private use*/ 
+!• journal private use*/ 
+/* Offset in buffer of dirty region. *I 
+/* Offset of end of dirty region. *I 
+/* Offset in buffer of valid region. */ 
+/* Offset of end of valid region. *I 
+I* store extra information related to redundancy of data, such as 
+* which redundancy copy to use, etc 
+*I 
+uint32_t b_redundancy_flags; 
+proc_t b_proc; 
+#ifdef BUF_MAKE_PRIVATE 
+buf t b_data_store; 
+#endif 
+struct bufattr b_attr; 
+}; 
+/* Associated proc; NOLL if kernel. */ 
+As rich as the buf structure is, it does not hold the actual buffer data, which is maintained 
+separately, through the buf 's b_datap (accessible via buf_[ set J dataptr ()),and/or the 
+b_upl (accessible through buf_[ set Jupl (). UPLs (Universal Page Lists) are explained in 
+chapter 11, but for now they can just be thought of as their names - lists of memory pages, 
+reserved to hold the buffer contents, and populated by a call to buf_map(). The b_datap may 
+also contain buffer metadata, zalloc ( ) ed from respective dedicated zones, with element 
+ranging in powers of two from 512 through 16,348. 
+Buffer headers are allocated from bsd_startupearly (), through a call to 
+kmem_suballoc() which attempts to allocate max_nbuf_headers and niobuf_headers 
+buf structures. The value of max_nbuf_headers can be obtained via the nbuf boot 
+argument, or (otherwise) set to 2% of ram (sane_size / so), but clipped so it is no less than 
+CONFIG_MIN_NBUF but no more than 16,384. Additionally, niobuf_headers is set to match 
+max_nbuf_headers (if less than 4,096), or to half of it plus 2,048. 
+Reading or writing a buffer from/to disk is performed by buf_b [read/write] (). The 
+actual operation is then carried out by VNOP_STRATEGY, by default asynchronously. This may be 
+made blocking, by calling buf _ biowai t ( ) on the buffer, as is performed by buf _ bread, and 
+by buf_bwrite() for buffers marked as synchronous (i.e. in which the B_ASYNC is not set). 
+216 
+
+
+--- Page 240 ---
+Chapter 7 - Fee, Fi-Fo, File: The Vi:= =l'.es;sem Switch 
+~ Experiment: Iterating over VFS structures using KPI iterators 
+Given the usefulness of mounted filesystems and their vnodes, it's often required to 
+iterate over these structures. This can be done using TAILQ_FOREACH over the structures, 
+as is done for example by panic_print_vnodes () (in bsd/vfs/vfs_subr.c) during a panic. 
+The problem, however, is the structures are not readily visible outside the VFS files. 
+Fortunately, a series of _iterate functions are all supported KPis and allow their caller 
+to iterate over the structures, specifying a callback action to perform: 
+• vfs_iterate() applies a callback for each mounted filesystem (struct mp*). 
+Internally, it calls mount_fillfsids to an fsid_list array, and then iterates on 
+it, calling mount_list_lookupby_fsid to get back the struct mount, skipping 
+dead mounts or unmounts in progress. Iteration can be performed sequentially or in 
+reverse order, if VFS_ITERATE_TAIL_FIRST is specified as a flag. Another optional 
+flag is VFS_ITERATE_CB_DROPREF which is used (along with the former) by 
+vf s _ unmountall ( ) , traversing the mount list in reverse order (to avoid 
+dependencies) and calling the unmount_callback. 
+• vnode_iterate() applies a callback for each vnode in the struct mp * mount 
+pointer it receives as an argument. It works by taking the mount's mnt_vnodelist 
+and moving it into the mnt_workerqueue (in vnode_iterate_prepare()), and then 
+iterating over it according to caller specified flags. Several such VNODE_ flags are in 
+bsd/sys/vnode.h, but in practice only VNODE_RELOAD and VNODE_WRITEABLE are 
+observed. The callback can return VNODE_[CLAIMED I RETURNED] [_DONE J, 
+specifying to the iterator whether or not the reference to the vnode can be dropped. 
+• buf_iterate() (in bsd/vfs/vfs_bio.c) can be used given a struct vnode * to 
+iterate over its buffers. Flags from bsd/sys/buf.h are BUF_SKIP_[NONJLOCKED, 
+BUF_SCAN_[CLEAN/DIRTY] and BUF_NOTIFY_BUSY. Return codes here are 
+BUF_[CLAIMED/RETURNED] [_DONE], similar to those ofvnode iteration. 
+A good example of this can be seen in the implementation of vfs_purge, a non-POSIX 
+system call ( #455) added in Darwin 13 to allow purging (flushing) of all vnodes on all 
+mounted filesystems, also available as the purge ( 1 ) utility. The system call implementation 
+(in bsd/vfs/vfs_syscalls.c) calls vfs_iterate () to loop over all mounted filesystems, with 
+vfs_purge_callback as the action to perform to each. This, in turn, calls 
+vnode_iterate on its mount point argument, specifying the vnode_purge_callback as 
+the action to perform for each vnode . 
+.!Jnirrg....2.:§.. vf s _purge demonstrating vnode iteration 
+/static int vfs_purge_callback(mount_t mp, _unused void* arg) { 
+vnode_iterate(mp, VNODE_WAIT!VNODE_ITERATE_ALL, vnode_purge_callback, NULL); 
+return VFS_RETURNED; 
+} 
+int vfs_purge(_unused struct proc *p, 
+_unused struct vfs_purge_args *uap, _unused int32_t *retval) { 
+if (!kauth cred issuser(kauth cred get())) return EPERM; 
+vfs_iterat;(O ;7 flags*/, vfs_purge_callback, NULL); 
+return 0; 
+~} --~-------~~-- __/ 
+Using the example, create your own vnode iterator over all active mounts in the system 
+in a kernel extension. You may want to experience with various callbacks, as well as assign 
+different triggers (for example, on extension load, by sysctl ( 2) or device ioctl ( 2) ). 
+One specific real-world application of this experiment is in the iOS 11.3 jailbreak, 
+~ which required remounting the root filesystem read-write by overwriting the initial 
+, mountpoint data. Previously opened vnodes had their backpointer to the mount 
+data incorrectly set - but the vnode_iterate could be used to overcome that. 
+217 
+
+
+--- Page 241 ---
+•os lnternals::Kernel Mode 
+File System Attributes 
+VFS maintains various attributes for file system objects. Attributes are broken into five 
+groups: common artrcutes (ATTR_CMN_ *) apply to all types of objects. Volume attributes 
+(ATTR_ VOL_*) apply to the mounted filesystem itself. Directory attributes (ATTR_DIR_ * are 
+defined for folders. Files have both file and fork attributes (ATTR_FILE_ * and ATTR_FORK_ *, 
+respectively). Fork attributes, however, are deprecated and when the 
+FSOPT_ATTR_CMN_EXTENDED flag is specified they are repurposed to provide additional, non­ 
+standard common attributes. 
+The attributes are all hardcoded in four corresponding tables, defined in bsd/vfs/vfs_attrlist.c 
+-getattrlist_common_tab,getattrlist_dir_tab,getattrlist_file_taband 
+getattrlist_common_extended_tab. The tables are all getattrlist_attrtab 
+structures, also defined (ibid.) as shown in Listing 7-7. The unique structure of the tables (shown 
+in the annotation comment, above) makes it easy to locate the table in the decompressed 
+kernelcache's _TEXT._ con st, using the joker module. 
+Listing_I:Z;_ Toe struct getattrlist_attrtab attribute tables (from bsd/vfs/vfs_attrlist.c) 
+----- //* .. 
+{ * Table-driven setup for all valid common/dir/file/fork attributes against files. 
+*I 
+struct getattrlist_attrtab { 
+attrgroup_t attr; 
+uint64_t bits; 
+#define VATTR_BIT(b) (VNODE_ATTR_ ## b) 
+ssize_t size; 
+kauth_action_t action; 
+} ; 
+/·• 
+* A zero after the ATTR bit indicates that we don't expect the underlying 
+* back with this inform;;:tion, and we will synthesize it at the VFS level. 
+*I 
+static struct getattrlist_attrtab getattrlist_conunon_tab[] ~ { 
+II OxOOOOOOOl 0000000002000000 sizeof(int32_t + uint32_t) 
+{ATTR_C!·lN_NAME, VATTR_BIT(va_name), sizeof ( struct attrreference), 
+{ATTR_Cl-!N_DEVID, 0, sizeof(dev_t), 
+FS to report 
+(1<<7) 
+KAUTH_VNODE_READ_ATTRIBUTES}, 
+KAUTH_VNODE_READ_ATTRIBUTES}, 
+{ATTR CMN DATA PROTECT FLAGS, 
+VATTR_BIT(v;;:_datapr~tect_class), sizeof(uint32_t), 
+{O, 0, 0, O} 
+}. ; 
+, --------------------------------------~-----/ 
+KAUTH_VNODE_READ_ATTRIBUTES}, 
+Thus, each attribute is represented by a single bit, using the VNODE_ATTR_ ••• macros (in 
+bsd/sys/vnode.h). When attributes are queried or set, a struct vnode_attr is used (ibid.) is 
+used, along with the vnode pointer and the vfs context, as an argument to 
+vnode_( get/set J attr (). Although the structure is not kernel private, VATTR_ * macros are 
+the preferred way of dealing with the attribute bitmaps in this structure, which also contains the 
+classic UN*X attributes (ownership and mode), timestamps (access/creation/modification) and 
+the fields returned by [ f J stat ( 2) on the file. 
+There are a variety of ways to query attributes from user mode. On a path name, 
+getattrlist ( 2) (#220), or (as of Darwin 14) getattrlistat ( 2) (#476) may be used. 
+Alternatively, fgetattrlist ( 2) (#228) can be used on a file descriptor. To handle so many 
+attributes, the system calls use a struct attrlist, which breaks the attributes into five 32- 
+bit bitmaps. In this way, a caller can ask for multiple attributes at once. Darwin 14 introduces 
+another system call, getattrlistbulk( 2) (#461), specifically intended for retrieving 
+attributes for multiple objects in the same directory. 
+Perusing the respective manual pages of all the above provides good examples as to the 
+system call usage. Note, also, that certain attributes may be defined as writable, in which case 
+setattrlist ( 2) or fsetattrlist ( 2) (system calls #221 and #229, respectively) can be 
+used to modify them. Darwin 17 adds setattrlistat ( 2) (system call #524), which provides 
+the basis for utimensat ( 2) and other calls. 
+218 
+
+
+--- Page 242 ---
+Chapter 7 - Fee, Fi-Fo, File: The Virtual Filesystem Switch 
+Finally, note that in Listing 7-7 that attribute table entries also have a kauth_action_t 
+associated with them, commonly KAUTH_VNODE_READ_ATTRIBUTES. As explained in III/3, The 
+KAuth facility is a precursor (circa 10.4) to the Mandatory Access Control Framework (as of 
+10.5). KAuth is called out from vnode_authorize and .• authattr[_new], after MACF's 
+mac_ vnode_check_[ get/set J * callouts are called. As discussed in III/4, the MAC 
+Framework delegates the decision to a policy extension, commonly Sandbox.kext. 
+fsctl(2) 
+The fsctl ( 2) system call (#242), along with the file-descriptor based ffsctl (#245) are 
+proprietary system calls meant for high level filesystem control operations", Using any one of 
+ioctl ( 2 j-stvle predefined control codes, a user mode caller 
+The fsctl ( 2) codes known to XNU proper are defined in bsd/sys/fsctl.h, which is also 
+exported to the user mode· <sys/fsctl.h>. The codes are #define both as FSIOC_ * and as 
+corresponding FSCTL_ *, with the latter being an application of the IOCBASECMD macro over 
+the former. The codes are shown in Table 7-8: 
+Table 7-8: Filesvstem independent r f 1fsctl<21 codes 
+FSIOC .. /FSCTL .. code Purpose 
+.. SYNC VOLUME Force a sync ( 2) on mounted volume 
+.. SET PACKAGE EXTS LaunchServices: set package extensions to ignore 
+.. NAMESPACE HANDLER GET 
+.. NAMESPACE HANDLER UPDATE 
+.. NAMESPACE HANDLER UNBLOCK 
+.. NAMESPACE HANDLER CANCEL VFS Namespace handlers 
+.. NAMESPACE HANDLER SET SNAPSHOT TIME 
+.. OLD SNAPSHOT HANDLER GET 
+.. SNAPSHOT HANDLER GET EXT 
+Override fs name, or 
+.. - SET_FSTYPENAME_OVERRIDE 0x80044a3a mount with 
+MNTK EXTENDED SECURITY 
+.. NAMESPACE ALLOW DMG SNAPSHOT EVENTS [Dis]Allow snapshot events on disk images 
+.. ROUTEFS SETROUTEID (#if ROUTEFs) Set new route ID 
+.. FIOSEEKHOLE Deprecated: now in f'cntl c 2 J 
+.. FIOSEEKD.ATA .· ••• ····· 
+. .. 
+(DISK_CONDITIONER )IOC GET 
+Disk conditioner 
+(DISK CONDITIONER )IOC SET 
+(SPOTLIGHT IOC )GET MOUNT TIME 
+Used by Spotlight (1/4) 
+(SPOTLIGHT IOC )GET LAST MTIME 
+The implementation of both syscalls, fsctl_internal() (in bsd/vfs/vfs_syscalls.c) first 
+converts the FSCTL* codes to their FSIOC_ * counterparts, and then switches over the 
+generic, filesystem independent commands shown in Table 7-8. Any other commands are passed 
+directly to the underlying filesystem's handler, via the VNOP_IOCTL wrapper. 
+* - The man page for both these calls is still found in XNU's bsd/man/man2/fsctl.2, but not installed to the MANPATH. 
+Perhaps this is for the best, seeing as the man page is terribly outdated, and the one code it lists 
+(FSGETMOUNTINFOSIZE) is not even present in the XNU sources anymore. 
+219 
+
+
+--- Page 243 ---
+*OS lnternals::Kernel Mode 
+Extended A~i.:-, ... :Ees 
+Apple :-nakes heavy use of extended attributes, or xattrs. As explained in Volume I/3, 
+extended attributes provide the implementations of important filesystem features, such as 
+compression, data protection, and resource forks. Thus, any filesystem which can support xattrs 
+(as both HFS+ and APFS do), can also provide these features. 
+As with standard attributes, there are several system calls to handle extended attributes: 
+[ f] getxattr (#234,235) , ( f] setxattr ( #236,237) and [ f] rernovexattr ( #238,239) can 
+be used to manipulate known attributes by name (all in bsd/vfs/vfs_syscalls.c). As is the common 
+convention, the f ..• variants work on an already open file descriptor. ( f J listxattr 
+(#240,241) can be used to list the extended attributes of a pathname or descriptor, although 
+corn. apple. system.* xattrs get filtered through xattr_protected (). 
+The system calls funnel to the kernel internal functions, vn_[ get I set I remove J xattr (in 
+bsd/vfs/vfs_xattr.c). Similar to standard attributes, both the MAC Framework's callout 
+(rnac_ vnode_check_[ get I set I delete] extattr, hooked by Sandbox.kext and MacOS's 
+Quarantine.kext) and that of Kauth's (i.e., calling vnode_authorize () with 
+KAUTH_ VNODE _ [ READ I WRITE]_ EXTATTRIBUTES) must agree to allow the operation. 
+Some filesystems natively support extended attributes, whereas others do not. Those which 
+do, advertise this capability with the VFS_TBLNATIVEXATTR flag (q.v. Listing 7-27). In those 
+which do not (e.g. FAT-derivatives), extended attributes may be emulated by use of hidden 
+"Apple Double" dot-underscore(._) files, #defined as ATTR_FILE_PREFIX. The emulation is 
+also used when archiving files into formats which do not support extended attributes, e.g. 
+tar ( 1). Thus, when CONFIG_APPLEDOUBLE is set (as it is, by default), the implementations of 
+default_(get/set/list]xattr() (in bsd/vfs/vfs_xattr.c) call open_xattrfile() to open 
+the Apple Double file in kernel, and then get_xattrinfo() to populate the attr_info_t. 
+The AppleDouble file format is documented with ASCII art in bsd/vfs/vfs_xattr.c) as shown in 
+Listing 7-9: 
+Listing 7-9: The AppleDouble Header File layout (from bsd/vfs/vfs_xattr.c) 
+; I* 
+Typical "_ AppleDouble Header File layout: 
+---- ------------------------------------------------- MAGIC 
+VERSION 
+FU,LER 
+COUNT 
+.-- AD ENTRY[OJ 
+.--+-- AD ENTRY[l] 
+I '-> FINDER INFO 
+I 1111111111111 
+I EXT ATTR HOR 
+I !//ll!!//II!/ 
+I ATTR ENTRY[O] 
+I ATTR ENTRY[l] 
+j ATTR ENTRY ( 2 ] 
+I I 
+I I 
+I 
+I 
+I 
+I 
+I I 
+I 
+I 
+*l 
+A'l.'TR ENTRY[NJ 
+ATTR DATA 0 
+i!///I////I/ 
+ATTR DATA 1 
+lll!ll!l////1 
+ATTR DATA 2 
+/lll/!ll!I/// 
+ATTR DATA N 
+I/II/II////// 
+Ox00051607 
+Ox00020000 
+0 
+2 
+Finder Info Entry (must be first) 
+Resource Fork Entry (must be last) 
+Fixed Size Data (32 bytes) 
+--+--. 
+--+--+--. 
+I I I 
+--+--+--+--. 
+<-' j 
+I I 
+<----' 
+<-------· 
+<----------· 
+Attribute Free Space 
+'----> RESOURCE FORK 
+!II/I/II//!// Variable Sized Data 
+I/IJ/1/!I/!// 
+/lll!l/!II/I! 
+////////////! 
+Ill/II/I/II// 
+--------------------------------------------- NOTE: The EXT ATTR HOR, ATTR ENTRY's and A77R DATA's are 
+stored as part of the Finder Info. The ier.gth in the Finder 
+Info AppleDouble entry includes the leng-:ch o: the extended 
+attribute header, attribute entries, ar.d attribute data. 
+\ 
+220 
+
+
+--- Page 244 ---
+Chapter 7 - Fee, Fi-Fo, File: The Virtual Filesystem Switch 
+~ Experiment: Examining AppleDouble attribute files 
+The easiest way to create AppleDouble files is to insert a removable drive formatted 
+with FAT32 or vFAT, both of which do not support extended attributes natively. Using 
+xattr ( 1) to create any arbitrary attribute will result in the creation of an AppleDouble. 
+Removing the AppleDouble will remove the attribute, as shown below: 
+I . I. I 
+morpheus@Zephyr {/Volumes/NO NAME) i touch x; zatt:r -w t:est value x 
+rncrpheus@Zephyr (/Volumes/NO NAME) % ls -la@ x 
+-rwxrwxrwx@ 1 morpheus staff O Apr 2-:l 20:30 x 
+test 5 
+# 
+# Removing the file will remove the attribute 
+# 
+rnorpheus@Zephyr ( /vo l ume svxo NAME) % ~-~ 
+rnorpheus@Zephyr (/Volumes/NO NAE.El % ls -la x 
+-rwxrwxrwx 1 morpheus staff O Apr 24 20:30 x 
+When the attribute and file exist, hexdumping the file will show the structure presented 
+in Listing 7-9. Output 7-10-b shown the file created by the above xattr addition, annotated. 
+Note that entries are in big endian format, and 16-bit aligned. 
+I . 
+# 
+# The extended attribute is implemented by a hidden file: 
+# 
+morpheus@Zephyr (/Volumes/NO NAME) i ls -la X 
+-rwxr ..... ·xrwx 1 morpheus staff -l096 Apr 24 20:32 - X 
+morpheus@Zephyr (/Volumes/NO NAHE) % hexdump~ 
+MAGIC VERSION Filler (ADH_ HACOSX) 
+00000000 00 05 16 07 00 02 00 00 -Id 61 63 20 .jf 53 20 58 I• ....... Mac OS XI 
+numEntries AD_ FINDERINFO 
+00000010 20 20 20 20 20 20 20 20 00 02 00 00 00 09 00 00 ........ I 
+AD - RESOURCE offset 
+00000020 00 32 00 00 Oe bO 00 00 00 02100 00 Oe e2[00 00 I . 2 ........•..... I 
+length 
+00000030 01 lelOO 00 00 00 00 00 00 00 00 00 00 00 00 00 i ......•••••..... I 
+00000040 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ! •••••••••••••••• I 
+total size 
+00000050 00 00 00 00 41 54 54 52 3b 9a c9 ff 00 00 Oe e2 ! •••• ATTR; ...... • I 
+data - start data_length 
+00000060 00 00 00 88 00 00 00 05 00 00 00 00 00 00 00 00 I ......... ······· I 
+offset length 
+00000070 00 00 00 00 00 00 00 01 00 00 00 88 00 00 00 05 I················ I 
+flags nl name[6] 
+00000080 00 00 05 74 65 73 74 00 76 61 6c 75 65 00 00 00 I ... test.value ... I 
+00000090 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 1 •••••••••••••••• 1 
+OOOOOeeO 00 00 00 00 0 l 00 00 00 01 00 00 00 00 00 00 00 ················ 
+OOOOOefO 00 le 5-1 68 69 73 20 72 65 73 6£ 75 72 63 65 20 .. This resource 
+00000£00 66 6f 72 6b 20 69 6e 74 65 6e 74 69 6£ 6e 61 6c fork intentional 
+0001JOflO 6c 79 20 6c 65 66 74 20 62 6c 61 6e 6b 20 20 20 ly left blank 
+00000f20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................ 
+OOOOOfeO 00 00 00 00 01 00 00 co 01 00 00 00 00 00 00 00 1 ................ 
+OOOOOffO 00 le 00 00 00 00 00 00 00 00 00 le 00 le ff ff ' ; ................ 
+00001000 
+The two mandatory attributes, AD_ATTRIBUTES (Ox09, at Offset Ox32 and spanning 
+OxebO bytes) and AD_RESOURCE (Ox02, at offset Oxee2 spanning Oxlle bytes, for the 
+resource fork), are created automatically, and highlighted. The AD_ATTRIBUTES contain one 
+attribute, identified by the ATTR_HDR_MAGIC ('ATTR'), and conforming to the struct 
+attr_header (also in bsd/vfs/vfs_xattr.c), with the attribute defined as an attr_entry: 
+Listing 7-10-c: The struct attr entry (from bsd/vfs/vfs xattr.c) 
+(typedef struct attr_entry { 
+I u_int32_t offset; /* file offset to data *I 
+i u_int32_t length; /* size of attribute data *I 
+u int16 t flags; 
+u-int8 t namelen; 
+I - - 
+1 
+u_intB_t name[l]; /* NULL-terminated UTF-8 name (up to 128 bytes max) */ 
+~ att!ib~te ((aligned(2), packed)) attr entry t; 
+221 
+
+
+--- Page 245 ---
+~ *OS lnternals::Kernel Mode 
+r.\on1@li= ~"®!F'.';-:: -,,:,, l.nl(ptpil\.S -=-M~- ----'-=-"'"' _::::.,., 
+Apple makes heavy use of VFS features - specifically, extended attributes - in order to 
+provide ado.c., _ on-standard and mostly private functionality. 
+ICIUIC ,- .......... u,1-::,lCIIIUCIIU v r-o t::Alt:::11::>IUIJ::, dllU u1e llleLrldrll!>rTl!> □ruvrainq cnem 
+Extension Support Provides 
+Resource Forks Alternate Data Streams 
+Compression Transparent file compression 
+Restricted Extended Attributes Darwin 15: Prevent modification to file, sans entitlement 
+Data Vaulting Darwin 17: Prevent read access to file, sans entitlement 
+Data Protection NSFileProtectionClass encryption for sensitive files 
+FSEvents Char device Filesystem Notifications via /dev/fsevents character device 
+Document IDs Proprietary 32-bit Identifiers tagging files & directories to track their lifecycle 
+Object IDs Proprietary 64-bit identifiers uniquely identifying an object for direct open 
+Disk Conditioning Proprietary Intentional 1/0 degradation/throttle for specific mount points 
+Triggers Proprietary Trigger vnodes used for automounting filesystems in MacOS 
+EVFILT VNODE kqueues Trigger vnodes used for automounting filesystems in MacOS 
+/dev/vn## device Loop mount device nodes, #if NVNDEVICE 
+File Providers Host port Designated processes serving as VFS namespace resolvers 
+Resource Forks 
+Resource forks are an antiquated legacy of the MacOS Classic days. The Macintosh File 
+System (MFS) could support a number of "forks", which enabled storing multiple related data 
+elements in the same file*. The main fork used was the resource fork, in which application 
+resources (icons, images and other media) could be stored. The NeXTSTEP bundle format 
+provides a far better method of storing resources, but resource forks are nonetheless supported 
+to this day. This support is enabled by #defineing NAMEDRSRCF0RK, as is done by default 
+across all Darwin flavors. 
+As discussed in Volume I (Output 3-22), the resource fork may be accessed by requesting 
+the file's com. apple. ResourceFork extended attribute, or by simply appending 
+" .. namedfork/rsrc" to any file. Special handling in cache_lookup_path() (in 
+bsd/vfs/vfs_cache.c) checks if a filename component requested starts with two dots and followed 
+by the _PATH_RSRCF0RKSPEC, and the filesystem supports forks (the mount structure's 
+rnnt_kern_flag of MNTK_NAMED_STREAMS is set). If so, then the cached vnode's cn_flags 
+CN_WANTSRSRCF0RK is set, and VFS syscalls operate on the fork instead of the actual vnode. 
+Operating on the fork involves a call to vnode_getnarnedstrearn (in bsd/vfs/vfs_xattr.c). If 
+the filesystem supports named streams, it is expected to provide a vnop callback for this 
+operation. If not the defaul t_getnarnedstream implementation is called. The HFS+, APFS, 
+and NFSv4 filesystems all provide callbacks for getting, making and removing named streams. 
+File compression 
+The corn. apple. decrnpfs xattr implements the transparent filesystem compression. 
+"Transparent", in that the calls manipulating a compressed file with VFS have no idea if a file is 
+compressed or not. The filesystem calls decrnpfs_file_is_cornpressed() on vnode access, 
+(i.e. when implementing .• _vnop_open( )), which calls decrnpfs_cnode_get_vnode_state 
+to check a cached result. The slower path checks for the UF _ COMPRESSED flag, which must 
+always be accompanied by a corn. apple. decmpfs extended attribte. The extended attribute is 
+expected to hold, at a minimum, a decmpfs_header (from bsd/sys/decmpfs.h), which will 
+indicate the compression_type and the uncornpressed_size (which is reported as the file 
+size for ls ( 1) and similar tools when the file is flagged as VF_ COMPRESSED). Files which are 
+small enough may have their contents compressed into the extended attribute's value. In other 
+cases the compressed data may be held in the resource fork. 
+* - Windows users may be familiar with the NT equivalent of "Alternate Data Streams", e.g. : : $DATA and the like. 
+222 
+
+
+--- Page 246 ---
+Chapter 7 - Fee, Fi-Fo, File: The Virtual Filesystem Switch 
+When the file data is requested, the driver can call decmpfs_pagein_compressed and 
+decmpfs_read_compressed to handle the decompression, while remaining entirely oblivious 
+to the decompression algorithm used. This is shown in Figure 7-12: 
+Figure 7-12: The decmpfs mechanism architecture, visualized 
+' ! 1) User mode process opens 
+'------------__J I .1 file on some filesystem 
+read(2J _________ .,._.,_A..:,;.PteFSCompression•:main() 
+8} Kemel extensions can add their own 
+1 
+methods by registering decomprHsors 
+and providing their'._'.fu~n~c;t,~·o~n'.!:p~oi~nt~•'.!~_.,..--.,,,,..---"-----1 
+l~e~ 
+· O 1 .. n 
+--------1 register_decmpfs_decompressor 
+CMP_MAX 
+255 
+3) Generic read redirects call to- l 
+~-----~-' Filesystem specific lmplemen'tltion j 
+VNOP_REA ~7)_T_w_e_l_ReJg~i.--~ 
+regi'5ter@d by XNU and 
+stores data directly in 
+xattr's attr _bytes 
+... fs_vnop_read() 
+'-------------'i 4) Fituystem driver c~lls decmps 
+to query if the file is compressed 
+decmpfs_fikUs_compre$$ed? 
+-----!_s_t_ru_c_t_d~ec~pf~~~egistration 
+decmpfs_regislralion Version 1 or version 3 (forgel_Hags) 
+validate Double check compressed file is valid 
+a(ljµst_fe!ch Hint to decomp,essor on upcoming fetch 
+fetch 
+get_flags 
+Retrieve and decompress. data 
+Called on file removal 
+Retrieve compression flags ('J3 only} 
+5t Oe:cmpfs check.$ UF _C(JMPRE.SSE:O 
+'--'=--~-~-------l flaga.ndcom.apple.decmpfs xattr 
+,-6)-F-o,-c-om--p,-e,-s-•d-fi-,l•-•-,d-,i-ve-,--, 'crnpf D 
+can s•lisfied ro•d with decmpfs... -- compresston_fy'p8 (n) 
+□v"'·'•··• r-~~---,,½.,......--.,.......,--,,.~----- f .. unc.ompre$$ed_size dean...fu fetch CO~".orl ~ ., Which obtains the compression det.1ils ,.,•· 
+EJ r.~&,~rnpf'.-i {b;dib:rn/dc,mipk.c) . ..,,o,... . ·- ... _!•~:~~"'="'- ,, , from the coo1. apple. decmpfs xattr.. attr__.Qyt"[,.o,;,J 
+D ;.:,-,11:•.•! ,_•11t•.n' ,;r, p;~1v',L·d 
+decmpfs_read_ compressed 
+cfecmpfs ~getJunc 
+.• And uses it to get the decompression function 
+(for methods> 1) from the compr'essors table 
+Kexts supplying decompression functions register with the kernel by calling 
+register_decmpfs_decompressor*. Although the compression_type is a 32-bit field, 
+the decompressors table is limited to CMP_MAX (255) methods. In practice, far fewer are 
+used. register_decmpfs_decompressor also publishes the decompression methods as 
+IOResource objects, so they are visible in the IORegistry: 
+• • I • • I ~ 
+# 
+# Get either com apple AppleFSCompression * kext names, or com.apple.AppleFSCompression.providesType* properties. 
+# This has the c~veat that it might miss ~n AppleFSCompression providers not following the naming convention, 
+# but that hasn't happened yet 
+# 
+morpheus@Chimera (-)Si reg -1 -w O -f L 
+~9TI!P. -- "(-o. •FSComP.ress 'o TYP..!!.LM!P.leFSComP.res ion ,P.rovide TyJ..'.'.. 
++-o com_apple_AppleFSCompression_AppleFSCompressionTypeZlib 
+<class com_apple_AppleFSCompression_AppleFSCompressionTypeZlib, .. > 
+-~~t-:s"' /:>~ · ·· Yes 
+r+'?" = Yes 
+'' = Yes 
+"= Yes 
+::" = Yes 
+·-:~+-~" = Yes 
++-o com_apple_AppleFSCompression_AppleFSCompressionTypeDataless 
+too l e. ,.,, ~ r_;,_··i.d.t··~; T:.,.-;,>:!.~:" = Yes 
+The flow in the above diagram can (somewhat) be traced thanks to KDebug codes, which 
+are emitted at specific points as of Darwin 18. Compression is transparent, but might pose a 
+challenge for third party raw filesystem tools, which access the filesystem data from outside 
+XNU, and therefore need to implement their own decompression logic. fsleuth handles most 
+common compression types known at the time of writing. 
+* - MacOS's type 5 compression also registers /dev/afsc_types 
+223 
+
+
+--- Page 247 ---
+•os lnternals::Kernel Mode 
+Restricted .... 
+.-r\ 
+One of Apple's most notable extensions is the com. apple. rootless extended attribute. 
+When coupled with the SF _RESTRICTED chflags ( 2) flag, it marks the file as immutable, 
+even to the root user. This is a stronger protection than BS D's SF_ IMMUTABLE, because the 
+root user can easily toggle that flag, whereas SF_ RESTRICTED cannot be modified with the 
+right entitlement This is a key feature of Apple's System Integrity Protection for MacOS (also 
+known as "rootless", introduced in MacOS 10.11 and discussed in III/9), culling the formerly 
+omnipotent powers of root so as to put restricted files out of reach. 
+When the flag is present, the com. apple. rootless extended attribute is checked. If 
+present and containing a value, the process requesting the operation must hold the 
+com. apple. rootless. storage. value entitlement to be allowed modifications. If present 
+with no value, only com. apple. rootless.* install* entitlement holders are allowed to 
+modify the file. This enforcement is provided courtesy of Sandbox.kext, whose platform profile 
+applies to all processes. 
+Data Vault 
+The Data Vault facility is a relatively new addition to Darwin, as of version 17. The idea is to 
+extend platform profile/SIP protections from merely modifying the files, to reading or even just 
+accessing their metadata. Another special flag, UF _DATAVAULT is used to datavault files. A code 
+signing flag, CS_DATAVAULT_CONTROLLER (0x80000000) granted to blessed processes through 
+the com. apple.rootless. datavaul t. controller special entitlement, which is required 
+to access these files. 
+Data Protection 
+A file system may be mounted with the MNT _ CPROTECT flag, which implies its files are 
+protected through NSFileProtectionClass. As described in Volume III (Chapter 11, 
+specifically 11-6 through 11-9), the com. apple. system. cprotect extended attribute holds 
+the wrapped per-file key, which is unwrapped by Apple [ SEP J Keys tore. kext callbacks. 
+Calling getattrlist( 2) with the ATTR_CMN_DATA_PROTECT_FLAGS will retrieve the file 
+protection class for a given file system object. Refer to III/11 for more details about the 
+extended attribute format, protection classes, and AppleKeyStore callbacks. 
+FSEvents 
+When XNU is compiled with CONFIG_FSE (as is the case by default), filesystem events also 
+get directed to the FSEvents facility. As described in I/4 (under "FSEvents"), this facility 
+(entirely self-contained in bsd/vfs/vfs_events.c) presents itself to user mode as the /dev/fsevents 
+character device. Clients can then use the device to listen on global filesystem notifications, 
+reading in a stream of kfs_event structures (q.v. Figure 4-1 in Volume I). When in kernel 
+mode, the kfs_event structures are buffered into their own dedicated zone, fs-event-buf. 
+The size of the zone is set at MAX_FSEVENTS (4096) entries, though may be overridden by the 
+kern.maxkfsevents boot argument. 
+The FSEvents clients are referred to as watchers. recall (from I/4) that watchers are 
+expected to use the FSEVENTS_CLONE ioctl ( 2), and supply a clone_args structure, 
+containing the event reporting array and a queue depth. The kernel mode handler 
+fseventsioctl takes these arguments and calls add_watcher () to populate an 
+fs_event_watcher entry in the watcher_table array. Then, when an fsevents record is 
+generated (in numerous locations throughout VFS, by calling add_fsevent), the watcher table 
+is consulted, and - if the specified event type is marked FSE_REPORT and the device node 
+( =volume) it is from was not on the devices_not_ to_watch list, the watcher (which is 
+presumably blocking on read ( 2) from the cloned descriptor) is woken up. The cloned 
+descriptor is of DTYPE _FSEVENTS, and its read ( 2) is serviced by fmod_watch ( ) , which 
+populates the kfs_event record . 
+There is a hard-coded limit of MAX_WATCHERS (8). Apple therefore discourages direct use of 
+the character device (in fact warning that it is "unsupported"), and offers the user-mode 
+FSEvents. framework, which uses fseventsd. The daemon, along with other Apple 
+processes (namely coreservicesd, revisiond and Spotlight's mds get flagged as 
+WATCHER_APPLE_SYSTEM_SERVICE (Ox00l0). This flag prevents events from being dropped 
+224 
+
+
+--- Page 248 ---
+when the watcher queue is over 75% full. This also allows watchers to set directories to ignore, 
+as per some internal radar. 
+To handle concurrent thread access, FSEvents uses four lck_rntx t locks: 
+• watch table lock: Protects the watcher_table. Access to this lock is through 
+[un)lock_watch_table( ), which is used when adding/removing watchers or 
+delivering events. 
+• event buf lock: Protects the kfs_fsevent list. Access to this lock is through 
+[un ] lock_event_list ( ) , which is called from add_fsevent and 
+release event ref. - - 
+• event writer lock: Protects concurrency to the user mode write( 2) operation, 
+handled by the fseventswrite callback. The lock is accessed directly in said function. 
+• event handling lock: protects the event queue of the watchers, when adding events 
+to a watcher or removing a watcher. 
+The locks are all static, with the first three are grouped into the fsevent-mutex lock 
+group, and the last being the sole member of the fsevent-rw group. 
+Document IDs 
+Chapter 7 - Fee, Fi-Fo, File: The Virtual Fi:esystem Switch 
+Document Identifiers are a proprietary mechanism introduced in XNU-2422, enabling 
+Darwin's VFS to uniquely identify files or directories in volumes which support this feature. Such 
+volumes advertise the voL_CAP_FMT_DOCUMENT_ID (Ox80000) capability, and the underlying 
+filesystem is charged with supplying an maintaining the document IDs. The document ID is a 32- 
+bit identifier which - once assigned - remain sticky to the path it was assigned to, if moved 
+and/or saved. Document IDs are used in the private CloudDocs.framework. 
+The undocumented UF _ TRACKED flag of ch flags ( 2) is used to assign a document ID to a 
+file, and also remove it (when the flag is removed). Note, that the flag does not appear in the 
+output of ls -o (which normally prints other flags), nor is it recognized by the chflags ( 1) 
+utility. The ID of a given filesystem object can be retrieved as the ATTR_CMN_DOCUMENT_ID 
+(OxlOOOOO) attribute along with the FSOPT_ATTR_CMN_EXTENDED flag (so that fork attributes 
+get reinterpreted). ID lifecycle changes can be tracked through the FSEvents mechanism: 
+FSE_DOCID_[CREATED/CHANGED] (#12, #13) events track their usage. The filemon tool is 
+able to monitor these events. 
+Document tombstones 
+Files marked with a document ID are closely monitored for lifecycle changes. When such 
+files are created, edited, renamed or removed the VFS layer offers "document tombstones" as a 
+way to store the metadata about the last operation on the particular Document ID. 
+Tombstones are doc_tombstone structures, defined in bsd/sys/tombstone.h along with 
+their KPis, as shown in Listing 7-14 (next page). The KPis are all private, and their main users 
+are filesystem drivers. APFS remains closed source, but some examples of these KPis can be 
+found in HFS.kext, whose sources are available in the hfs project. The tombstone is saved in the 
+BSD uthread's t_tombstone field. 
+Object IDs 
+Another undocumented feature is the ability to open a file by specifying the filesystem and 
+object ID. The undocumented openbyid_np system call (#479). The operation requires a 
+MACF privilege (PRIV - VFS - OPEN - BY - ID), which the Sandbox enforces with the 
+com. apple .private. vfs. open-by-id entitlement. Among the holders of the entitlement 
+are backupd, searchd, revisiond and the iCloud components (bird ( 8) /brctl ( 1), 
+cloudd( 8) and others), which utilize the syscall through the private CloudDocsDaemon 
+framework's BRCOpenByID wrapper. 
+225 
+
+
+--- Page 249 ---
+*OS lnternals::Kernel Mode 
+Li~:::;q 7-14: Document tombstone structures and KPis, from bsd/sys/tombstone.h 
+r-epresen ting a document "tombstone·· that 's recorded 
+a ~hread manipulates files marked with a document-id. 
+e ~hread recreates the same item, this tombstone is 
+.:se::! to preserve the document id on the new file. 
+• I': 1.s a separate structure because of its size - we want to 
+* al.l::<:ate ::.ton demand instead of just stuffing it into the 
+~?:read strllcture~ 
+stn:ct: cioc_tombstone { 
+st:ruct vnode 
+struct vnode 
+uint32_t 
+uint32 t 
+uint64=t 
+uint64_t 
+unsigned char 
+•t_lastop_parent; 
+•t lastop item; 
+t=lastopyarent_vid; 
+t lastop item vid; 
+t-lastop-fileid; 
+t=lastop=document_id; 
+t_lastop_filename[NAME_MAX+l]; 
+} ; 
+struct doc_tombstone *doc_tombstone_get(void); 
+II remove a tombstone 
+void doc_to:nbstone_clear(struct doc_tombstone •ut, struct vnode **old_vpp); 
+// Save parent. child name so that doc id can be reapplied 
+void doc_tombstone_save(struct vnode *dvp, struct vnode *vp, 
+struct componentname *cnp, uint64 t doc id, 
+ino64_t file_id); - - 
+// ignore if nameptr ends with .bak or .tmp 
+bool doc_tombstone_should_ignore_name(const char *nameptr, int len); 
+II true unless should ignore name or name is NULL 
+bool doc_tombstone_should_sa~e(struct doc_tombstone •ut, struct vnode *vp, 
+"------------ struct componentname •cnp); 
+Disk Conditioning (Darwin 17) 
+Disk Conditioning is a facility for intentional degradation of I/O performance from specific 
+mount points. It allows delaying access time as well as restricting read/write throughput of 
+devices, through callouts made throughout VFS. As with the Network Link Conditioner, it cannot 
+be used to improve times - only to introduce artificial latency and delay. The dmc ( 1) utility 
+controls the facility when applied over a mount point. The utility works its magic by two specific 
+[f]fsctl(2) (#242/245) codes- DISK_CONDITIONER_IOC_[GET/SET], both of which 
+accept a disk_conditioner_info structure. The structure is defined in bsd/sys/fsctl.h, as 
+shown in Listing 7-15. The entire file is marked XNU_KERNEL_PRIVATE, so it is not exported to 
+the user mode headers. 
+Listing 7-15: The disk_conditioner info structure (from XNU 4570's bsd/sys/fsctl.h) 
+(/• Disk conditioner configuration*/ 
+typedef struct disk conditioner info { 
+int enabled; - - 
+uint64 t access time usec; II maximum latency until transfer begins 
+uint64-t read throughput mbps; // maximum throughput for reads 
+uint64-t writ~ throughput mbps; // maximum throughput for writes 
+int is=ssd; / /-behave lik; an SSD - accessed by disk,_conditioner_mount is ssd 
+disk_conditioner_info; 
+-, 
+I* Disk conditioner•/ 
+#define DISK_CONDITIONER_IOC_GET _IOR('A', 18, disk_conditioner_info) 
+#define DISK CONDITIONER FSCTL GET IOCBASECMD(DISK CONDITIONER IOC GET) 
+#define DISK-CONDITIONER-IOC SET IOW( 'A', 19, disk conditioner info) 
+#define DISK-CONDITIONER-FSCTL SET IOCBASECMD(DISK CONDITIONER IOC SET) 
+The in-kernel functionality is provided by bsd/vfs/vfs_disk_conditioner.c, through a set of 
+disk_conditioner_ *functions.The disk_container_delay is the main one, called from 
+buf_biodone (in bsd/vfs/vfs_bio.c) to introduce the artificial delay on a conditioned mount 
+device. disk_conditioner_[ get/set ]_info are used to support the corresponding 
+ioctl(2) codes from Listing 7-15, and disk_conditioner_unmount is used when 
+unmounting a conditioned mount point, so as to free the disk_conditioner_info structure. 
+226 
+
+
+--- Page 250 ---
+Chapter 7 - Fee, Fi-Fo, File: The Virtual P.esystem Switch 
+Triggers (MacOS) 
+Darwin's VFS implementation provides support for vnode triggers. These enable an 
+interested kernel extension to set callbacks which will be invoked when the vnode is accessed, 
+particularly for mounting. Triggers are dependent on the C0NFIG_TRIGGERS compile-time 
+option, which is set for MacOS but not elsewhere. This makes sense, as the chief use of triggers 
+is in autofs.kext, which performs NFS-automounting on MacOS - a feature which the *OS variants 
+have no need of. As a consequence, the sizeof ( struct vnode) is larger by eight bytes on 
+MacOS, owing to the need to place a vnode _resolve_ t at the end of the structure. 
+Triggers are registered through a call to vfs_addtrigger () (defined in bsd/sys/mount.h) 
+to accept a mount point, relative path, trigger info and the VFS context. The trigger info is a 
+struct vnode_trigger_info, defined in bsd/sys/vnode.h as follows: 
+Listing 7-16: The vnode_trigger_info (from XNU 4903's bsd/sys/vnode.h) 
+struct vnode_trigger_info { 
+trigger_vnode_resolve_callback_t 
+trigger_vnode_unresolve_callback_t 
+trigger vnode rearm callback t 
+trigger=vnode=reclaim_callback_t 
+void* 
+uint32_t 
+vti_resolve_func; 
+vti_unresolve_func; 
+vti rearm func; 
+vti-reclaim func; 
+vti-data; -/* auxiliary data (optional) *I 
+vti=flags; /* optional flags (see below) *I 
+} ; 
+#define VNT_AUTO_REARM 
+#define VNT_NO_DIRECT_MOUNT 
+(1 << 0) 
+(1 « 1) 
+When the vnode is accessed a call to vnode _trigger_ resolve ( ) checks if its 
+v_resolve field holds a vr_resolve_func and it is not already mounted or already flagged 
+with VNT_RES0LVED. As of Darwin 18, triggers are also subject to a new MACF hook, 
+mac_vnode_check_trigger_resolve(). 
+Assuming all checks allow, the callback is called, and its implementation is entirely up to the 
+kext. In the case of autofs. kext, it works with triggers. kext to propagate the event up to 
+a user mode daemon - automountd, on host special port #11, implementing MIG subsystem 
+#666 with 8 messages, and configurable through /etc/autofs.conf. 
+The autofs project, consisting of both kexts (autofs and triggers), daemons (autofsd and 
+automountd), mount_autofs, mount_url and several interesting test utilities is Qpen source[21, and 
+the interested reader is encouraged to peruse it, to find multiple examples of working with 
+triggers and mounting. 
+EVFILT_ VNODE kevent ( 2) notifications 
+In addition the formidable FSEvents mechanism, Apple extended their VFS implementation 
+so as to integrate it the kevent ( 2) facility. As explained in 1/8, kqueue ( 2) sand their 
+kevent ( 2) provide a substrate for GCD. Unlike FSEvents, which is global, EVFILT _ VN0DE 
+requires arming with a specific file descriptor, which will be watched for write-oriented lifecycle 
+events{NOTE_[WRITE/LINK/EXTEND/ATTRIB/LINK/RENAME/REV0KE] and 
+[ •. FUNL0CK J ). This makes it closer in operation style to Linux's inotify than FSEvents, 
+though directory descriptors cannot be used here. 
+/dev/vn## (conditional) 
+Darwin adopts from BSD support for a special device called /dev/vn##, which can be used 
+to provide a device interface (character, but most commonly block) to a file. This can be used for 
+the common practice of loop mounting, wherein a file containing a raw filesystem image can be 
+mounted like a device. This is contingent on XNU being compiled with NVNDEVICE #defined as 
+an integer, which will cause the creation of /dev/vn## nodes from Oto that number minus one. 
+227 
+
+
+--- Page 251 ---
+•os lnternals::Kernel Mode 
+Loop rnountir ; ·s a common practice, but the -o loop option of mount ( 8), which might 
+be familiar to some from Linux, is not supported. Instead, Darwin requires open ( 2) ing the file 
+to be used in this way, and issuing a VNIOCATTACH ioctl ( 2), supplying the file name, file 
+size, and recd/write in a struct vn_ioctl (from <sys/vnioctl.h> ). This causes the creation of 
+a /dev/vn=== with ### taking the next available number. Once the /dev/vn### device is 
+initialized, it can be treated as any other device, and can be mount ( 8) ed, etc. 
+The /usr/libexec/vndevice binary on MacOS and BridgeOS (which still identifies internally as 
+vncontrol) provides a CLI which performs the VN ioctl ( 2) s. The kernel-side implementation 
+is in bsd/dev/vn/vn.c. This feature, which was supported by default in earlier versions of Darwin, 
+is no longer supported, with NVNDEVICE undefined since the HFS+ lega[Y. volume name 
+exRloit[3] which relied on this mechanism was used to jailbreak iOS 4.x. 
+File Providers 
+Apple introduced file providers back in iOS10, modifying the API before making it public in 
+Darwin 19 for MacOS as well. These are application extensions, allowing developers to provide a 
+filesystem-like interface for documents on remote servers, using the Fileprovider.framework and 
+the NSFileProviderExtension class. The framework is somewhat documented by ARRle[4], 
+though all details of implementation are hidden. 
+Internally, file providers are an application of VFS namespaces ("nspaces"). The nspace 
+subsystem is initialized by a call to nspace_resolver_init( ), during vfsinit( ). Apple 
+originally used this to support filesystem snapshots. As of Darwin 19, is seems* that this has 
+been extended to support a new concept of "dataless" files. Not much is known about these, but 
+they are marked with SF _DATALESS and appear to be placeholders for remote files. Such files 
+can be materialized (fetched) or evicted. The evictability of a file can be retrieved through 
+ffsctl ( 2) with the (presently) undocumented code of 0x40084a47, and toggled through 
+Oxc0084a44. 
+When a file is materialized, vnode_materialize_dataless_file calls 
+resolve_nspace_item[_extJ (). This checks if a resolver is registered, and ensures 
+(through a call to vfs_context_is_dataless_manipulator( ), that the holds the 
+com.apple.private.vfs.dataless-manipulationor •. dataless-resolver 
+entitlements. Then, an upcall to it is made using send_nspace_resolve_path( ). The upcall 
+is performed through a MIG message to host special port #30, which presently contains the 
+following messages: 
+T_ab_l~ 7-17: The nspace* MIG subsvstems 
+# Routine Description 
+867800Inspace_handle Presently ([3 1) unimplemented 
+867801 I nspace_resolve_cancel I Cancel an existing path resolution request 
+867802lnspace resolve_path !Issue a path resolving request for specified path 
+The nspace resolver, as of Darwin 19, is the filecooredinationd(8) daemon. The daemon was 
+introduced as far back as Darwin 17, but in 19 it also claims HSP #30. The daemon registers 
+itself by setting the vf s. nspace. resolver sysctl ( 2) MIB. When a resolver process exits, 
+proc _exit ( ) calls nspace _resolver_ exited ( ) to automatically deregister. 
+The FileProvider.framework's fileproviderd, acts as an intermediary between file provider 
+extensions (for which there is some documentation) and the filecoordinationd. 
+* - At the time of writing the XNU sources are not available (and, from experience, may not be for a while). When 
+they are, one could hope to find the code behind this facility in bsd/vfs/vfs_syscalls.c. 
+228 
+
+
+--- Page 252 ---
+Cha ter 7 - Fee Fi-Fo File: The Virtual ri!esvstem Switch 
+~ Experiment: Using the f ileprov iderct 1 ( 1) utility 
+The powerful fileproviderctl ( 1) utility, which Apple thankfully includes both on 
+MacOS and *OS (for sysdiagnose ( 1)) as Darwin 19, can be used to test file eviction and 
+materialization. This fascinating utility also supports unicode emojis in the Terminal 
+environment, which makes it surprising to use. 
+For this experiment, iCloud Drive must be enabled - which is easy to check with 
+fileproviderctl listproviders. If it is, go to one of the drive-enabled folders. It's 
+easy to check those too through the utility: 
+morpheus@Bifrost (-)$ cd - DesktoP. 
+morpheus@BifrOst (-/Desktop)$ fileproviderctl list roviders 
+com.apple.CloudDocs.MobileDocumentsFileProvider 
+rnorpheus@Bifrbst (~/Desktop)$ fileP.roviderctl enumerate~!!~ 
+0: 'ilf Desktop id:i6a9d2 • 10/14/19, 9:37 PH 
+; : 'ilf Documents id: i6a9c2 .;:. • Today, 10: 58 AH 
+W collection t1 gathering completed in 0.22~s 
+f, observed item:lf iCloud Drive id:NSFileProviderRootContainerltemldentifier 
+Today, 10:57 AM 4.61 GB available on iCloud 
+If iCloud Drive is enabled, placing a file on the desktop and calling fileproviderctl 
+evict file will make the file vanish, leaving in its place a hidden file, .fi/e.icloud: 
+morpheus@BifrOst (-/Desktop)$ ls -1 P.asswd 
+-n.,r-r--r-- 1 morpheus staff 6946 Oct 12 13:59 ./passwd 
+# Perform eviction 
+# 
+morpheus@Bifrdst (-/Desktop)$ fileP.:roviderctl evict!$.. 
+morpheus@BifrOst (-/Desktop)$ ls -1. P:asswd 
+ls: ./passwd: No such file or directory 
+# 
+#8 
+# 
+morpheus@BifrOst (-/Desktop)$ ls -1 
+total 48 
+drwx------@ 8 morpheus 
+drwxr-xr-x+ 28 morpheus 
+-rw-r--r--@ morpheus 
+-rw-r--r-- 
+-rw-r--r--@ 
+# 
+morpheus 
+morpheus 
+staff 256 Oct 14 2019 
+staff 896 Oct 12 13:57 
+staff 6148 Oct 12 13:59 .DS - Store 
+staff 0 Apr 25 20:2-l .localized 
+staff 154 Oct 12 13:59 . pas swd , ic loud 
+# Examine this new .passwd.icloud file (a bplist} using jlutil(j) 
+# 
+morpheus@BifrOst (-/Desktop)$ 'lutil ,P.asswd.icloud 
+NSURLNameKey: passwd 
+NSURLFileSizeKey: 69,6 
+NSURLFileResourceTypeKey: NSURLFileResourceTypeRegular 
+The hidden file holds the basic metadata required to pull this file back from iCloud. 
+Doing so requires using fileproviderctl ( j) again: 
+# 
+# Materialize the file 
+# 
+rnorpheus@BifrOst (-/Desktop)$ fileP.roviderctl materialize P.asswd 
+Attempting to materialize item at -/D{5}p/p{4}d 
+file -/D{5}p/p{4}d: 
+ASCII text 
+morpheus@BifrOst (-/Desktop)$ ls -1. p~ 
+-rw-r--r-- 1 morpheus staff 6946 Oct 12 13: 59 . /jse s swd 
+Trying this experiment while either debugging filecoordinationd or XPOcE ( j) ing 
+fileproviderd will reveal a spate of messages and interactions between the daemons. 
+229 
+
+
+--- Page 253 ---
+*OS lnternals::Kernel Mode 
+\\ll~ rQT?:-~ 
+VY Lr r:i?J tN,_"" ~ 
+-----·---- --- --· ---· 
+The ;re;;- -5€ of VFS is through its rich set of Kernel Programming Interfaces, all neatly 
+defined anc c.,-o1ted in bsd/vfs/vfs_kpi.vfs. Through the KPis, kernel level code requiring VFS 
+client fund:o.'E..i.:-; - accessing vnode member data - can do so through accessors, leaving the 
+vnode _ t as 2-i opaque pointer. This is important, considering the vnode _ t structure tends to 
+change every '10':: and then between releases. Over four dozen such accessors exist, and a good 
+way to find then is to try grep "vnode _ kpi _ vf s. c I grep "vp) ". Note, however, that 
+not all accessors are defined as "approved" KPis. vnode_tag is presently Unsupported, and a 
+few are Private. 
+Additional VFS functionality is provided by bsd/vfs/vfs_vnops.c, which provides 
+vn_[ open/read/write/rdwr /access/select/close J * - i.e. calls that mimic (and, in 
+some cases, support) the standard file descriptor lifecycle. Additional, less common calls (such as 
+vn_[get/set/list/remove]xattr) can be found in respective files. Lastly, 
+bsd/vfs/vfs_subr.c, providing advanced functionality, such as authorization, triggers and resolvers. 
+The vfs context t - - 
+An important structure used throughout VFS KPis is the vfs_context_t. This is a pointer 
+to a struct vfs_context, defined in bsd/sys/user.h as a structure of two fields - the 
+vc_thread (the Mach thread_t) and the vc_ucred (the thread's kauth_cred_t credential 
+structure). Normally, the vfs_context_current () can be used to retrieve the current thread 
+context, which is equivalent to accessing the uu_context field of the uthread returned by 
+get_bsdthread_info ( current_thread ()), or vfs_context_kernel () if no other 
+context could be found. vfs_context_kernel () itself is (as noted in its comment) a very 
+dangerous hack, but one which has been in use for a long time and Apple shows no signs of 
+addressing. Calling vfs_context_create () on a given context can clone it, or create a new 
+context (with the current_thread and kauth_cred_get) if called with NULL. Context thus 
+created are kalloc ( ) ed from kalloc. 16, and should be freed with vf s _context_ rele ( ) . 
+The vf s _context_ t is used extensively by VFS to determine the attributes of the current 
+operation. Table shows all the KPis which can be used: 
+- ····-·· .. ..,, ..... ~ ···-·· ·- ............................ ~ ....... 
+vfs - context .. Purpose 
+.. _proc Get the context's vc_thread's owning proc_t, or current_proc() 
+.. _pid Convenience to get the PIO from vfs_context_proc() 
+.. _suser Check if kauth_cred_t is that of the superuser (uid 0) 
+.. _is64bit Check if kauth_cred_t is that of the superuser (uid 0) 
+.. _issignal Convenience to get proc_pendingsignals from vfs_context_proc() 
+.. _cwd Get the uu_cdir from the vc_thread's matching uuthread, or the 
+vfs_context_proc( )
+0
+S p_fd->fd_cdir 
+.. _(get/set]_special_port task_(get/set)_special_port on the vc_thread'S task. \ 
+.. _issuser Convenience returning true if context is superuser 
+.. _iskernel Convenience returning true if context is vfs_context_kernel( J 
+.. ucred Return kauth_cred_t of process in context, or NULL 
+Table 7-21: KPI id wh k' ith vf 
+Manipulating files in kernel mode 
+It is inevitable that, sooner or later, kernel code will need to access a file directly. This is the 
+case when, for example, a file is provided to execve ( 2), or other system calls which accept a 
+pathname as an argument - such as open ( 2), getfh ( 2) and the like. Another is when the file 
+needs to be created from kernel mode - such as when dumping a core or kdebug tracing. In 
+these cases, there must be a (relatively) simple way to convert a pathname to a struct 
+vnode. Such functionality is provided by namei ( ) , from bsd/vfs/vfs_lookup.c. 
+230 
+
+
+--- Page 254 ---
+Chapter 7 - Fee, Fi-Fo, File: The Virtual Filesystem Switch 
+The namei ( ) function takes a single argument - a pointer to a struct nameidata to 
+encapsulate the lookup arguments, defined in bsd/sys/namei.h as follows: 
+~truct nameidata { 
+I* 
+* Arguments to namei/lookup. 
+*I 
+user_addr_t ni_dirp; 
+enum uio_seg ni_segflg; 
+#if CONFIG_TRIGGERS 
+enum path operation ni op; 
+#endif I* CONFIG_TRIGGERS *I - 
+.!Jfilin~ The struct nameidata (from bsd/sys/namei.h) 
+---------------------- 
+I* 
+* Arguments to lookup. 
+*I 
+struct vnode *ni_startdir; 
+struct vnode *ni rootdir; 
+struct vnode *ni=usedvp; 
+I* 
+/• pathname pointer* 
+/• location of pathname*/ 
+I* intended operation, enum path_operation in vnode.h *I 
+/* starting directory *I 
+/• logical root directory *I 
+/* directory passed in via USEDVP */ 
+* Results: returned from/manipulated by iookup 
+•! 
+struct vnode *ni vp; 
+struct vnode *ni=dvp; 
+I* 
+* Shared between namei and lookup/commit routines. 
+*I 
+u int 
+char 
+char 
+u_long 
+ni_pathlen; 
+*ni_next; 
+ni_pathbuf[PATHBUFLEN]; 
+ni_loopcnt; 
+struct componentname ni_cnd; 
+int32_t ni_flag; 
+int ni_ncgeneration; 
+/* vnode of result *I 
+I* vnode of intermediate directory ·• / 
+i• remaining chars in path*/ 
+/* next location in pathname*/ 
+/* count of symlinks encountered*/ 
+I* For a batched vnop, grab generation beforehand *I 
+\_.,_}_ ----------------------- 
+As the listing shows, the nameidata is a rather complex structure. File access therefore 
+begins with a call to NDINIT. This is a macro #define in bsd/sys/namei.h as accepting several 
+arguments: 
+Ta e 7- : e arguments o t e NDINIT macro 
+Arg Purpose 
+nd is a struct nameidata to be initialized by the call, passed by reference. 
+op An operation which is one of LOOKUP (0), CREATE (1), DELETE (2) or RENAME (3). 
+This is passed to vNOP_LOOKUP. 
+pop is a more precise operation, which is used only if the kernel is compiled with coNFIG_TRIGGERs. 
+This is an OP * path operation value, passed to resolvers 
+Theser set the cn_flags (component name flags of the ni_cnd field of the node data. Common 
+flags values are [NOJFOLLOW (symbolic links) ,LOCKLEAF (to auto-lock vnode on return) and 
+AuorTVNPATH[l/2J, to request auditing of pathname. 
+segflg A uro * value specifying the origin of the namep argument (uro usERSPACE/uro SYSSPACE) 
+namep The pathname of the vnode to be opened. 
+When taken from userspace, it is used with the the CAST ossa ADDR T macro. 
+ctx is the VFS context, commonly vfs_current_context( J 
+bl 23 Th f h 
+With the struct nameidata initialized, the next step is to call namei ( ) on it. This 
+performs the vnode lookup, by taking the namep component, calling copy instr( 9) (if 
+obtained from urn_ USERSPACE) or copystr ( 9), and then perform the step by step directory 
+traversal (by processing pathname components in between '/' separators), resolving symbolic 
+links if the FOLLOW flag is set. The operation continues until the name can be resolved, and 
+MACF is consulted (using mac_vnode_check_lookup_preflight before the actual 
+lookup ( ) operation or if a symbolic link is encountered. 
+The lookup ( ) function is, as its comment states, "a very central and rather complicated 
+routine". Its complexity arises from the many special cases it needs to consider: double dot( .. ) 
+directory specifiers, union mounts, resource forks, and other idiosyncrasies. The heart of the 
+lookup operation, however, is in a call to VNOP_LOOKUP, through which VFS finds the underlying 
+filesystem driver's ••• vnop _ lookup handler. This way the filesystem specific logic can be 
+entirely decoupled from the pathname and link processing. The return code of the lookup can be 
+any of the common errno codes, such as ENOENT, EACCES, EPERJ-1, etc. 
+231 
+
+
+--- Page 255 ---
+*OS lnternals::Kernel Mode 
+Remaining optimistic and assuming the lookup was successful, namei ( ) will likewise be 
+successful, ano ~ - = · -cce will be ready for use in the ni _ vp member of the struct 
+nameidata. When rnc r .. -TI:2.:.data contains a buffer (as indicated by the HASBUF flag of 
+ni_cnd.cn_flags and a non NULL ni_cnd.cn_pnbuf), care must be taken to free it. This is 
+handled by a call to nameidone ( ) , which resets the flag, resets the pointer to NULL and uses 
+FREE_ZONE to free the buffer from the dedicated M_NAMEI BSD zone. When the vnode is no 
+longer needed, it must be released with a call to vnode _put ( ) , which will decrease its 
+v _ iocount and possibly put it on the vnode list for recycling ( discussed later). 
+Kernel code can also take a different route over the NDINIT/namei approach, and call 
+vnode_open (from bsd/vfs/vfs_subr.c). This simplifies the process into a single line of code, 
+hiding the eventual use of both the macro and namei (by the internal vn_open_auth ( ) ), but 
+the route is more scenic (and laced with more authentication checks). 
+The main use of a struct vnode is for 1/0 operations, through vn_rdwr (). This 
+function, declared and well commented in bsd/sys/vnode.h, can be used to either UIO_READ or 
+UIO_WRITE any len bytes from/to offset to/from a specified buffer base address. Additional 
+arguments to this function are the seglg indicating whether base is a UIO_USERSPACE or 
+UIO_SYSSPACE, the credentials of the requestor, and the struct proc p of the process on 
+behalf of which the 1/0 request is done. Additionally, ioflg specifies a bitmask of IO_* options 
+- from bsd/sys/vnode.h, and ares id, a pointer to an integer storing the number of bytes which 
+remain in the 1/0 request after vn_rdwr completes. 
+The vn _ rdwr ( ) implementation is a wrapper of vn _ rdwr _ 6 4 ( ) . The caller supplied buffer 
+is used to create a uio _ t, and an iov _ t is added to it, created from the caller specified base 
+and len. Unless the caller specified IO_N0AUTH as an ioflg, A MACF check is performed here 
+- calling out to mac_vnode_check_[ read/write J. Assuming the check succeeds (or the 
+caller bypassed by specifying IO_NOAUTH), the operation is performed by 
+VN0P _ [READ/WRITE J, with the only exception being if the vnode provided is the swap vnode 
+(in which case reads are services by vn_read_swapfile( )). On return, the uio is checked for 
+any unsatisfied request bytes using uio_resid, and the value is written to the aresid 
+argument (or the call returns -EI0, if aresid was not specified). 
+This pattern of access can be seen in several locations around the kernel. The Mach-0 
+loading process of get_macho_vnode() (from bsd/kern/mach_loader.c, discussed in Chapter 6) 
+is one such example. Another good one is exec_activate_image, which supports the 
+execve ( 2) implementation: 
+Lifiling...z:M.;. The code of exec activate image pertaining to vnode handling (from bsd/kern/kern_exec.c) 
+exec_activate_image(struct image_params *imgp) 
+{ 
+struct nameidata *ndp = NULL; 
+MALLOC(ndp, struct nameidata *, sizeof(*ndp), M_TEMP, M_WAITOK I M_ZERO); 
+NDINIT(ndp, LOOKUP, OP_LOOKUP, FOLLOW I LOCKLEAF I AUDITVNPATHl, 
+UIO_SYSSPACE, CAST_USER_ADDR_T(excpath), imgp->ip_vfs_context); 
+again: 
+error= namei(ndp); 
+if (error) 
+goto bad_notrans; 
+imgp->ip ndp = ndp; /* successful namei(); call nameidone() later *I 
+imgp->ip=vp = ndp->ni_vp; /* if set, need to vnode_put() at some point */ 
+error= vn_rdwr(UIO_READ, imgp->ip_vp, imgp->ip_vdata, PAGE_SIZE, 0, 
+UIO SYSSPACE, IO NODELOCKED, 
+vfs-context ucred(imgp->ip vfs context), 
+&re;id, vfs=context_proc(i~gp->ip_vfs_context)); 
+bad_notrans: 
+if (imgp->ip_ndp) 
+nameidone(imgp->ip_ndp); 
+if (ndp) 
+FREE (ndp, H_TEMP); 
+232 
+
+
+--- Page 256 ---
+, 
+Chapter 7 - Fee, Fi-Fo, File: The V, ....a - esysiem Switch 
+Direct File 1/0 
+There is a special case in kernel mode for kern_ope::._::i:.e_for_direct_io( ). This 
+function is used exclusively by IOKit's IOPolledinte=:::ace dass. The class is used during 
+hibernation (from iokit/Kernel/IOHibernateIO.cpp) and certam cases of crash dumping. The class 
+also demonstrates a use of the kernel's built-in AES support (aes_[encrypt/decrypt]_cbc, from 
+libkern/crypto/corecrypto_aes.c). 
+IOPolledinterface provides IOPolledFile[ Ope:i/Close/Read/Write] methods, 
+and the •• Open .. method uses kern_open_file_fo=_<Erect_io() (from 
+bsd/kern/kern_symfile.c). The pattern is initially not unlike that of exec_activate_image( ), 
+shown in Listing 7-24, but also involves requesting specific file attributes, and then calling 
+vn_open_auth(). It thus makes a great example of how to perform various file handling tasks 
+in kernel. 
+.bigjng 7-25-a: the open_file_for_direct_io() routine (from bsd/kern/kern_symfi~e..::2._ 
+// Demonstrating vn_open_auth() in kernel 
+ref->ctx = vfs_context_kernel(); 
+fmode = (kIOPolledFileCreate & iflags) ? (O_CREAT I FWRITE) FWRITE; 
+cmode S_IRUSR I S_IWUSR; 
+ndflags = NOFOLLOW; 
+NDINIT(&nd, LOOKUP, OP_OPEN, ndflags, 
+UIO_SYSSPACE, CAST_USER_ADDR_T(name), ref->ctx); 
+VATTR_INIT(&va); 
+VATTR_SET(&va, va_mode, cmode); 
+VATTR_SET(&va, va_dataprotect_flags, VA_DP_RAWENCRYPTED); 
+VATTR_SET(&va, va_dataprotect_class, PROTECTION_CLASS_D); 
+if ((error= vn_open_auth(&nd, &fmode, &va))) { 
+kprintf("vn_open_auth(fmode: %d, cmode: %cl) failed with error: %d\n", 
+fmode, cmode, error); 
+goto out; } 
+// Demonstrating vnode_getattr() in kernel 
+VATTR_INIT(&va); 
+VATTR_WANTED(&va, va_rdev); 
+V!\TTR_WANTED( &va, va fsid); 
+VATTR_WANTED(&va, va-devid); 
+VATTR_WANTED(&va, va-data size); 
+VATTR_WANTED(&va, va=data=alloc); 
+VATTR_WANTED(&va, va_nlink); 
+error= EFAULT; 
+if (vnode_getattr(ref->vp, &va, ref->ctx)) goto out; 
+The file opened in this way may also be a partition, which would require getting device 
+geometry, etc - hence necessitating an ioctl in kernel. This is achieved by using a function 
+pointer, linking it to either a device-based ioctl ( ) , or a file-based one. Through the in-kernel 
+ioctl functionality the device geometry or file block map/extent layout can be obtained. Blocks 
+can be mapped into memory, and then read/write operations are as simple as an in-memory 
+copy. When the file is closed, kern_writefile () (a wrapper over vn_rdwr ()) is called . 
+.!Jfili.ng~ In kernel ioctl (from open file for direct io ( ) , in bsd/kern/kern_symfile.c) 
+/static int file_ioctl(void * pl, void* p2, u_long theioctl, caddr_t result) 
+{ 
+dev t device= *(dev t*) pl; 
+ret;rn ((*bdevsw(major(device)J.d_ioctl) 
+(device, theioctl, result, S_IFBLK, p2)); 
+do_ioctl = &file_ioctl; 
+// get partition base 
+if (partitionbase_result) 
+{ 
+error= do_ioctl(pl, p2, DKIOCGETBASE, (caddr_t) partitionbase_result); 
+if (error) goto out; 
+} 
+// get block size & constraints 
+error= do_ioctl(pl, p2, DKIOCGETBLOCKSIZE, (caddr_t) &blksize); 
+if (error) goto out; 
+233 
+
+
+--- Page 257 ---
+•os lnternals::Kernel Mode 
+Vnode lifeCJCle 
+Vnodes are allocated from the BSD M _ VNODE zone ( #25), which is backed by the dedicated 
+vnodes zone. The zone grows dynamically as vnodes are allocated, but there is an upper cap on 
+vnodes. The maximum number of vnodes is determined during bsd_startupearly(), set to the 
+kernel's sane_size divided by 64k + 1,024. The value is further capped by the compile type 
+CONFIG_VNODES macro, which is commonly 263,168. This can be overridden by the 
+kern. maxvnodes argument. 
+File I/O, however, is very frequent. So sooner or later any limit will be hit, but vnodes never 
+get freed - instead, they are recycled. The struct vnode maintains two counts - v _usecount 
+(a reference count, modified by vnode_ref_ext/vnode_rele_internal) and v_iocount 
+(for I/O operations, modified by vnode_get () /vnode_put () and other operations). When 
+both these counts are zero the vnode may be put on one of three vnode freelists, by 
+vnode _list_ add ( ) , depending on the vnode flags: 
+• Vnodes marked VL_DEAD: are added to the vnode_dead_list. This list is tried first 
+when obtaining a new vnode. 
+• Vnodes marked VRAGE: are put on the vnode_rage_list, which holds "rapidly aging" 
+vnodes. Aged vnodes are put in the front of free lists, rather than their end. 
+• Other vnodes: are put on the vnode_free_list. It is easy to determine if a given 
+vnode is already on the freelist, through the VONLIST macro, which expands to a check 
+the vnode's v _freelist member against the magic value of Oxdeadb. 
+Vnodes have quite a few structures associated with them, so it's not a simple matter to just 
+put them on a free list. They must be properly laundered - which is the task of vclean ( ) . This 
+routine is responsible for f sync ( 2) ing the vnode contents, cleaning the associated memory 
+pages in the Unified Buffer Cache, calling VNOP _ INACTIVE if the last reference to the vnode has 
+been dropped, to advise the filesystem of this. It additionally calls VNOP _ RECLAIM ( ) , giving the 
+filesystem a chance to remove the vnode from any cached structures or hash lookups, as well as 
+deallocate filesystem private structures. 
+~ 
+
+
+--- Page 258 ---
+Chapter 7 - Fee, Fi-Fo, File: The Virtual ?esys!em Switch 
+After considering all the objects and KPis defined for use by clients VFS, let us turn our 
+attention to those interfaces required of the service providers of VFS, and the process of 
+developing a VFS filesystem. 
+Registering Filesystems 
+A filesystem provider can register its filesystem with VFS by calling on vfs fsadd. This 
+function (in bsd/vfs/kpi_vfs.c) takes in a struct vfs_fsentry by reference. If registration is 
+successful, its second argument, a vfstable_t is populated with an opaque handle, which can 
+be used when deregistering. The magic of VFS is that it handles filesystems of multiple types 
+and varieties. For this, the very notion of a filesystem needs to be abstracted, and VFS's struct 
+vfs_fsentry, showin in Listing 7-26, aims to achieve exactly that: 
+llill!!_~ The struct vfs_fsentry (from bsd/sys/mount.h) 
+----------- st r u ct vfs_fsentry { 
+struct vfsops * vfe_vfsops; /* vfs operations*/ 
+int vfe_vopcnt; /*#of vnodeopv_desc being registered (reg, 
+struct vnodeopv_desc ** vfe_opvdescs; /* null terminated; •/ 
+int vfe_fstypenum; /* historic filesystem type number*/ 
+char vfe_fsname(MFSNAMELEN]; /* filesystem type name * / 
+uint32_t vfe_flags; /* defines the FS capabilities */ 
+void* vfe_reserv[2]; /* reserved for future use; set this to zero• 
+. } ; 
+The vfe_fsname is used to locate the filesystem, when matched against the filesystem 
+type specified by the mount ( 2) system call. Every filesystem should also declare the 
+vfe_flags, a bitmap of VFS_TBL* constants (also from bsd/sys/mount.h), which inform the 
+kernel of the filesystem capabilities. The most important fields in the vfs_fsentry are the 
+vfe_ vfsops and vfs_opvdescs, which specify the filesystem level operations and individual 
+vnode level operations (respectively) that the filesystem supports. In this way, the higher level 
+VFS operations are really just higher level shims, with the kext-supplied filesystem specific logic 
+performing all the actual work. 
+Listing 7-27: The VFS filesystem flags in XNU 4903 
+I* 
+* Filesystem Registration information 
+*! 
+#define VFS TBLTHREADSAFE OxOOOl 
+#define VFS-TBLFSNODELOCK Ox0002 
+#define VFS-TBLNOTYPENUl-1 Ox0008 
+#define VFS-TBLLOCALVOL OxOOlO 
+#define VFS-TBL64BITREADY Ox0020 
+#define VFS-TBLNATIVEXATTR Ox0040 
+#define VFS-TBLDIRLINKS Ox0080 
+#define VFS-TBLUNMOUNT PREFLIGHT OxOlOO 
+#define VFS=TBLGENERICMNTARGS Ox0200 
+#define VFS_TBLREADDIR_EXTENDED Ox0400 
+#define VFS_TBLNOMACLABEL OxlOOO 
+#define VFS_TBLllNOP_PAGEINV2 Ox2000 
+#define VFS_TBLVNOP_PAGEOUTV2 Ox4000 
+#define VFS_TBLVNOP_NOUPDATEID_RENAME Ox8000 
+#define VFS_TBLVNOP_SECLUDE_RENAME OxlOOOO 
+#define VFS_TBLCAN!-lOUNTROOT Ox20000 
+I* Only threadsafe filesystems are supported•/ 
+/* Only threadsafe filesystems are supported*/ 
+// File system is 64-bit compatible 
+// File system natively supports extended attributes 
+!• does a preflight check before unmounting */ 
+/* force generic mount args for local fs */ 
+/• fs supports VNODE_READDIR_EXTENDED *I 
+// v2 APis: Filesystem will handle UPL creation, // 
+// population, locking, and release 
+/* should not call vnode_update_ident on rename *I 
+The vf sent supplied by the registrant as a parameter to vf s _ f sadd ( ) leads to the 
+creation of a new struct vfstable entry. The VFS_TBL* flags (from Listing 7-27) are 
+converted by vfs_fsadd() to the VFC_VFS* flags of the vfstable's vfc_flags, and the 
+vfe_vfsops are moved to the vfc_vfsops. The vnode operations (vfe_opvdescs) are 
+similarly copied to a MALLOC'd buffer of vfe_descsize bytes, pointed to by vfe_descptr. 
+The newly created struct vfstable is then either copied over an unassigned slot, or extends 
+the table through the vfc_next pointer of the last entry. If the registered callback functions in 
+the vfc_vfsops include a vfs_init() handler, it is invoked. 
+235 
+
+
+--- Page 259 ---
+*OS lnternals::Kernel Mode 
+VFS operations 
+Any filesystem registered using vfs_fsadd may opt to install a number of callback 
+functions, as a struct vfsops pointer which is provided as the first member (vfe_vfsops) 
+of the struct vfs_entry. The structure presently defines some 15 callbacks, though not all 
+are required. The callbacks (all pointers to functions returning an integer) are well documented 
+in bsd/sys/mount.h, and shown in Table 7-28: 
+............ I ........ ''''- .. , ..J vµ ..... ,u1.1v,,~ U'-11111..U Ill I.II~ i:)l...LU.Ll. V..L.:::>V~i:) \IIVIII U::>U/::>y::>JIIIV\Jlll..11} 
+Operation Purpose 
+vfs_mount(mp, devvp, data, context); Mount the fs from devvp on mp 
+vfs_start(mp, flags, context); Start the mounted fs at mp. flags unused 
+vfs unmount(mp, mntflags, context); Unmount fs at mp with mntflags (e.g. MNT FORCE) 
+vfs_root(mp, out vpp, context); Return root vnode vpp of fs mounted on mp 
+vfs_quotactl(mp, cmds, uid, arg, context); Perform quotactl ( 2) cmds with arg for uid 
+vfs getattr(mp, out attr, context); Get VFS attributes attr of fs mounted on mp 
+vfs_sync(mp, waitfor, context); Sync fs cache with device, optionally waiting. 
+vfs_vget(mp, ino, out vpp, context); Get the vnode pointer (vpp) by inode number (ino) 
+vfs fhtovp(mp, fhlen, fhp, out vpp, context); Convert NFS file handle fhp to vnode vpp 
+vfs_vptofh(in vp, out fhlen, out fhp, context); Convert vnode vp to file handle fhp 
+vfs_init(vfsconf); Prepare filesystem for having instances mounted. 
+vfs_sysctl(mib, mibLen, oldp, in/out oldlenp, Perform vfs sysctl ( 3 > on filesystem new, newlen, context); 
+vfs_setattr(mp, in attr, context); Set attributes attr of filesystem mounted on mp 
+vfs_ioctl(mp, cmd, data, flags, context); Perform ioctl ( 2) cmd on fs mounted on mp 
+Darwin 16 
+vfs_vget_snapdir(mp, out vpp, context); 
+Examples of using this KPI can be found in the open source FUSE (discussed later), or by 
+disassembling Apple's own filesystem kexts. 
+Vnode operations 
+The vfe_opvdescs field of the vfs_fsentry defines the operations which populate the 
+v _ ops vector of every vnode in the registered filesystem, unless otherwise stated (through a 
+quasi filesystem). The operations are defined as an array of vnodeopv _entry_ desc ( defined 
+in bsd/sys/vnode.h) structures, each with two fields - a pointer to the vnodeop_desc and 
+another to the function implementing the operation. The structure is shown in Listing 7-29 (next 
+page). 
+The vnodeop_desc structures are kept opaque (in osfmk/vnode/vnode_internal.h), but 
+there is no need to expose them. There is a limited set of operations, and XNU exports pre­ 
+initialized structures corresponding to each of them. Filesystems can thus prepare their 
+implementations, link to the corresponding descriptors, and pass the structure to be registered. 
+The •• _desc structure is commonly found in _DATA._data, and is easily recognizeable 
+thanks to its vdesc_narne field, which discloses the operation. Working back from the structure 
+to the containing kext (or, in 1469, the kernel's) _DATA_CONST._const) can help 
+symbolicate the operations structure provided by individual filesystems. 
+236 
+
+
+--- Page 260 ---
+Chapter 7 - Fee, Fi-Fo, File: The Vt'.'..12. =-esystem Switch 
+.!Jgj_ng~ The VFS operation entry and descriptor s:ructl!res, from XNU 4903's bsd/sys/vnode.h 
+struct vnodeopv_entry_desc { 
+struct vnodeop_desc *opve_op; 
+int (*opve_impl)(void *); 
+I* t;h1.c 
+I* code 
+::~ ::t ::his is*/ 
+r._:cg this operation•/ 
+} ; 
+struct vnodeopv_desc { 
+int (***opv_desc_vector_p)(void *); I* p-r to:: e ?t.r r.o the vector where op should go 
+struct vnodeopv_entry_desc *opv_desc_ops; -e=i:cated list•/ 
+} ; 
+struct vnodeop_desc { 
+int vdesc_offset; 
+canst char *vdesc_name; 
+int vdesc_flags; 
+/*offset._ ector--first for speed•/ 
+/* a readable name tor debugging*/ 
+/* VDESC + =:ags ~/ 
+I* 
+* These ops are used by bypass routines to map and locate arguments. 
+* Creds and procs are not needed in bypass routines, but sometimes 
+* they are useful to (for example) transport layers. 
+* Nameidata is useful because it has a cred in it. 
+*I 
+int 
+int 
+int 
+int 
+int 
+int 
+I* 
+*vdesc_vp_offsets; 
+vdesc_vpp_offset; 
+vdesc_cred_offset; 
+vdesc_proc_offset; 
+vdesc_componentname_offset; 
+vdesc_context_offset; 
+I* list ended by VDESC _NO_ OFFSET * I 
+I* return vpp location*/ 
+/* cred location, if any*/ 
+/* proc location, if any*/ 
+/* if any*/ 
+I* context location, if any *I 
+* Finally, we've got a list of private data (about each operation) 
+* for each transport layer. (Support to manage this list is not 
+* yet part of BSD.) 
+*I 
+caddr_t *vdesc_transports; 
+-}_; / 
+Once the filesystem is registered, execution moves to a callback model, through VNOP _ * 
+wrappers over common vnode operations. VFS fulfills its role as an adapter layer, performing 
+common logic for the defined operations before dispatching them to the filesystem-specific 
+implementations, found in the vnode's v _ op member. Most wrappers are similar, loading an 
+operation-specific argument structure passing it to the operation pointer (provided by the 
+filesystem). The VNOP_READ wrapper serves as a typical example: 
+Listing 7-30: Example of a VNOP wrapper in VNOP_READ (from bsd/vfs/kpi_vfs.c) 
+, errno t 
+VNOP_READ(vnode_t vp, struct uio * uio, int ioflag, vfs_context_t ctx) 
+{ 
+int _err; 
+struct vnop_read_args a; 
+#if CONFIG_DTRACE 
+#endif 
+user_ssize_t resid = uio_resid(uio); 
+if (ctx == NULL) { return EINVAL; 
+a.a_desc = &vnop_read_desc; 
+a.a_vp = vp; 
+a.a_uio = uio; 
+a.a_ioflag = ioflag; 
+a.a_context = ctx; 
+_err= (*vp->v_op[vnop_read_desc.vdesc_offset])(&a); 
+DTRACE FSINFO IO(read, 
+vn;de_t, ;p, user_ssize_t, (resid - uio_resid(uio))); 
+return (_err); 
+237 
+
+
+--- Page 261 ---
+*OS lnternals::Kernel Mode 
+~~ ~11:@cru□®~ 
+, .. ......_.,~- -- -•·"·--·----- - -- --- -------- ··- 
+Putting together all we've seen so far we end up at the flow presented in Figure 7-31, which 
+connects with Figure 5-23: 
+1 · -f~_:typ;~f J.. j bsd/vfs/vfs_vnops.c 
+fo_read(fp, *uio, flags, ctx) DTYPE_VNODE const struct fileops vnops = 
+L_----------.-------4 have their f _ops . fo_type = DTYPE_VNODE, 
+linked to vnops • · .. fo_read = vn.r-ead, r-----------±-------k=====,·-- .fo_write = vn_write, 
+. · . fo_ioctl = vn_ioctl, (*fp->f_ops->fo_read)(fp, =u+o , f laqs, ctx) .fo_select ·= vn_select, 
+.fo_close = vn_closefile, 
+.fo_kqfilter = vn_kqfilt_add, 
+.fo_drain = NULL, 
+Figure 7-31: The flow of fo_read() 
+vn_read(fp, *uio, flags, ctx) 
+} ; 
+.0 bsd/kern/kern_descript. c 
+0 bsd/vf's/kpi_vfs. c 
+Q bsd/vfs/vfs_vnops. c 
+O securi ty/mac_vfs. c 
+I ·····---····· ···-···---- -····-- 
+♦ ' Obtain vnode pointer from 
+fileproc fg_data vp = (struct vnode *)fp->f...:fglob->fg_data,,, _, 
+mac_vnode_check_read(ctx, ., , vp) aoo 
+VN0P_READ(vp, *uio, ioflag, ctx); 
+r 
+Serialize pa~amete~7 
+, . into single struct j struct vnop_read_args a = { vp, uio, • . } I 
+_apfs_vnodeop_opv_desc: 
+Oxfd790: Oxff920 _apfs_vnodeop_p 
+Oxfd798: Oxfd7a0 _apfs_vnodeop_entries 
+_apfs_vnodeop_entries: 
+Oxfd7a0: NULL 
+Oxfd7a8: NULL 
+Operation resolved from 
+filesystem implementation 
+vfe_opvdescs 
+v_op[vnop_read_desc.vdesc_offset](&a); 
+fs~ype_vnop_read(args); 
+Oxfd838: Ox22cbf _apfs_vnop_open Oxfd840: NULL ........ Oxfd848: Ox23224 _apfs_vnop_close Oxfd850: NULL . ······· Oxfd858: Ox34c82 _apfs_vnop_read 
+A good way of gaining familiarity with VFS APis and KPis is to look at them in context - by 
+examining the implementations of some of the file systems used in XNU. The three case studies 
+picked are quite different - devfs, MacOS's NFS support and FUSE, but they are thankfully all 
+open source, and through them some common implementation patterns can be observed. 
+/dev (devfs) 
+For devices to be usable by user mode callers, they must have some filesystem 
+representation, in the form of device nodes (which appear in ls -1 as 'b'(lock) or 'c'haracter. 
+Device nodes traditionally had to be created (by the mknod ( 2) system call) or removed 
+manually following the driver addition or removal - a cumbersome requirement which could lead 
+to unnecessary complications. Modern day UN*X systems (notably, Linux/Android) solved this by 
+installing a user mode daemon to automatically maintain the nodes. Darwin and FreeBSD, 
+however, adopt a different approach. 
+The /dev directory is itself a a mount point, for the devfs special filesystem. This is a virtual 
+filesystem (somewhat like Linux's /proc), where nodes can be created directly from kernel code. 
+Only node pathnames can be created this way, but this proves sufficient. Kernel code can call on 
+devf s _make_ node ( ) (from bsd/miscfs/devfs/devfs_tree.c) to create the node, and obtain an 
+opaque handle as it magically appears in /dev. The handle can be used with devfs_remove() 
+(ibid.) to just as magically make it disappear. Once added, the device ready for use: User mode 
+operations will be redirected by the VFS layer to the implementing callback. Both operations take 
+the devfs_mutex (bsd/miscfs/devfs/devfs_tree.c), through the DEVFS_[UNJLOCK macros 
+(#defined in bsd/miscfs/devfs/devfsdefs.h) 
+Darwin's devfs implementation closely resembles that of BSD's, with the original author 
+comments and a few Apple modifications. Device nodes are created in the M_DEVFSNODE BSD 
+Zone. The node names are allocated from M_DEVFSNAME. The device nodes are maintained as 
+struct devnodes, with their dn_typeinfo (a devnode_type union) holding either their 
+dev _ t, directory entry, or symbolic link name. The root node is dev _ root, a devdirent _ t, 
+from which all files are linked. 
+238 
+
+
+--- Page 262 ---
+Chapter 7 - Fee, Fi-Fo, File: The Vutual i']esys tem Switch 
+The [ b I c J devsw entries 
+Creating a device in kernel requires initializing an appropriate structure - a bdevsw or 
+cdevsw, both defined in bsd/sys/conf.h - optionally setting the d_type (D_TTY, D_DISK, or the 
+nostalgic D_TAPE), and specifying callback functions corresponding to the allowed operations on 
+the device (shown in Table-xxbcdevsw, next page). The structure can then be registered with 
+the corresponding [b/c J devsw_add () (from bsd/kem/bsd_stubs.c), which adds it at its major 
+index entry in the global [ b/ c J devsws array. Should the device ever need to be removed, a call 
+to [b/c]devsw_remove with the major and structure will do the trick. 
+Table 7 32· The callbacks of the bdevsw and cdevsw structures - 
+Operation Block Char 
+int open(dev t dev, int flags, int devtype, proc t p) Yes Yes 
+int close(dev t dev, int flags, int devtype, struct proc *p) Yes Yes 
+void strategy(struct buf *bp) Yes Yes 
+int ioctl(dev t dev, u_long cmd, caddr_t data, int fflag, proc t p); Yes Yes 
+int read(dev t dev, struct uio *uio, int ioflag); No Yes 
+int write(dev t dev, struct uio *uio, int ioflag); No Yes 
+int stop(struct tty *tp, int rw); No Yes 
+int reset(int uban) No Yes 
+int select(dev_t dev, int which, void * wql, struct proc *p); No Yes 
+int llllllap(void) No Yes 
+int dump(void) . Yes No 
+int psize(dev t dev) Yes No 
+Block devices are commonly created in conjunction with more complicated, IOKit-enabled 
+logic. In these cases, the IOMediaBSDClient IOKit class (discussed in Chapter 13) can be 
+used to handle the block device creation automatically, without the need to call the bdevsw* 
+functions at all (or the devfs registration, as discussed next). Similar IOKit handling can be found 
+in IOKit's roserialBSDClient which handles character devices for serial port devices, but in 
+most cases creating a character device is best done manually. 
+It is possible to manifest a single hardware device as both block and character. This is, in 
+fact, quite common, with disk devices, whose block representation is used for mounting 
+filesystems, and the character representation as a "raw" device, for purposes of fsck( 8) and 
+the like. Calling cdevsw_add_with_bdev() will use the same major index for both node types 
+(as in the case, for example, with /dev/[r]disk* nodes). 
+A Raw access to block devices entirely bypasses the filesystem, and thus any file 
+permissions, or extended attributes and flags like those used in SIP are rendered 
+irrelevant. Apple thus enforces the com. apple. rootless. restricted-block­ 
+devices (MacOS) and com. apple. private.security. disk-device-access (*OS) 
+master entitlements, which are bestowed upon the OS's own low-level tools (notably, the 
+fsck* family). On a jailbroken *OS device the entitlement can easily be faked, but in 
+MacOS bypassing it requires disabling SIP. 
+specfs nodes 
+Device nodes are still represented as vnodes, but with a v _type of VBLK or VCHR. In 
+addition, when the vnode is created (by devfs, mknod( 2), vnode_create_internal (), or 
+otherwise), its vnfs_vops are set to [ devfs_] spec_vnodeop_p. This puts such nodes, 
+sooner or later, within the realm of the specfs filesystem. 
+The spec_vnodeop_p (in bsd/miscfs/specfs/spec_vnops.c) use the vnode's v_rdev to 
+obtain the major, which gives them an index into the bdevsw or cdevsw arrays. What happens 
+next can be generalized into three cases: 
+239 
+
+
+--- Page 263 ---
+*OS lnternals::Kernel Mode 
+• When an ~-:teme,-,tation exists for the operation in both character or block device 
+switches, (ope~, c a os e and ioctl) it is called upon, in order to perform the operation in 
+a manner determined by the driver. There may still be some specific device specific 
+tweaks or hacks - for example, preventing opening of mounted block devices, or handling 
+the dosmq Jf a controlling tty. 
+• When dealing with read or write operations, can directly invoke the callbacks for a 
+character device driver. For block devices, however, these callbacks do not exist, and thus 
+one of the buf_bread[n] or buf_b[ /a/d]write are used. 
+• Other callbacks in Table 7-32 not called from specfs either have different code paths to 
+call them, or were initially put due to compatibility with BSD, but were quickly phased out 
+or left unsupported. 
+The fdesc quasi-filesystem 
+Hidden in /dev is the rather peculiar /dev/fd quasi-filesystem, called fdesc. First - unlike 
+other filesystems, it is not an actual mounted filesystem (though it used to be in older versions 
+of MacOS). Second, the filesystem appears different to each process which uses it. Every process 
+sees in fdesc numbered entries, corresponding to its open file descriptors". A good way to see 
+that is to list the directory with two different process - one, such as ls ( 1), and the other one a 
+shell (through autocomplete functionality in /dev/fd. fdesc also creates symbolic links to 
+descriptors 0, 1 and 2 from /dev/stdin, stdout and stderr (respectively). 
+fdesc's implementation is contained in bsd/miscfs/devfs/devfs_fdesc_support.c and 
+bsd/miscfs/fdesc.h, requiring CONFIG_FDESC, which is set in MacOS. There are two sets of 
+operations, beginning with those of at the directory entry level, implemented using the callbacks 
+in devfs_devfd_vnodeop_entries (bsd/miscfs/devfs/devfs_vnops.c). The key operations are: 
+• devfs_devfd_readdir (): called from VNOP _READDIR() when the user requests a 
+directory listing, through getdirentries [ 64 J. The callback obtains its position in the 
+directory listing, dividing the uio_offset by UIO_MX (16), the record size. It then 
+checks if that position is a valid file descriptor in the current _proc ( ) 's space - i.e. non 
+NULL, and not flagged by UF _RESERVED, using the fdf ile and fdflags macros. 
+Valid descriptor indices result in a creation of a shortened dirent record of uro jix 
+bytes, in which the descriptor sprint£ ( Jed into the d_name. This continues for as long 
+as the uio has room (i.e. uio_resid(uio) ?: uro_MX), and the index has not 
+exceeded the number of files in the caller. 
+• devf s _ devfd _ lookup ( ) , which obtains the calling process from the VFS context 
+pointer, and then checks if the looked up name (actually the descriptor number, in string 
+form) is valid, in the same way devf s _ devfd _ readdir ( ) does. If the name is indeed 
+valid, it calls to fdesc_allocvp() to create a vnode for that descriptor on the fly, and 
+returns it in the lookup's vpp. 
+The created vnode is tagged as VT_FDESC, and its vnode_fsparam is set such that 
+the vnfs_vtype is VNON, and the vnode level operations are fdesc_vnodeop_p. The 
+vnode_fsparam's vnfs_fsnode (which ends up in v_data) points to a struct 
+fdescnode (from bsd/miscfs/devfs/fdesc.h), which holds the descriptor number in fd_fd. 
+Moving to the vnode level operations (in devfs_fdesc_vnodeop_entries, from 
+bsd/miscfs/devfs/devfs_fdesc_support.c), we see that the only operations actually supported are: 
+• fdesc_[ get/set J attr: accesses the vnode's v _data, where it finds the fdescnode 
+structure, from which it retrieve the descriptor, and uses fp _ lookup ( ) to obtain it. 
+• f des c _ open ( ) : implemented in an admitted "XXX Kludge", storing the descriptor 
+number in the uthread's uu_dupfd, and deliberately returning ENODEV. This forces a 
+release of the vnode by vn_open_auth (),and code back in openl () calls 
+dupfdopen ( ) (from bsd/kern/kern_descrip.c) on the descriptor number. The actual vnode 
+opened is thus the real vnode pointed to by the descriptor, which explains why all the 
+other operations return ENOTSUP. 
+* - Linux's /dev/fd is a symbolic link to /proc/self/fd, wherein pseudofiles are managed by the proc filesystem. 
+240 
+
+
+--- Page 264 ---
+Chapter 7 - Fee, Fi-Fo, File: The Virtual Fl:esystem Switch 
+I~. 
+~ Experiment: Creating a simple character device 
+As we have seen, character devices make up a large part of the nodes in devfs. It is 
+common practice to implement anything outside of mass storage devices as character 
+devices - and therefore useful to be able to build the a simple character device driver from 
+scratch. Such a driver can then be used as a template for more complex devices, real or 
+virtual, which communicate via the POSIX model. 
+Using an empty kernel extension as a starting point, we can put in the code to create 
+the device node. First, we need to populate a struct cdevsw with callbacks. These can 
+initially all be NULL, but better practice is to link them to enodev (from bsd/kern/subr_xxx.c), 
+which returns -ENODEV to user mode. In the entry point, we can then create the device with 
+cdevsw_add. Unless there is a penchant for a specific major, -1 specifies that the caller is 
+requesting dynamic allocation of a major index for the added device. If successfully added, 
+the return code will indicate the major assigned. The devices managed then need to be 
+published to user mode, using devfs_make_node. This is shown in Listing 7-33: 
+.!Jsing~ Creating a new character device node in /dev 
+------------ 
+st r u ct cdevsw devsw = { 0 }; l 
+int major= cdevsw_add(-1, &devsw); 
+if (major== -1) { I* fail*/ } 
+void *devNode = devfs_make_node(makedev(major, minor), 
+DEVFS_CHAR, 
+MY_DEV_USER, 
+MY_ DEV_ GROUP, 
+MY_ REV_ PERHS, 
+MY __ DEV_NAME); 
+II e.g. UID ROOT 
+// e.g. GID_WHEEL 
+I I e.g. 0644 
+II e.g. "test" 
+if ( !devNode) { I* fail, cdevsw=-r_e_m_o_v_e:_( '-) _*_/__:_} ~~------~ 
+At this point, building and kextload (a) ing your module should make a new device 
+node appear in /dev, thanks to the magic of devfs. Trying any operation on the node will 
+result in an error message, because no callbacks have been implemented. 
+The next step is to implement a few callbacks. To make the device "functional", the 
+implemented callbacks usually include read and write. Keeping the example simple, we 
+can have our device act as a clipboard of sorts, holding data provided by the user using 
+write ( 2), and supplying it back to the user through read ( 2). A partial implementation of 
+a read function is shown below (the write function can be implemented similarly): 
+Listing 7-34: A sample reader function for a memory buffer backed character device 
+fcha~uf[BUFSIZE]; 1 
+int writePos; 
+int my_read(dev_t Dev, struct uio *Uio, int IoFlag) { 
+int error= O; 
+1 // TODO: SAMPLE ONLY! Don't forget sanity/bounds checks on kernel memory here •. 
+// read() only uses one iovec in the uio, but good code should handle multiple 
+// When moving to/from a single buffer, max copy size can be set to uio_resid() 
+// but scatter/gather needs to consider multiple iovec sizes .. 
+int available= MIN(BUFSIZE - Uio->offset, uio_resid()); 
+error= uiomove64(buf + Uio->uio_offset, available, Uio); 
+~---r-et_u_r_n_e_r_ro_r_;~---- 
+As optional enhancements, the ardent reader is encouraged to implement open ( 2) 
+(with access control based on the process credentials or entitlement) and ioctl ( 2) with 
+some proprietary code (e.g. to clear the kernel buffer). 
+241 
+
+
+--- Page 265 ---
+*OS lnternals::Kernel Mode 
+NFS (MacOS 
+Most UN*X flavors have adopted the Network File System (NFS) standard to provide file 
+sharing services. MacOS does so as well, supporting both NFSv3 (RFC1813) and NFSv4 
+(RFC3530). 
+NFS is a legacy mechanism, and is best discussed elsewhere (in the RFCs 
+specified or a good reference like Qtl!.aghan's excellent reference[5l or the 
+BSD Implementation[6l. The aim of this section is to detail the Darwin 
+implementation specifics, and not get bogged down with the protocol or 
+component explanation. 
+The user mode portions of NFS are handled in MacOS similar to other operating systems, by 
+several daemons: 
+• LsbinLnfsd: providing support for remote client requests using the NFS and/or mount 
+protocols (formerly provided by the now obsolete rnountd (a)). This LaunchDaemon 
+starts from com.apple.nfsd.plist, contingent on the presence of /etc/exports (which contains 
+the list of filesystems to export). 
+• Lsbin/ ... rnc.statd: providing the host status service, as a way for local daemons to probe 
+their remote counterparts. 
+• Lsbin/....r~c.lockd: providing the locking service, which is required when a remote client 
+requests a local file lock. 
+• LusrLlibexecLautomountd: managing the autofs mechanism, which transparently 
+mounts remote filesystems when access to them is attempted. This LaunchDaemon starts 
+from com.apple.automountd.plist, and claims Host Special Port #11. 
+• LsbinLnfsiod: sets the maximum number of asynchronous I/O threads. This is a 
+deprecated daemon, because control of the number of threads can be done by merely 
+setting the vfs. generic. nfs. client. nfsiod_thread_rnax sysctl ( 2) value - 
+which is exactly what this binary does, and exits. 
+Darwin's NFS support is contignent on #defineing NFSSERVER and NFSCLIENT, which is 
+done on MacOS, but not the *OS variants. The flags enable the inclusion of file contents from 
+bsd/nfs/, which provides several system calls as well as the kernel implementation of the NFS 
+server logic, and NFS client VFS layer code. 
+NFS server operations 
+The NFSSERVER #define enables several system calls: 
+/ 
+• nfssvc (itl..5..5.).: This is a "pseudo system call", in that most of the NFS service handling 
+is done in kernel mode, and so this system call is not expected to return. The nfsd(8) 
+merely provides a user-mode process shell, spawning any number of server threads, all of 
+which invoke this call with the NFSSVC_NFSD argument, and remain in it until the 
+daemon exits or is killed. Another use of the system call is with the NFSSVC_ADDSOCK 
+argument, which registers the server sockets with the kernel. Lastly, the NFSSVC_EXPORT 
+flag, to maintain the server's map of exported filesystems. 
+• getfh (#161).: Enabling the translation of any pathname to an NFS handle. Fortunately, 
+only on filesystems which are exported. 
+• fhoP.en (#248).: Enabling the translation of an NFS file handle to an open file descriptor 
+with the o_ flags from fcntl.h. This is required by /sbin/rpc.lockd, so as to enable locking 
+when handling NFS requests. 
+242 
+
+
+--- Page 266 ---
+Chapter 7 - Fee, Fi-Fo, File: The Virtual Filesystem Switch 
+NFS Client operations 
+NFS Client services are started automatically when the mount (a) command is given a 
+mount point and remote file system specified with -t nfs. This, in turn, calls mount_nfs (a), 
+and mounts a remote server specification of a filesystem on a local directory mount point. 
+As a filesystem, NFS provides operations for NFSv2 and NFSv4 implementations 
+(nfsv[ 24 ]_vnodeop_entries, in bsd/nfs/nfs_vnops.c), which vary somewhat with the 
+protocol version. NFS also provides operations for the spec_ •• and fifo_ .. cases. The vnode 
+I/O is performed by the NFS BIO layer, which manages the data buffers sent from and to the 
+remote server. This is integrated with the local UBC. 
+The NFSCLIENT #define also enables the nfsclnt system call (#247). This call, used by 
+rpc.lockd(8), supports a flag, which may be NFSCLNT_LOCKDNOTIFY or •. _LOCKDANS (for 
+rpc.lockd(8) notification or answers) and the NFSCLNT_TESTIDMAP, used by nfs4mapid(8). 
+The nfsstat( 1) utility can be used to display client and server statistics, by polling various 
+sysctl ( 8) MIBs in the vf s. nf s namespace. The utility has also been spotted in iOS 13 beta 
+2, indicating that Apple could be testing NFS client functionality in *OS internal builds. 
+Filesystems in USEr mode (FUSE) 
+The Filesystems in USEr mode architecture challenges the tradtional implementation of 
+filesystems as kernel drivers. Rather than implement the complex filesystem logic in kernel, FUSE 
+deploys only a lightweight kernel extension, which serves as a proxy for VFS callbacks. The 
+actual work behind them, however, can be carried out by a user-mode process (commonly, a 
+daemon). 
+The mechanism behind the kernel to daemon interaction is a reverse system call. In this 
+implementation, the user mode daemon performs a system call ( commonly, read ( 2 ) ) on a 
+device node supplied by the kernel-level VFS driver code. The system call is left to block until the 
+kernel-level code requires some service from the daemon. It encodes the request in the "read" 
+data, which is then processed by the daemon and acted upon. The daemon can then write ( 2) 
+the reply back to the device node, supplying it back to the VFS driver. 
+FUSE is by no means unique to Darwin systems. It was started in other UNIX flavors, and is 
+in fact not officially supported - the Darwin implementation was introduced by Amit Singh 
+(author of the seminal precursor to this work) called MacFUSEl7J. The project was later picked 
+up by the open source community, and the present implementation - OSXFUSEl8J - is maintained 
+to this day. Because FUSE does require a kernel component, it is not applicable in the *OS 
+variants, wherein Apple uses DMG mounts (by registering loop block devices) instead. 
+Apple uses their own version of filesystems in user mode, in the private UserFS.framework, 
+as of iOS 11. The project is naturally closed source and does not share any design ideas with 
+FUSE - It does not rely on a character device, nor does it implement the reverse syscall 
+mechanism. The private framework uses XPC to communicate with its userfsd daemon and 
+userfs_helper,overcom.apple.filesystems.[userfs[d/fs_helper] ports. The 
+master daemon is entitled for raw device access, and loads filesystem support rom the 
+framework's Plugins/ directory (though these are prelinked into the shared cache). Present 
+plugins are msdos.dylib and exfat.dylib, obviating the need of the corresponding kernel 
+extensions, which were indeed removed from *OS kernelcaches. To support iOS 13's "liveFS" 
+feature, additional livefile_xxx.dylib plugins were introduced, for APFS, exfat, msdos and HFS. 
+243 
+
+
+--- Page 267 ---
+*OS lnternals::Kernel Mode 
+~~WO®\Wl @~~~ 
+1. Look through the rnaru.a, pages of BSD's vnode ( 9), vget ( 9) and vput ( 9 ) , comparing 
+these with Darwin's implementation. 
+2. Why are filesystems in user mode a good idea? What would the disadvantage be? 
+3. Why is Apple using their home grown implementation, rather than something like FUSE? 
+~®lf@[f'®[ru~~ 
+~- 
+1. Silvers - "UBC: An Efficient Unified I/O and Memory Caching Subsystem for NetBSD" 
+https: LLwww. usenix. orgf legaQt/ pu bl ications/1 ibrary/ 
+12roceeding.s/usenix2000/freenixLfull 12a12ers/silvers/silvers_htmlL 
+2. Apple Open Source - autofs project - http_;f/_g12ensource.a1212le.comLtarballs/autofs 
+3. The iPhone Wiki - "HFS Legacy Volume Name Exploit" - 
+htt12s:L/.www.theiphonewiki.com/wiki/.HFS_Legacy Volume Name Stack Buffer Overflow 
+4. Apple Developer - File Provider Documentation - 
+https:L/.developer.apple.comf.documentation/.file12rovider 
+5. McKusick, Neville-Neil & Watson - "The Design and Implementation of the FreeBSD 
+Operating System" (2nd Edition) - ISBN -978-0321968975 
+6. MacFUSE project page on Google Code: http_;//Code.goog1e.comL12/.macfuse/ 
+7. OSXFUSE project page on github:http.;LLosxfuse.github.com/ 
+8. htt12s:LLwww.amazon.com/NFS-Illustrated-Brent-Callaghanfd12/.0201325705 
+244 
+
+
+--- Page 268 ---
+Space Oddity: APFS 
+Apple first introduced its newest filesystem, APFS, as a special preview in MacOS 12, 
+announcing plans to finally retire the venerable (18+ years old) HFS+. Though still not a full 
+fledged and bootable filesystem, APFS showed great promise by providing 64-bit compatibility 
+and plenty of new features. 
+It was only almost a year later, however, that APFS was deemed stable enough to be used 
+as a default filesystem. Over this time, Apple kept working and reworking the filesystem 
+internals, breaking compatibility with previous implementations. The filesystem finally stabilized 
+with the first out-of-box implementation in iOS 10.3, probably chosen due to the relative safety 
+of *OS, wherein users are not given free rein to the filesystem. It was then enabled in MacOS 
+10.13, and has pushed HFS+ to the sidelines. 
+Although Apple promised the specification of APFS was to be available "by the end of the 
+year" (2016), it failed to deliver it, providing a paltry and partial placeholder document extolling 
+APFS's features, but disclosing virtually no detail on the implementation. In the meantime, it took 
+extensive reverse engineering to figure out how the filesystem really worked. Preliminary 
+analysis by Jonas Plum[11 provided detail on the data structures. This was followed by extensive 
+research detailing APFS internals, performed by Hansen et al. In a detailed article[21, they 
+provide a forensic view of the data structures used, which proved invaluable for future work, 
+including the author's implementation of his filesystem tool. 
+Finally, two and half years after its initial release and coinciding with that of Darwin 18, the 
+APFS specification showed up with no announcement on develo12er.agQle.com[31_ The document 
+is fairly detailed in documenting the data structures and constants, but seems at times to be 
+minimalistic and created automatically from the source code comments of the header files - 
+certainly not on par with the HFS+ specification of TN1150. This chapter, along with the 
+reference provided by Apple, should hopefully provide a clear view of APFS' intricate structures 
+and logic. 
+This book is filled with hands-on experiments, but this chapter, in particular, 
+is where the reader is encouraged to follow along with each and every one. 
+1!f Filesystem implementations make very specific use of very particular data 
+structures - and the best way to understand them is through careful step-by­ 
+step tracing of filesystem operations, and dumping raw blocks. The fsleuth tool, 
+which is freely available from the book's website, was especially designed with 
+verbose debugging output to allow the avid APFS ( and HFS+) enthusiast to 
+inspect the filesystem internals. 
+- 
+245 
+
+
+--- Page 269 ---
+•os lnternals::Kernel Mode 
+~ ~□~
+0
+~ ~W@ Wii@:w @ff £!Pl?~ 
+APFS is a relatively neatly designed filesystem, but before we get bogged down in detail it's 
+wise to consider the high level view of APFS. Figure 8-1 (next page) depicts such a view: 
+Partitions are defined in the GUID Partition Table (GPT), which is at the second block of the 
+disk (and another backup stored towards the end of the disk). The APFS partition type is 
+identified by a well-known GUID. In MacOS, another well-known GUID is used for APFS recovery 
+volumes. 
+An APFS partition consists of a single container, which provides the superblock 
+functionality and metadata for the entire partitioned space. The container manages an Object 
+Map (omap), which is a B-tree used to manage various object types - the most important of 
+which is the volume. Within the confines of the container can be up to 100 volumes, where 
+every such volume is a mountable filesystem, which can be mounted independently of its 
+siblings. All volumes, however, share the same space of the container with each other, and 
+therefore the total size of all volumes cannot exceed that of the container. 
+Being a filesystem, each volume usually maintains its own object map (though in some 
+cases may use that of its container) which is again a B-Tree. Two specific objects make up the 
+filesystem itself: 
+• The RootFS Tree: is a B-Tree wherein file metadata is maintained. This includes the file's 
+inode attributes (stat ( 1), and the like), extended attributes (xattr ( 1) ), and extent 
+records. 
+• The Extent Tree: maps logical extents to physical blocks, where the file data is actually 
+stored. 
+In addition to the volumes and their filesystems, the container needs to maintain state for 
+all of its blocks. This is the role of the Space Manager object. The Space Manager maintains a 
+logical bitmap, wherein 'O' indicates the corresponding block is free, and '1' indicates it is in use. 
+Although every block is 4K, the number of blocks in a given container can be huge, and so the 
+Space Manager groups contiguous blocks into chunks, and makes use of Chunk Info Blocks 
+(CIBs) to maintain the bitmaps at a chunk level, and CIB Allocation Blocks (CABs) to group 
+together continguous CIBs. 
+Our last object in the APFS bestiary is the Reaper. Reapers track the state of large objects, 
+so that they can be safely deleted and their space reclaimed. An example of that is on snapshot 
+deletion, which requires destroying all deleted objects whose state was preserved for the 
+snapshot, but is no longer needed if the snapshot is destroyed. The objects to be reaped are 
+maintained in Reaper List blocks, which, as their name implies, may span multiple blocks and 
+list entries. 
+There are additional objects, although less commonly encountered. Fusion drives, which 
+enable containers to span traditional (magnetic platter) hard drives and solid state disks, 
+maintain write back caches and "middle trees" to track hard drive blocks cached on the solid 
+state disks. APFS also contains built-in support for encryption, supporting an intermediate state, 
+as the drive is in the process of being encrypted (when enabling FileVault), through an 
+"encryption rolling state" object. Finally, in order to provide EFI support in the face of APFS's 
+frequent changes, the "EFI jumpstart" object which is an encapsulated EFI driver. 
+As we continue our exploration, £sleuth ( j) will be used to unravel the structure of APFS, 
+one object at a time, in a series of experiments - starting with inpecting the GUID Partition Table 
+itself. 
+2~ 
+
+
+--- Page 270 ---
+.Ei_g~: A very high level view of APFS 
+Well Known GUID indicates 
+Cl) 
+\I 
+~ 
+·~ 'i3 
+8 
+~ ro 
+0. (/) 
+co 
+Q) 
+0. ro .r:: 
+u 
+Blocko_oo 
+~ Container superblock provides 
+global object map wherein 
+other objects can be looked up 
+,-------------------- .--------------1, .. -: ..•.... 
+Array of "filesystems" points 
+to superblock volumes 
+·----------! -· .•--········ 
+f FS 8-Tree has records of 
+BlockJfff I various types for every inode 
+Block vvv 
+Block sss 
+A volume represents a 
+mountable filesystem 
+"spaceman" handles free space 
+management for container 
+--_] 
+Block rrr 
+"Reaper" handles garbage 
+collection for large objects 
+inode #2 for the fs root 
+PN Volume snapshots 
+.-11able state rollback 
+r--- 
+~ 
+
+
+--- Page 271 ---
+•os lnternals::Kernel Mode 
+~ Experiment: Inspecting GPT, partitions and volumes 
+Using dd ( 1) it is easy to grab a raw dump of the raw disk device (/dev/rdisk0). With 
+the advent of SIP this will require you to try the operation in recovery mode, or with SIP 
+disabled. Inspecting only the first couple of blocks through a hex dump, will show you 
+something similar to this: 
+figure 8-2: An annotated hexdump of the GPT from MacOS 
+-- 00000 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 1 ................ 1 . 
+OOlbO 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 fe I················ I OOlcO ff ff ee fe ff ff 01 00 00 00 a3 70 3d 3a 00 00 1. · · · · · · · · · .p=: · -1 OOldO 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 I··············· -1 * 
+OOlfO 00 00 00 00 00 00 00 00 00 00 00 00 00 00 55 aa I - · · · .......... u.1 
+00200 45 46 49 20 50 41 52 54 00 00 01 00 Sc 00 00 00 EFI PART .... \ .. - I 
+00210 Se 23 a6 27 00 00 00 00 01 00 00 00 00 00 00 00 '#. ' ........... -1 
+00220 a3 70 3d 3a 00 00 00 00 22 00 00 00 00 00 00 00 .p=: .... " ...... -1 
+00230 82 70 3d 3a 00 00 00 00 02 34 84 e2 fd b4 c8 43 .p=: ..... 4 ..... cl 
+00240 a4 df 3c 80 53 be fl 00 02 00 00 00 00 00 00 00 .. <.S .......... -1 
+00250 80 00 00 00 80 00 00 00 88 6d cd 75 00 00 00 00 ....•...• m.u ... • I 
+00260 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................ I l * 
+00400 28 73 2a cl lf f8 d2 11 ba 4b 00 aO c9 3e c9 3b (S* •••••• K ••• >.; I 
+00410 da f6 98 ff 49 ec Sd 4e b3 55 75 11 le 98 c6 ec .... I .. N.Uu .... - I 
+00420 Ox28 Ox64027 < .......• @ •••••• I 
+00430 00 00 00 00 00 00 00 00 45 00 46 00 49 00 20 00 ........ E.F.I. - I 
+00440 53 00 79 00 73 00 74 00 65 00 6d 00 20 00 50 00 s.y.s.t.e.m .. P. I 
+00450 61 00 72 00 74 00 69 00 74 oo 69 00 6f 00 6e 00 a.r.t.i.t.i.o.n.l 
+00460 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................ I 
+* 
+00480 ef 57 34 7c 00 00 aa 11 aa 11 00 30 65 43 ec ac I . W4 I ....... OeC .. I 
+00490 b8 63 2d e3 a3 3b Sf 44 83 aO 3d fc la 30 b9 19 I ,c- .. ;_D •. = .. o. • I 
+004a0 Ox64028 Ox3a29e87f I c@ .... · · · · l: ····I 004b0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 I················ I * 
+00500 4d 64 61 53 63 61 aa 11 aa 11 00 30 65 43 ec ac I MdaSca .•••. Oec .. I 
+00510 bS c7 3c 3a 70 f6 3e 4a a7 e2 6e 3d 7b 74 dl f9 1 .. <:p.>J .. n={t •. I 
+00520 Ox3a29e880 Ox3a3d707f I-· l = • • • • .p=: · · · -1 I oosso 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 I················ I I * Ox28 * Ox200 = Ox5000 
+\8_sooo eb 58 90 42 53 44 20 20 34 2e 34 00 02 01 20 00 I .X.BSD 4 .4 ..• · l 
+-•-- ~ -•-~--~"A>W•" 
+Looking at the hexdump can be a bit daunting - but fortunately GPT recognition is built- 
+in to fsleuth ( j). Try the tool on the raw disk device will show: 
+Out12ut 8-2: GPT parsing with fsleuth ( j) 
+root@Zephyr 1-)# £sleuth dev rdiskO 
+Autoselected first APFS partition (change with "partition") 
+Autoselected first volume - 'Preboot (change with "vo Lume") 
+Encrypted Container spanning 465.11 GB (121926923 blocks) with 4/100 volumes 
+FSleuth:Preboot: / )> 9P.! 
+GPT Header found at LBA 1 with backup @977105059 
+Revision: CxlOOOO Size: OxSc 
+Spanning 3~-977105026 
+UUID: 02 34 84E2-FDB4-C84 3-MDF-3C8 0 5 3BCF10 0 
+# Entries: 128, each 128 bytes, Starting at LBA 2 
+Entry_Q_;_ Type: EFI System Name: GUID: DA .. 8C6EC @LBA 40-409639 
+gntry____!_;_ Type: APFS Name: (none) GUID: B8632DE3- ...• 30B919 @LBA 409640-975825023 
+grruy--1..;, Type: APFS Recovery Name: (none) GUID: B5C73C ... 74D1F9 @LBA 975825024-977105023 
+Note, that prior to MacOS 14 fsleuth( j) will detect both APFS partitions - and that 
+the APFS recovery partition has a different GUID (B5C7 .•• -7B74D1F9) than the one used 
+for boot. As of MacOS 14 there is only one container, and the recovery filesystem is instead a 
+volume within it. 
+248 

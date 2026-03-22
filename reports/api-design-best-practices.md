@@ -1,0 +1,194 @@
+# API Design Best Practices
+
+**Research Date:** March 14, 2026  
+**Topic:** RESTful API Design Guidelines
+
+---
+
+## Overview
+
+Well-designed APIs are essential for building scalable, maintainable applications. This report covers key best practices for designing RESTful APIs that are easy to use, hard to misuse, and flexible for future changes.
+
+---
+
+## Core Principles
+
+### 1. Platform Independence
+- Use standard HTTP protocols
+- Support familiar data formats (JSON, XML)
+- Provide clear documentation
+- Clients should be able to call the API regardless of internal implementation
+
+### 2. Loose Coupling
+- Client and service should evolve independently
+- Use only standard protocols
+- Implement mechanisms for clients and services to agree on data formats
+
+---
+
+## Resource Design
+
+### Use Nouns, Not Verbs
+- **Good:** `/users`, `/orders`, `/photos`
+- **Avoid:** `/getUsers`, `/createOrder`, `/deleteUser`
+
+### Plural Nouns for Collections
+- `/users` - collection of users
+- `/users/123` - specific user (item in collection)
+
+### Resource Relationships
+- `/customers/5/orders` - all orders for customer 5
+- Keep relationships simple: avoid deep nesting beyond `collection/item/collection`
+- Use HATEOAS (Hypermedia as the Engine of Application State) for navigation
+
+---
+
+## HTTP Methods
+
+| Method | Description | Idempotent |
+|--------|-------------|------------|
+| GET | Retrieve a resource | Yes |
+| POST | Create new resources | No |
+| PUT | Update/replace existing resource | Yes |
+| PATCH | Partial update to existing resource | No |
+| DELETE | Remove a resource | Yes |
+
+### Key Guidelines
+- Keep verbs out of URLs - HTTP methods already express the action
+- Use proper method semantics (don't use GET for mutations)
+
+---
+
+## API Responses
+
+### Use Standard HTTP Status Codes
+
+**Success Codes:**
+- `200` - OK (general success)
+- `201` - Created (resource successfully created)
+- `204` - No Content (successful deletion)
+
+**Client Error Codes (4xx):**
+- `400` - Bad Request (invalid input)
+- `401` - Unauthorized (missing/invalid auth)
+- `403` - Forbidden (no permission)
+- `404` - Not Found
+- `422` - Unprocessable Entity (validation failed)
+- `429` - Too Many Requests (rate limiting)
+
+**Server Error Codes (5xx):**
+- `500` - Internal Server Error
+- `503` - Service Unavailable
+
+### Error Response Format
+```json
+{
+  "error": {
+    "code": "INVALID_INPUT",
+    "message": "Description of what went wrong",
+    "details": []
+  }
+}
+```
+
+### Provide Examples
+- Include example responses for all GET endpoints
+- Keep examples simple and understandable in under 5 seconds
+- Include data types in API specifications
+
+---
+
+## Request Handling
+
+### Query Parameters for Filtering
+- `/photos?location=boston&hashtag=winter&limit=10`
+- Use for optional filters, pagination, sorting
+
+### Path Parameters for Specific Resources
+- `/users/kesh92` - specific user by ID
+- Use for required resource identification
+
+### Pagination
+- Always paginate large collections
+- Use `limit` and `offset` or `page` and `pageSize`
+
+### Field Selection
+- Allow clients to request specific fields: `?fields=id,name,email`
+
+---
+
+## Versioning
+
+### URL Path Versioning (Recommended)
+- `/api/v1/users`
+- `/api/v2/users`
+
+### Other Options
+- Header versioning: `Accept: application/vnd.api+json;version=2`
+- Query string: `/users?version=2`
+
+---
+
+## Security Best Practices
+
+1. **Always use HTTPS**
+2. **Implement rate limiting** to prevent abuse
+3. **Use OAuth 2.0 or API keys** for authentication
+4. **Validate all input** on the server side
+5. **Don't expose sensitive data** in URLs or logs
+6. **Implement CORS** appropriately
+
+---
+
+## Documentation
+
+### Must-Have Elements
+- Clear description of all endpoints
+- Request/response examples
+- HTTP status codes and error formats
+- Authentication requirements
+- Rate limiting policies
+- Version history
+
+### Use OpenAPI/Swagger
+- Machine-readable API specifications
+- Auto-generate documentation
+- Enable interactive API explorers
+
+---
+
+## Performance Considerations
+
+### Avoid Chatty APIs
+- Don't expose too many small resources
+- Denormalize data when appropriate
+- Batch related operations
+
+### Caching
+- Use appropriate cache headers (`ETag`, `Last-Modified`)
+- Implement caching at CDN level for public APIs
+
+### Rate Limiting
+- Return `429 Too Many Requests` when exceeded
+- Include `Retry-After` header
+
+---
+
+## Summary
+
+A well-designed API should be:
+- **Easy to read and work with** - intuitive resource names
+- **Hard to misuse** - clear error messages, proper HTTP semantics
+- **Complete and concise** - provides all needed data without over-fetching
+- **Flexible** - supports versioning and evolution
+
+---
+
+## References
+
+- [Swagger.io - Best Practices in API Design](https://swagger.io/resources/articles/best-practices-in-api-design/)
+- [Microsoft Azure - Web API Design Best Practices](https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design)
+
+---
+
+*Report generated by Research Agent*

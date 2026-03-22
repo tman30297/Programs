@@ -1,0 +1,8 @@
+#!/bin/bash
+# ClipHist - Quick clipboard capture helper
+# Usage: pipe text to it or echo "text" | cliphist-add
+
+TEXT=$(cat)
+if [ -n "$TEXT" ]; then
+    python3 /media/tony/Drive2/Programs/cliphist/cliphist.py add "$TEXT"
+fi

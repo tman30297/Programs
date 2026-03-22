@@ -1,0 +1,256 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="generator.xsl"?>
+<block>
+  <name>Signal Record &amp; Process</name>
+  <key>signal_replay_flowgraph</key>
+  <category>Signal Processing</category>
+  <thunk>python</thunk>
+  <validate>no</validate>
+  <生成>
+    <title>Signal Record &amp; Process for Replay</title>
+    <description>Record from SDR, clean, and prepare signals for SA818 replay</description>
+    <window>
+      <x>50</x>
+      <y>50</y>
+      <width>1200</width>
+      <height>800</height>
+    </window>
+    <advance>200</advance>
+  </生成>
+  <check/>
+  <source>
+    <import>import os</import>
+    <import>import sys</import>
+    <import>import signal</import>
+    <import>import numpy as np</import>
+    <import>from gnuradio import gr, analog, blocks, filter, eng_notation</import>
+    <import>from gnuradio.eng_option import eng_option</import>
+    <import>from optparse import OptionParser</import>
+    <import>import wx</import>
+    <parameter>
+      <key>sample_rate</key>
+      <value>48000</value>
+    </parameter>
+    <parameter>
+      <key>freq</key>
+      <value>154.46375e6</value>
+    </parameter>
+    <parameter>
+      <key>gain</key>
+      <value>20</value>
+    </parameter>
+    <parameter>
+      <key>if_gain</key>
+      <value>20</value>
+    </parameter>
+    <parameter>
+      <key>bb_gain</key>
+      <value>20</value>
+    </parameter>
+    <classname>top_block</classname>
+    <format>%YAML 1.1
+---
+id: signal_replay_flowgraph
+version: 3.10.8.0
+metadata:
+  title: Signal Record &amp; Process
+  description: Record from SDR, clean, and prepare signals for SA818 replay
+  generated: '2026-03-20'
+options:
+  parameters:
+    sample_rate:
+      label: Audio Sample Rate
+      value: '48000'
+      dtype: int
+    freq:
+      label: RF Frequency (Hz)
+      value: 154.46375e6
+      dtype: real
+    gain:
+      label: RF Gain
+      value: '20'
+      dtype: int
+    if_gain:
+      label: IF Gain
+      value: '20'
+      dtype: int
+    bb_gain:
+      label: Baseband Gain
+      value: '20'
+      dtype: int
+    input_file:
+      label: Input File (for processing mode)
+      value: ''
+      dtype: str
+    output_file:
+      label: Output File
+      value: recording.wav
+      dtype: str
+    mode:
+      label: Mode
+      value: record
+      dtype: enum
+      options: [record, process]
+      option_labels: [Record from SDR, Process existing file]
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [10, 10]
+    rotation: 0
+    state: running
+
+blocks:
+- name: sample_rate
+  id: parameter
+  parameters:
+    value: '48000'
+  states:
+    coordinate: [150, 10]
+- name: freq
+  id: parameter
+  parameters:
+    value: 154.46375e6
+  states:
+    coordinate: [280, 10]
+- name: gain
+  id: parameter
+  parameters:
+    value: '20'
+  states:
+    coordinate: [410, 10]
+- name: if_gain
+  id: parameter
+  parameters:
+    value: '20'
+  states:
+    coordinate: [540, 10]
+- name: bb_gain
+  id: parameter
+  parameters:
+    value: '20'
+  states:
+    coordinate: [670, 10]
+- name: input_file
+  id: parameter
+  parameters:
+    value: ''
+  states:
+    coordinate: [800, 10]
+- name: output_file
+  id: parameter
+  parameters:
+    value: recording.wav
+  states:
+    coordinate: [930, 10]
+- name: mode
+  id: parameter
+  parameters:
+    value: record
+    option_labels: '[Record from SDR, Process existing file]'
+    options: '[0, 1]'
+  states:
+    coordinate: [1060, 10]
+
+# Record mode: RTL-SDR Source → NFM Demod → Audio Filter → Wavfile Sink
+- name: rtlsdr_source_0
+  id: rtlsdr_source
+  parameters:
+    device_args: ''
+    freq_correction: '0'
+    if_gain: if_gain
+    output_shift: '0'
+    sample_rate: '2400000'
+    type: fc32
+  states:
+    coordinate: [280, 150]
+- name: analog_nfm_demod_0
+  id: analog_nfm_demod_cf
+  parameters:
+    audio_decimation: '5'
+    channel_rate: '48000'
+    deviation: '5000'
+    max_dev: '5000'
+    type: fc32
+  states:
+    coordinate: [280, 280]
+- name: low_pass_filter_0
+  id: fir_filter_fff
+  parameters:
+    decim: '1'
+    taps: firdes.low_pass(1, audio_rate, 3000, 100)
+    type: fff
+  states:
+    coordinate: [280, 400]
+- name: blocks_wavfile_sink_0
+  id: blocks_wavfile_sink
+  parameters:
+    bits_per_sample: '16'
+    channels: '1'
+    file_rate: '48000'
+    filename: output_file
+    nchan: '1'
+    type: float
+  states:
+    coordinate: [280, 530]
+
+# Processing mode: File Source → Bandpass → AGC → Noise Gate → Output
+- name: blocks_wavfile_source_0
+  id: blocks_wavfile_source
+  parameters:
+    affinity: '0'
+    filename: input_file
+    max_noutput_items: '0'
+    repeat: 'false'
+    type: float
+  states:
+    coordinate: [600, 150]
+    bus_structure: null
+- name: band_pass_filter_0
+  id: fir_filter_fff
+  parameters:
+    decim: '1'
+    taps: firdes.band_pass(1, audio_rate, 300, 3000, 200)
+    type: fff
+  states:
+    coordinate: [600, 280]
+- name: analog_agc_xx_0
+  id: analog_agc_xx
+  parameters:
+    attack_rate: 1e-6
+    reference: '0.5'
+    release_rate: 1e-5
+    type: float
+  states:
+    coordinate: [600, 400]
+- name: blocks_wavfile_sink_1
+  id: blocks_wavfile_sink
+  parameters:
+    bits_per_sample: '16'
+    channels: '1'
+    file_rate: '48000'
+    filename: '"clean_" + output_file'
+    nchan: '1'
+    type: float
+  states:
+    coordinate: [600, 530]
+
+connections:
+- [rtlsdr_source_0, '0', analog_nfm_demod_0, '0']
+- [analog_nfm_demod_0, '0', low_pass_filter_0, '0']
+- [low_pass_filter_0, '0', blocks_wavfile_sink_0, '0']
+- [blocks_wavfile_source_0, '0', band_pass_filter_0, '0']
+- [band_pass_filter_0, '0', analog_agc_xx_0, '0']
+- [analog_agc_xx_0, '0', blocks_wavfile_sink_1, '0']
+</format>
+  </source>
+  <test>
+    <id>python</id>
+    <lines/>
+  </test>
+  <build/>
+  <cb>
+    <classname/>
+    <methodname/>
+  </cb>
+</block>

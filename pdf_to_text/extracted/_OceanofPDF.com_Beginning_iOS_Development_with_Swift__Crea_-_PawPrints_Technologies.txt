@@ -1,0 +1,578 @@
+--- Page 2 ---
+Beginning 
+iOS Development with Swift: Create Your Own iOS Apps Today
+ 
+ 
+1st Edition 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+--- Page 3 ---
+Copyright © 2015 by PawPrints Learning Technologies All rights reserved. No part of this book may be reproduced in any form or by any electronic or meFirst Edition: February 2015  Contents
+    
+
+--- Page 4 ---
+IntroductionWelcome! Congratulations to taking the first step to creating amazing iOS appl iOS is the largest platform available and this easy-to-follow book walks you through the development process step by step. This boo In it, we teach you how to download the tools, get Xcode up and running, code  
+Who this book is written for This book is written for the beginning iOS developer. It would be great if you hducate.com for a beginner’s guide to Swift.  How this book is structured In this book, we break down iOS programming into smaller chunks which mak What tools do I need? You will need a Mac capable of running Xcode. Additionally having a real iOS Source Code Just drop us an email at support@i-ducate.com and we will send all source code to you! Contact We look forward to hearing from you at support@i-ducate.com. Now wait no further and get started on your iOS development lear
+
+--- Page 5 ---
+Chapter 1 - Getting Started
+Downloading Xcode From The Apple Developer Website
+ Go to https://developer.apple.com/devcenter/ios/index.action Register as an Apple developer if you do not have an account yet. As an Apple developer, you get access to man
+iOS Dev Center - Development Resources Once you are logged in, Go to ‘Downloads’ 
+iOS Dev Center - Download Xcode You will see the latest version of Xcode. Download and install it. This will be the tool we will use to create our a  
+Downloading Xcode From The Mac App Store
+ Alternatively, you can download Xcode from Apple Mac App Store - 
+ 
+
+
+--- Page 6 ---
+Mac App Store - Download Xcode 
+Overview of Xcode
+ In this section, we briefly introduce you to the Xcode interface. The below screenshot shows how a standard Xc 
+Xcode Interface The project window has three main sections. The left section is the Navigator pane which shows a tree director The middle section is the Editor pane where you edit your project’s source code or also build your user interfac The right section is the Utilities pane which contains inspectors that provide information about the current selec As you proceed through the following sections, you will learn how to create a project with Xcode and learn mor   
+
+--- Page 7 ---
+Chapter 2 - Outlets and Actions (I)
+A Simple Alert App
+ In this example, you will display a simple Alert message upon clicking a button. You will learn the basics of Act 
+ iPhone Simulator showing Simple Alert First, open Xcode and you will see a welcome screen as follows - 
+Xcode Welcome Screen From the Xcode welcome screen, select Create a new Xcode project. The next screen will prompt you to choo 
+Choosing template for the new project As you can see, there are a few different template types offered by Xcode. Based on your chosen template, Xcodconfigured project. This new project will include many source code files which are handy as a starting point. 
+
+--- Page 8 ---
+Select Single View Application and press Next. This opens a new screen for you to enter options for your new a 
+Choose options for your new project Let me go through each of these options - ● Product Name: This is the name of your app. Enter 'HelloWorld'.● Organization Name: Enter your own name or name of your company.● Organization Identifier: The Organization identifier is the domain name written in reverse order. If you● Bundle Identifier: This field is auto populated by combining the Product Name field and Organisation I● Language: Choose 'Swift'● Devices: Choose 'iPhone'● Use Core Data: Leave this unchecked Press Next. Xcode will ask you where to save your project. Select any convenient location and press the Create Xcode will automatically create a new folder for your project with the Product Name (HelloWorld in your case 
+The Xcode window at the start of your project 
+Implementing the user interface The left most pane of the Xcode window is named the Navigator area. You will see a row of icons at the top of  From the Project navigator, find the file named Main.storyboard and click it once - 
+
+
+--- Page 9 ---
+Select Main.storyboard from Project navigator Once you select Main.storyboard from Project navigator, the Editor pane (middle pane) will show the Interfaand-drop. Your Xcode window should now look something like this - 
+Xcode Interface Builder for editing Main.storyboard The storyboard contains designs for all of your app’s screens and show how the app goes from one screen to ano In order to see the view hierarchy, let’s enable the Document Outline pane. Click the icon at the bottom-left of the Editor pane. 
+Click on show Document Outline icon (circled red) Clicking on that icon will reveal the Document Outline pane at the right side of the Navigator pane. 
+View Controller Scene hierarchy From the view controller scene hierarchy, you can see that there is only a single screen. This screen is created as At this point, click the Run button located at the top-left corner - 
+
+--- Page 10 ---
+Click the run button to launch app in iOS simulator If this is the first time you are using Xcode, you will be prompted to enable 'dev Xcode will build your application and launch in the iOS simulator - 
+iPhone Simulator running app with empty screen The app doesn’t look impressive at this stage because you haven’t done anything yet except creating an empty p You will be running most of your applications in the Simulator. But certain feat Before you move to the next section, press the Stop button (next to Run button) to stop the running app - 
+Stop running app 
+Building our View Let’s work on our currently empty view now. You might have noticed that the current empty view doesn’t look l 
+Disable Size Classes Let’s now concentrate on building our view. At the bottom of the Utilities pane, you will find the Object Libra 
+
+--- Page 11 ---
+The Object Library Scroll through the items in the Object Library until you see Button. Click on Button and drag it into the view. 
+Dragging the button on top of the view If you select the Button from the view, the Attributes Inspector (fourth icon from left) of Utilities pane will al You can play with different properties and see how it looks. But for now, we are just going to change the button  At this point, if you click the Run button in the Xcode’s toolbar, the simulator will launch your app, which will  
+App running on iPhone 6 simulator You can see that the ‘Click on Me!’ button appears on the screen. However, when you tap the button, it doesn’t d 
+Adding some Swift code
+ In the previous section, we added a button to our view. We want to show an alert message when a user taps the b In the ViewController.swift file, find the following code line -
+
+--- Page 12 ---
+ class ViewController: UIViewController { You will insert some Swift code immediately after the above line. Following are the lines of code you will need  @IBAction func showAlert() {       let alertController = UIAlertController(title: "Hello World!", message: "This is my first iOS app!", preferred       alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))       presentViewController(alertController, animated: true, completion: nil)   } So, your ViewController.swift file should look like - import UIKit class ViewController: UIViewController {    @IBAction func showAlert() {       let alertController = UIAlertController(title: "Hello World!", message: "This is my first iOS app!", preferred       alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))       presentViewController(alertController, animated: true, completion: nil)   }    override func viewDidLoad() {       super.viewDidLoad()       // Do any additional setup after loading the view, typically from a nib.   }    override func didReceiveMemoryWarning() {       super.didReceiveMemoryWarning()       // Dispose of any resources that can be recreated.   } } 
+Explanation We added a new method named “showAlert” (this is also known as an‘Action’). The code in showAlert() metho let alertController = UIAlertController(title: "Hello World!", message: "This is my first iOS app!", preferredS In the second step, we add a button titled “OK” by calling the addAction() method - alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)) Then we call presentViewController() method to make the alert message visible to screen - presentViewController(alertController, animated: true, completion: nil) Now, we want this showAlert() method to be executed automatically when user taps the button. We are just one  
+Connecting our Button to Code
+ We need to establish a connection between our “Click on Me!” button and the showAlert() action. When someon Select the Main.storyboard and click once. It will load the interface builder on to the editor pane. While pressing 
+
+--- Page 13 ---
+Release the mouse button first and then release the control button. You will see a pop-up with a few options. Select “showAlert” option under Sent Events. This will make a connection between the b   
+Drag to the View Controller icon (left) and a pop-over menu appears when releasing the button (right) 
+Explanation We have connected our button to the showAlert() action. Whenever a user touches the button, an alert will now b 
+Running the app Click the Run button from Xcode’s toolbar and the simulator will launch your app. If you click on the button, an 
+Running HelloWorld app As you can see, the alert has the title “Hello World!” and the text “This is my first iOS app!”. If you click the ‘O 
+Learning Points Congratulations! You have learned how to implement an ‘Action’ that shows an alert and connected that action t   
+
+--- Page 14 ---
+Chapter 3 - Outlets and Actions (II)
+A Simple Calculator App
+ In this section, you will create a simple Calculator app that calculates the area of a circle. 
+A simple app for calculating area Create a new Single View application and name it SimpleCalculator
+Options for creating new application We will start by putting the necessary UI controls into the View. From the Project navigator, select Main.storyb Next, drag and drop in a Text Field. 
+ User interface with a Label and Text Field Drag and drop a Button into the view. Double click on it to rename the text as ‘Calculate Area’.
+
+
+--- Page 15 ---
+Add ‘Calculate Area’ button to user interface We need one more UI control - a label for showing the calculated area. Place a Label into the view under the bu 
+Add Label for showing calculated area Now we should have all the necessary UI controls placed into our View. 
+Adding Outlets
+ In our app, a user will enter the value of radius into the Text Field and touch the ‘Calculate Area’ button. The use So far, we only added necessary UI controls (or views) in Interface Builder. Now we need to be able to program To reference different views from our code, we use Outlets. An outlet is like a regular object property, which is a In this application, we need to access two views programmatically - the Text Field for accessing the value of rad @IBOutlet weak var radiusTextField: UITextField!@IBOutlet weak var areaLabel: UILabel! Add the above two lines of code immediately after the following line - class ViewController: UIViewController { 
+Connecting the Outlets
+ Outlets represent pointers to the UI Controls. We now need to link the Outlets to the UI Controls that we have dr Let’s first connect the radiusTextField Outlet to the Text Field. Holding the Control key, mouse click and drag f 
+Connecting Text Field with outlets Do the same for the areaLabel Outlet. Holding on the Control key, mouse click and drag from the View Control 
+Implementing The Action Method
+ At this point, both the Outlets are connected to corresponding UI Controls and we can now reference them from In your ViewController.swift file, add the following code immediately after the lines where you added Outlets - 
+
+--- Page 16 ---
+@IBAction func calculateArea(sender: AnyObject) {       var radiusStr : NSString = radiusTextField.text       let pi : Double  = 3.14       let radius = radiusStr.doubleValue       let area = pi * radius * radius       areaLabel.text = String(format: "%.2f", area)} The above code defines an action named ‘calculateArea’. The ViewController.swift file should have the followin import UIKit class ViewController: UIViewController {    @IBOutlet weak var radiusTextField: UITextField!   @IBOutlet weak var areaLabel: UILabel!    @IBAction func calculateArea(sender: AnyObject) {       var radiusStr : NSString = radiusTextField.text       let pi : Double  = 3.14       let radius : Double = radiusStr.doubleValue       let area : Double = pi * radius * radius       areaLabel.text = String(format: "%.2f", area)   }    override func viewDidLoad() {       super.viewDidLoad()       // Do any additional setup after loading the view, typically from a nib.   }    override func didReceiveMemoryWarning() {       super.didReceiveMemoryWarning()       // Dispose of any resources that can be recreated.   } } 
+Explanation var radiusStr : NSString = radiusTextField.text Declare a variable named radiusStr of type NSString. In Swift, we use the var keyword to declare a variable, wh let pi : Double  = 3.14 This line declares a constant named pi of type Double and assigns the value 3.14. Declaring constant in Swift is  let radius : Double = radiusStr.doubleValue The above line gets the numeric value of radius from the variable radiusStr and assigns that to the constant nam let area : Double = pi * radius * radius Next, we calculate the area using the formula pi * radius * radius and assign that to the constant named area. areaLabel.text = String(format: "%.2f", area) Finally, we output the calculated area by setting the text property of label areaLabel. While outputting the area, w 
+
+--- Page 17 ---
+Instead of declaring constants for holding value of radius, area etc., we could have declared them as variables. B 
+Connecting Action to Button
+ We have defined the ‘calculateArea’ action, now we need to connect that with the button control. Select the Mai Select ‘calculateArea’ in the pop up menu -
+Connecting action with button 
+Running Application Now we are ready to run the application. Click the Run button from the top menu of Xcode and the app should  Enter radius into the text field and click ‘Calculate Area’ button. The calculated area should appear onto the labe
+Calculating area Congratulations! You have developed your own SimpleCalculator app. 
+What you have learned You have learned the basics of declaring Outlets to refer to UI controls. You have learned how to define and imp   
+
+--- Page 18 ---
+Chapter 4 - Using the SegmentedControl and WebView
+A Simple Photo Switcher App
+ In this section, you will learn how to create an app that switches photos with a Segmented control. Further, the p 
+Figure: Running PhotoSwitcher app Create a new Single View iPhone application and name it as PhotoSwitcher. Next, add a label and a Segmented 
+Figure: Select Segmented Control from Object Library  
+Figure: Add Label and Segmented Control to View Select the Segmented Control. Under the 'Attribute Inspector' of the Segmented Control, change the value under
+Figure: Configuring Segmented Control Enter John for segment 0, Mark for segment 1 and Luke for segment 2. Alternatively, you can enter your own fa Declare an Outlet for the SegmentedControl in ViewController.swift file by adding the following line immediate @IBOutlet weak var memberChoice: UISegmentedControl! Connect the Outlet to the SegmentedControl in Interface Builder by holding on Ctrl and drag click from View C  
+
+--- Page 19 ---
+Figure: Connecting Outlet to the SegmentedControl Now, add a WebView under the Segmented Control to display the various photos. 
+Figure: Add UIWebView Control Next, you need to declare an Outlet for the WebView. Add the following line to your ViewController.swift file - @IBOutlet weak var webView: UIWebView! Then, connect the Outlet to the WebView by holding on Ctrl and drag click from View Controller to WebView a 
+Figure: Connecting Outlet to WebView Next, you need to add the following getMember action method in your ViewController.swift file -    @IBAction func getMember(sender: AnyObject) {       var member: String = memberChoice.titleForSegmentAtIndex(memberChoice.selectedSegmentIndex)!       var imageURLString: String!        if member == "John" {           imageURLString = "http://s27.postimg.org/ik6bvknwj/001.jpg"       }       else if member == "Mark" {           imageURLString = "http://s4.postimg.org/3mqub6rnh/002.jpg"       }       else if member == "Luke" {           imageURLString = "http://s23.postimg.org/63spg2zo7/003.jpg"       }        var imageURL: NSURL = NSURL(string: imageURLString)       webView.loadRequest(NSURLRequest(URL: imageURL))   } Finally, connect the SegmentedControl to the action by holding on Ctrl and drag click to the View Controller. Se 
+
+--- Page 20 ---
+ 
+Figure: Connecting action to Segmented Control Click on Run and your app should run on simulator - 
+Figure: Running App on Simulator When you click on a segment, the photo of that segment fetches an image of that family member into the WebVi 
+Explanation of getMember Action Method var member: String =  memberChoice.titleForSegmentAtIndex(memberChoice.selectedSegmentIndex)! In the above code, we declare a variable member to store the value of the selected segment's title.   var imageURLString: String!        if member == "John" {           imageURLString = "http://s27.postimg.org/ik6bvknwj/001.jpg"       }       else if member == "Mark" {           imageURLString = "http://s4.postimg.org/3mqub6rnh/002.jpg"       }       else if member == "Luke" {           imageURLString = "http://s23.postimg.org/63spg2zo7/003.jpg"       } Using an if-else-if statement, we check if the member variable has a value of either John, Mark or Luke. If its anyone of them, w var imageURL: NSURL = NSURL(string: imageURLString)     webView.loadRequest(NSURLRequest(URL: imageURL)) Finally, we create an NSURL object with the imageURLString to load the image into our WebView. The NSURL Note that because we have linked the SegmentedControl to the Action getMember in Interface Builder, everytim 
+What You have Learned 
+
+--- Page 21 ---
+We have learned how to use the SegmentedControl and how to use the if-else-if selection statement to populate a remote image into a WebView.   
+
+--- Page 22 ---
+Chapter 5 - Animating Images using Sliders
+A Simple Animating Images App
+ In this section, you will learn how to animate multiple pictures in an imageview and having a button to start and   
+Figure: Running completed app Create a new Single View iPhone App and name it as AnimatingImage. Before we start adding UI controls, mak Now select Main.storyboard file from the project navigator and drag a button to the top. Change the button labe Next, add a UIImageView below the button element. Keep some space between the button and the UIImageView 
+Figure: Add button and image view Now declare two Outlets for imageview and button in ViewController.swift file - import UIKitclass ViewController: UIViewController {   @IBOutlet weak var imageView: UIImageView!   @IBOutlet weak var runButton: UIButton!    override func viewDidLoad() {       super.viewDidLoad()       // Do any additional setup after loading the view, typically from a nib.   }   override func didReceiveMemoryWarning() {       super.didReceiveMemoryWarning()       // Dispose of any resources that can be recreated.   } } Connect the Outlets to the imageView and button
+
+--- Page 23 ---
+ 
+Figure: Connecting imageView with Outlet Add three images into your project by right clicking on Supporting Files > Add Files to … > browse select yo 
+Figure: Add Files to project  
+Figure: Importing image assets Add in the below codes into the viewDidLoad() method of ViewController.swift file - import UIKit class ViewController: UIViewController {   @IBOutlet weak var imageView: UIImageView!   @IBOutlet weak var runButton: UIButton!    override func viewDidLoad() {       super.viewDidLoad()       // Do any additional setup after loading the view, typically from a nib.        var animationImages = [UIImage(named: "pet_bird.png"), UIImage(named: "pet_cat.png"), UIImage(name        imageView.animationImages = animationImages       imageView.animationDuration = 1   }   override func didReceiveMemoryWarning() {       super.didReceiveMemoryWarning()       // Dispose of any resources that can be recreated.   }
+
+--- Page 24 ---
+} 
+Explanation The viewDidLoad() method is called after the view has loaded while starting up. Within this method, we create a var animationImages = [UIImage(named: "pet_bird.png"),UIImage(named: "pet_cat.png"), UIImage(named: "pet_dog.png")] Then we assign the array to the imageView's animationImages property - imageView.animationImages = animationImages Finally, we set the transition speed to be 1 sec between images - imageView.animationDuration = 1 
+Implementing The Run Animation Method Next, add the below codes to ViewController.swift file, immediately after Outlets declaration -    @IBAction func runAnimation(sender: UIButton) {       if imageView.isAnimating() {           imageView.stopAnimating()           runButton.setTitle("Start!", forState: UIControlState.Normal)       } else {           imageView.startAnimating()           runButton.setTitle("Stop!", forState: UIControlState.Normal)       }   } 
+Explanation The runAnimation() method is an action which will be linked to the button that starts and stops the animation. W if imageView.isAnimating() {         imageView.stopAnimating()         runButton.setTitle("Start!", forState: UIControlState.Normal) } If the state of the imageView is animating, we stop the animation and set the title of the button to 'Start!', indicati else {         imageView.startAnimating()         runButton.setTitle("Stop!", forState: UIControlState.Normal) } Else, the imageView is not animating. In that case, we start the animation and set the title of the button to 'Stop!' 
+Connecting the Action to runAnimation Link the button to the action and select the action 'runAnimation'.  
+
+--- Page 25 ---
+Figure: Connect Action to runAnimation Run your project and you should see your images being animated when you press on 'Animate' and stop animati  
+Figure: Animating images 
+Adding a Slider
+ We will be adding a slider bar to the animation app to change the alpha of the image view as the animation runs. Drag a slider from the object library and place it between the button and the image view. Add two labels, one for displaying the text 'Alpha' and another one for displaying the current alpha value. Make  
+Figure: Adding slider and two labels Add two more Outlets to ViewController.swift file - one for slider and another one for alpha value label - @IBOutlet weak var alphaSlider: UISlider!@IBOutlet weak var alphaLabel: UILabel! Next, ensure that you connect the Outlets to them in the view. You should know how to do that by now! Else, plvisit the earlier chapters. Now, select the slider from the storyboard and go to attributes inspector. Set the minimum, maximum and curren  
+
+
+--- Page 26 ---
+Figure: Setting attributes for slider Now add the following action method to your ViewController.swift file -    @IBAction func setAlphaValue(sender: UISlider) {       var alphaValue: String       imageView.startAnimating()       runButton.setTitle("Stop!", forState: UIControlState.Normal)       imageView.alpha = CGFloat(alphaSlider.value)       alphaValue = String(format: "%.2f", alphaSlider.value)       alphaLabel.text = alphaValue   } Link the slider to the action we have just created by holding control and click drag from the slider to the View C Run the project and notice the alpha changes when you slide the slider. Notice that your alpha label's value changes as well.  
+Figure: Running the application 
+Explanation Since we have linked setAlphaValue() action method to the slider, when we slide, the setAlphaValue() method w  var alphaValue: String The above statement declares a variable named alphaValue of type string. imageView.startAnimating() This line starts the animation.runButton.setTitle("Stop!", forState: UIControlState.Normal) When the animation starts, we want to change the button label to 'Stop!' so that a user can understand that clickin imageView.alpha = CGFloat(alphaSlider.value) The above statement sets the alpha property of imageView to the slider's value which is a decimal number betwe alphaValue = String(format: "%.2f", alphaSlider.value)alphaLabel.text = alphaValue Display the alpha value in floating value up to 2 decimal places to the label and output this value in the alpha lab
+
+--- Page 27 ---
+ 
+What We have Learnt We have learned how to animate images, change title of buttons depending on different states and learned how t   
+
+--- Page 28 ---
+Chapter 6 - Switching Between Views In this section, you will learn how to switch between views. We will be utilizing the Storyboard function to desi Create a Single View Application and name it as SwitchViewsApp. 
+Figure: Create new project So far, we have been using the Storyboard to design our application's views. But Storyboard offers more than th From the project navigator, click the Main.storyboard file once. You should see one View Controller in the storyNow drag a View Controller from the object library into the storyboard. It doesn't matter where you put your Vie
+Figure: Add a new View Controller into storyboard Now we will add UI controls into both views. You cannot drag UI controls into view when it is zoomed out, so z
+Figure: Add buttons to views Next, control click from the button on the first view and drag it to the second view. The 'Action Segue' menu wil  
+
+--- Page 29 ---
+Figure: Selecting 'modal' action segue   
+Figure: Segue from first view controller to second view controller Note: There are other options like 'push' which is the kind of Segue you use when the two view controllers are in Select the segue and go to the attribute inspector. From the 'Transition' dropdown, select a transition animation.  
+Figure: Selecting transition animation Now, do the above steps for the second view. Start by control clicking from the button on the second view to the  
+Figure: Storyboard with two view controllers and segues between them Depending upon the relative positions of the view controllers within your storyboard, the segues might look a bi Now run your project and you should have an app with two views and you can navigate between them using theGoing further, you can add more views and buttons and connect them, linking them to one another! 
+
+--- Page 30 ---
+Passing Values Between Views
+ Now, what if we need to pass values from one view to another? The original view already has the default ViewC To add our class file, select the project folder, right click and select 'New File'.  
+Figure: Add new file The next screen will prompt you to choose a template for creating a new file. Select iOS → Source from the lef 
+File: Selecting Cocoa Touch Class Click the Next button and fill in the necessary fields as shown below -  
+Figure: Create SecondViewController class Make sure you name the class as SecondViewController. Select UIViewController for subclass as field and selec  
+
+
+--- Page 31 ---
+Figure: SecondViewController.swift file To connect the SecondViewController.swift to the second view, go back to the storyboard and select the second v 
+ Figure: Selecting second view Now go to the inspector pane and select Identity Inspector (third icon from left). In class field, select SecondView
+Figure: Select class for second view Now go back to storyboard and add a new text field in the first view. We will allow the user to enter a message i  
+Figure: Add text field to first view In the second view, add a label. This label will output the message passed from the first view.
+Figure: Add label to second view In ViewController.swift, add the codes in bold below, which declares an Outlet for text field and add a method to import UIKit class ViewController: UIViewController { @IBOutlet weak var textField: UITextField! override func viewDidLoad() {     super.viewDidLoad()     // Do any additional setup after loading the view, typically from a nib.} override func didReceiveMemoryWarning() {
+
+--- Page 32 ---
+     super.didReceiveMemoryWarning()     // Dispose of any resources that can be recreated.} override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {     var secondViewController = segue.destinationViewController as SecondViewController     secondViewController.message = textField.text} } 
+Explanation @IBOutlet weak var textField: UITextField! The above line declares an Outlet for the text field. override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) { The prepareForSegue method is called when the Segue is performed. That is to say, when the transition from the var secondViewController = segue.destinationViewController as SecondViewController Within the prepareForSegue method, we retrieve the reference of the second view controller with the above cod secondViewController.message = textField.text Finally, we assign the text in the textField to the message variable in the secondViewController. We have not dec 
+SecondViewController In SecondViewController.swift, add the codes below. We declared the Outlet for the label in the second view. Rem We also declare a String property message which will store the string value passed from the first view to the sec import UIKit class SecondViewController: UIViewController { @IBOutlet weak var messageLabel: UILabel!var message: String! override func viewDidLoad() {     super.viewDidLoad()      messageLabel.text = message} override func didReceiveMemoryWarning() {     super.didReceiveMemoryWarning()     // Dispose of any resources that can be recreated.} }  
+Explanation 
+
+--- Page 33 ---
+@IBOutlet weak var messageLabel: UILabel! This line declares an Outlet for the label. var message: String! We declare a variable named message which is of type String. This variable will hold the value of the string pass messageLabel.text = message This line is called within the viewDidLoad() method and set the text property of messageLabel to the value store  
+Running The App Run the app now. You should be able to enter a message in the first view and see the message in the label in seco Congratulations! You have learned how to transfer values between views!  
+Figure: Running app – entering text in first view's text field
+Figure: Running the app – text entered in first view appears to second view 
+What About Navigating Between Multiple Views?
+ So far, we have illustrated navigation between two views and using the segue to pass values from one view to an To illustrate this, we will be adding one more button to our first view which will navigate to a third view. We wi
+
+--- Page 34 ---
+ 
+Getting Started First, add another button in the first view and rename it as “Go To Third View”.  
+Figure: Add new button to first view Next, in the storyboard, add a new View Controller, which will be our third view. 
+Figure: Add third view controller Next, to distinguish the third view from the second view, change the background color of the view to yellow (or Once you change the background color of third view, add a label and a button to it the same way you did for the 
+Creating Segues
+ Now, create a segue by control-clicking from the 'Go To Third View' button in the first view to the third view. Select 'modal' from Action Segue  
+
+--- Page 35 ---
+Figure: Storyboard with three view controllers and segues between them 
+Giving the Segue Identifiers Now, select the Segue from the first view's “Go To Third View” button at the third view and go to the attribute in  
+Figure: Setting identifier for segue We will next give the segue from the first view button to the second view. Click on that segue and under the attr We will next create a class for the Third view. This is similar to creating the SecondViewController.swift class fo Then connect the class to the third view. Start by selecting the third view controller from the storyboard and then
+Figure: Setting class for third view 
+ThirdViewController Update the ThirdViewController.swift file with the following code which creates the Outlet for the label and a va import UIKit class ThirdViewController: UIViewController {    @IBOutlet weak var messageLabel: UILabel!   var message: String!
+
+--- Page 36 ---
+    override func viewDidLoad() {       super.viewDidLoad()        messageLabel.text = message   }    override func didReceiveMemoryWarning() {       super.didReceiveMemoryWarning()       // Dispose of any resources that can be recreated.   } }  
+Explanation @IBOutlet weak var messageLabel: UILabel! This line declares an Outlet for the label. var message: String! We declare a variable named message which is of type String. This variable will hold the value of the string pass messageLabel.text = message This line is called within the viewDidLoad() method and set the text property of messageLabel to the value store 
+ViewController Update your ViewController.swift file's prepareForSegue method with the following code - override func prepareForSegue(segue: UIStoryboardSegue, sender:  AnyObject?) {       if segue.identifier == "SecondViewSegue" {           var secondViewController = segue.destinationViewController as  SecondViewController           secondViewController.message = textField.text       }       else if segue.identifier == "ThirdViewSegue" {           var thirdViewController = segue.destinationViewController as  ThirdViewController           thirdViewController.message = textField.text       }   } 
+Explanation Remember that we gave identifiers to our segues previously? We now use these segue identifiers in a if-else statement to determine what actions to perform when a particular segue is triggered. if segue.identifier == "SecondViewSegue" {         var secondViewController = segue.destinationViewController as SecondViewController         secondViewController.message = textField.text } The above code checks if the segue identifier is 'SecondViewSegue' and if so, we retrieve an instance of Second else if segue.identifier == "ThirdViewSegue" {         var thirdViewController = segue.destinationViewController as  ThirdViewController
+
+--- Page 37 ---
+         thirdViewController.message = textField.text } In this case, we check if the segue's identifier is 'ThirdViewSegue'. If that's the case, we do the same thing but fo 
+Running The App Run the app and upon typing a message, click on the 'Go To Third View' button and notice that, your message is 
+Figure: Running app   
+Figure: Navigate to third view 
+What You Have Learnt Congratulations! You now have the necessary skills to implement more complex view navigation and pass value    
+
+--- Page 38 ---
+Chapter 7 - Using the TabBar Controller In this section, you will learn how to use the TabBar controller. We will be utilizing the Storyboard function to d Create a 'Tabbed Application' iPhone app and name it as TabBarApp.  
+Figure: Creating Tabbed Application Note that with the creation of Tabbed Application, you have two view controller classes – FirstViewController.swift and SecondViewController.swift. Click on Main.storyboard file and disable size classe  
+Figure: Storyboard of default Tabbed application As you can guess from the name, the Tabbed Application consist of multiple 'tabs' (or views). By default, the Ta The Tab Bar Controller acts as a container for other views. As soon as a Tab Bar Controller loads, it will immedi At this stage, you can run the application and can navigate to the first and second views by clicking the tab bar i You can add any UI Control items (like buttons, text fields, labels etc) to either of these two views. In the next section, you will see how we can add a third view and connect that to tab bar controller, so that we ha
+
+--- Page 39 ---
+ 
+Adding Another Tab
+ We currently have only two tabs in the TabBarApp. Let's add one more tab connecting to a third view. Once you In the zoomed out storyboard, drag a 'View Controller'  into the canvas.  
+Figure: Add new view controller Next, control click and drag from the Tab Bar Controller to the new View Controller you just added. A popup will appear. Select 'view controllers' under the Relationship Segue.  
+Figure: Control drag from tab controller view to third view Once you have done that, a line connecting a third tab (auto-generated) from the Tab Bar Controller view to the third view will be generated.  
+
+--- Page 40 ---
+Figure: Create relationship segue Yes, its that easy! If you take a look at the above picture, you will see that the label of third tab is 'Item'. We wan  
+Figure: Change bar item title As soon as you change that, the label of third tab bar item will be changed to 'Third'. 
+Figure: Label of third tab bar item changed You can even set a custom image for the tab bar item from the same attribute inspector area. The image attribute 
+Figure: Set image for tab bar item Next we have to create a ViewController class for the code of the third View Controller. Right click the TabBarA 
+
+--- Page 41 ---
+Figure: Select Cocoa Touch Class template Click Next. The next screen let's you enter class name and parent class. Name the class 'ThirdViewController'. M  
+Figure: Choose options for new class Click Next and a new class file called ThirdViewController.swift will be generated. Now to link ThirdViewController to the third view, do the following steps. Select ThirdView in the storyboard. U 
+Figure: Link ThirdViewController file with third view Once you have done this, we have connected ThirdViewController to the Third view. Let's now add a button to the Third view and an action to that button to test that the connection is done properly. Drag a button into the third view and add the following simple action method in the ThirdViewController.swift fi    @IBAction func testButtonPressed(sender: AnyObject) {       let alert = UIAlertController(title: "It works!", message: "Third view  alert", preferredStyle: UIAlertContro       let action = UIAlertAction(title: "OK", style:  UIAlertActionStyle.Default, handler: nil)       alert.addAction(action)       presentViewController(alert, animated: true, completion: nil)   } Next, connect the button in the Third view by control click drag from the button to the Third View Controller an 
+Explanation
+
+--- Page 42 ---
+ let alert = UIAlertController(title: "It works!", message: "Third view  alert", preferredStyle: UIAlertControllerS The above line creates an UIAlertController instance and assigns that to the constant named alert. This will crea let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default,  handler: nil) The above line creates an UIAlertAction instance and assigns that to the constant named action. We create this U alert.addAction(action) The addAction() method of UIAlertController instance is used to add an action. We call this method to add the “ presentViewController(alert, animated: true, completion: nil) Finally we call presentViewController() method to show the alert. 
+Running Your App Now run the application in the simulator and observe that you have a tab bar application with three tab items. Cl 
+Figure: Running the app 
+What You Have Learnt You have learnt how to create a tab bar application using the storyboard feature of Xcode. You have learnt how t   
+
+--- Page 43 ---
+Chapter 8 - Creating TableViews
+In this section, you will learn how to use a table view in a master detail based app.
+In a master detail based app, you select items from a master table view and upon selecting an item, it brings you  
+Figure: Running the completed app Create a Single View Application for iPhone and name it 'FriendList'. 
+Figure: Create new application Open the storyboard and disable size classes. Then select the default View Controller and delete it by pressing th 
+Figure: Select default view controller and delete it Also delete the default ViewController.swift file. 
+
+--- Page 44 ---
+Figure: Delete ViewController.swift file Next in the storyboard, drag a Table View Controller onto it. 
+Figure: Add Table View Controller In the project navigator, right click on the project and select 'New File...'. The next screen will prompt you to ch The next screen will let you configure options for your new file. Enter 'FriendTableViewController' as Class nam  
+Figure: Create FriendTableViewController class Click Next and a new file named FriendTableViewController.swift will be generated. Now we need to link this newly generated class to table view controller. In the storyboard, select the table view  
+
+--- Page 45 ---
+Figure: Link FriendTableViewController class with table view Xcode allows us to create custom table view cells. We can easily design how it looks using the Xcode's interface In the project navigator, right click on the project and select 'New File...'. The next screen will prompt you to ch The next screen will let you configure options for your new file. Enter 'FriendTableViewCell' as Class name and  
+Figure: Create class for table view cell Click Next. The FriendTableViewCell.swift class file will be generated under project directory. Next, go to the storyboard. You will see that the table view contains a prototype cell. We will customize this pro Select the prototype table view cell and go to the identity inspector pane. Select 'FriendTableViewCell' as the val 
+Figure: Link FriendTableViewCell with table view cell Still selecting the table view cell, under attributes inspector, 'Identifier' field, type 'FriendTableCell'. We are goi 
+Figure: Give identifier to the prototype cell 
+Designing The TableViewCell
+
+--- Page 46 ---
+ This is the interesting part. We can customize the look of our tableview cells! Just as how we can customize our  Enlarge the cell by dragging it down. Next, drag an image view and a label in the cell.
+Figure: Designing the tableview cell 
+FriendTableViewCell.swift In FriendTableViewCell.swift, fill in the below codes in bold. import UIKit class FriendTableViewCell: UITableViewCell { @IBOutlet var nameLabel: UILabel!@IBOutlet var friendImageView: UIImageView! override func awakeFromNib() {     super.awakeFromNib()} override func setSelected(selected: Bool, animated: Bool) {     super.setSelected(selected, animated: animated)} } We have just declared the outlets for the imageview and label of the tableview cell. Remember to connect the ou 
+Figure: Connections inspector You can see the empty circle to the right of each connection type which indicates that they aren't connected to an 
+
+--- Page 47 ---
+Figure: Outlets connected to UI controls 
+FriendTableViewController.swift In FriendTableViewController.swift file, fill in the below codes. We will be storing the friend names and their co import UIKit class FriendTableViewController: UITableViewController { var images: [String] = []var names: [String] = [] override func viewDidLoad() {     super.viewDidLoad()      images = ["alice.jpeg", "john.jpeg", "kate.jpeg", "mike.jpeg"]     names = ["Alice", "John", "Kate", "Mike"]} } Here, we first declare two instance variables – names and images, both of them are arrays of String type. Initially we assign them an empty array (by specifyin 
+UITableViewController Delegate Methods
+ The following methods are the implementation of the UITableViewController delegate methods. That is, they re tableView(numberOfRowsInSection) First, add in the below code to FriendTableViewController.swift file below the viewDidLoad() method - override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {    return names.count} The tableView(numberOfRowsInSection) method states how many rows to display in the table view. In this case The count property of names array returns the number of elements in the array. tableView(cellForRowAtIndexPath) This delegate method presents the content to be displayed for each row of the table view, i.e. the tableview cell.  override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath:  NSIndexPath) -> UITableViewCell {
+
+--- Page 48 ---
+let cell = tableView.dequeueReusableCellWithIdentifier("FriendTableCell")  as FriendTableViewCell     cell.nameLabel.text = names[indexPath.row]     cell.friendImageView.image = UIImage(named: images[indexPath.row])     return cell} Explanation of Code let cell = tableView.dequeueReusableCellWithIdentifier("FriendTableCell")  as FriendTableViewCell In the above code, we use the dequeReusableCellWithIdentifier() method of tableView to check if there are any r cell.nameLabel.text = names[indexPath.row] Next, we assign the nameLabel in each cell as the string value obtained from the names array. Each row retrieve cell.friendImageView.image = UIImage(named: images[indexPath.row]) We then retrieve and populate the image for each cell in a similar fashion as the name except that we have to cre return cell Finally we need to return the tableview cell. 
+Running the App Run the project. You should see a tableview of cells which consists of a populated image and label each.
+Figure: Running the app We will next extend the tableview such that when we click on each individual cell, it brings us to a detail page. 
+Creating A Details View
+ In the storyboard, drag a new View Controller into the canvas. This View Controller will be our friends details v
+
+--- Page 49 ---
+Figure: Add a new view controller Next, we will create a class for that new view controller. In the project navigator, right click on the project and select 'New File...'. The next screen will prompt you to ch The next screen will let you configure options for your new file. Enter 'FriendDetailViewController' as Class na
+Figure: Create new class Now, let's set this new class as the class for details view controller. From storyboard, select the details view cont 
+Figure: Set class for detail view controller 
+Embedding the Navigation Controller We will next embed a navigation controller into our project. You do this by first selecting the table view, then go 
+
+--- Page 50 ---
+Figure: Embed tableview controller within navigation controller With a navigation controller, our views act like a stack where views are placed on top of one another. The defaul Next, drag control click from the table view cell to the new view. Select 'push' under Selection Segue. As previou
+Figure: Creating segue from table cell to detail view Your storyboard should now look like the following figure -
+Figure: Storyboard with views In the new view, drag a label and image view into the view - 
+Figure: Add label and image view 
+FriendDetailViewController.swift 
+
+--- Page 51 ---
+Update FriendDetailViewController.swift file with the following code - import UIKit class FriendDetailViewController: UIViewController {    @IBOutlet weak var nameLabel: UILabel!   @IBOutlet weak var imageView: UIImageView!    var friendName: String!   var friendImageFileName: String!    override func viewDidLoad() {       super.viewDidLoad()        nameLabel.text = friendName       imageView.image = UIImage(named: friendImageFileName)   } } 
+Explanation @IBOutlet weak var nameLabel: UILabel!@IBOutlet weak var imageView: UIImageView! We declare two Outlets, one for the label and another one for the image view. var friendName: String! var friendImageFileName: String! Next, we declare two instance variables of String type. The variable named friendName will store the value of n nameLabel.text = friendName imageView.image = UIImage(named: friendImageFileName) Now connect the label and image view to the Outlets. 
+Passing Values From The TableView to the Detailed View
+ Passing values from the master table view to the detailed view is similar to the way we pass values from one viedepth explanation on 'prepareForSegue'. First, we identify the segue from the table view to the detailed view by selecting it in the storyboard. Under the a 
+Figure: Set identifier for the segue 
+
+--- Page 52 ---
+FriendTableViewController.swift Now in FriendTableViewController.swift, add the below method -  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {     if segue.identifier == "ShowFriendDetail" {         let controller = segue.destinationViewController as FriendDetailViewController         let indexPath = tableView.indexPathForCell(sender as FriendTableViewCell)         controller.friendName = names[indexPath!.row]         controller.friendImageFileName = images[indexPath!.row]     } } 
+Explanation of Code if segue.identifier == "ShowFriendDetail" { We first check if the segue's identifier is 'ShowFriendDetail'. let controller = segue.destinationViewController as FriendDetailViewController If it is, we use the destinationViewController property of segue object to get the view controller which will appe let indexPath = tableView.indexPathForCell(sender as FriendTableViewCell) In the above line, we get the indexPath of the table row selected by the user. controller.friendName = names[indexPath!.row] controller.friendImageFileName = images[indexPath!.row] These two lines set the values of friendName and friendImageFileName instance variables of FriendDetailViewC 
+Running the App Run the app now. Upon selecting one of the table cells, you will be brought to the detail view showing the name Congratulations! You have learned how to use a table view as well as implement your own custom table view ce
+Figure: Running the app     
+
+--- Page 53 ---
+Chapter 9 - Detecting Touches and Taps
+In this chapter, you will create an app that detects touches and taps. Although there is a simpler way to do it usin
+Create a Single View iPhone application and name it TouchTapApp. Select the storyboard and disable size classe 
+Figure: Add three labels into the view Click on the View itself and go to the Attributes inspector. Click on the checkboxes 'User Interaction Enabled' and 'Multiple Touch'. 
+Figure: Enable interaction attributes Create the Outlets for the labels with the below code in ViewController.swift file. These labels will show the num import UIKit class ViewController: UIViewController {   @IBOutlet weak var messageLabel: UILabel!   @IBOutlet weak var tapsLabel: UILabel!   @IBOutlet weak var touchesLabel: UILabel!} Connect the Outlets to the labels in the view. Next, fill in the below codes in ViewController.swift immediately below the Outlets declaration -    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {       messageLabel.text = "Touches Began"       updateLabels(touches)   }    override func touchesCancelled(touches: NSSet!, withEvent event: UIEvent!) {       messageLabel.text = "Touches Cancelled"       updateLabels(touches)   }    override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {       messageLabel.text = "Touches Stopped"       updateLabels(touches)   }    override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {       messageLabel.text = "Drag Detected"       updateLabels(touches)   }
+
+--- Page 54 ---
+ Xcode will throw a bunch of errors because we have referenced a function name that we have not declared yet. T Explanation There are four methods called regarding touches. When a touch first happens, the touchesBegan method is calledrag, the touchesMoved method is called. When a touch is cancelled, the method touchesCancelled is called. 
+The updateLabels method We next implement the updateLabels method in ViewController.swift file -    func updateLabels(touches: NSSet) {       var numTaps = touches.anyObject()?.tapCount       tapsLabel.text = "\(numTaps!) taps detected"        var numTouches = touches.count       touchesLabel.text = "\(numTouches) touches detected"   } Explanation The updateLabels method is called by the touch methods which detect touches. This method retrieves the tap co var numTaps = touches.anyObject()?.tapCount tapsLabel.text = "\(numTaps!) taps detected" We first retrieve the number of times the view is tapped using the tapCount property and we then show that to th var numTouches = touches.count touchesLabel.text = "\(numTouches) touches detected" The count property of touches object returns the number of current touches there are on the view. Run and deploy your project to a device (on how to deploy your project to a device, see Deploying your apps to  Summary You have learnt how to detect taps and touches on a view!  
+
+--- Page 55 ---
+Chapter 10 - Detecting Gestures
+In this section, you will create an app that can detect taps, pinches, swipes, pan, rotation and more! What's more
+Create a Single View application and name it GestureApp. Drag a webview into the view. Declare an Outlet for t import UIKit class ViewController: UIViewController {@IBOutlet weak var webView: UIWebView! override func viewDidLoad() {     super.viewDidLoad()} } Next, connect the Outlet by drag clicking from View Controller in the storyboard to the webview. We will next learn how to detect swipes on a view. Drag and drop a Swipe Gesture Recognizer into the view. Wh
+Figure: Add Swipe Gesture Recognizer Click on the left gesture recognizer in the bar and under the attributes inspector, chose 'Left' in the Swipe field. N 
+Figure: Select Left swipe Next, control click drag from the left gesture recognizer to the web view. Select 'goForward' under the Sent Actio
+Figure: Select 'goForward' action
+
+--- Page 56 ---
+ Repeat the same steps for the right gesture recognizer and select 'goBack' when you drag control click to the web Finally, add the below codes in bold to the viewDidLoad to set the webview to a website when the app starts up.     override func viewDidLoad() {     super.viewDidLoad()      var url = NSURL.URLWithString("http://www.apple.com")     var request = NSURLRequest(URL: url)     webView.loadRequest(request)    }  Run the app on an actual device if possible. Otherwise try it with the simulator. Browse through a couple of pag 
+Linking Gestures to Actions You can also link gestures to actions. In this section, I will show you how to link a pinch gesture to an action. Th Add the below action method to ViewController.swift file -    @IBAction func pinch(sender: AnyObject) {       var alert = UIAlertController(title: "Pinch", message: nil, preferredStyle: .Alert)       alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))       presentViewController(alert, animated: true, completion: nil)   } The above action method should look very familiar to you. It just shows an alert message. You have written cod Next go to storyboard and drag a 'Pinch Gesture Recognizer' from object library to your view. Like  the swipe ge Link the pinch gesture recognizer to the action method by control clicking from the pinch gesture recognizer to t  
+Figure: Link pinch gesture recognizer to action 
+Running the App Upon running the app, try pinching the screen. You should see an alert message which is triggered by the pinch g   
+
+--- Page 57 ---
+Chapter 11 - Building Location Based Apps
+In this chapter, you will build an application that makes use of the Map and GPS capabilities of the device.
+First, create a new iPhone Single View Application and name it LocationBasedApp. Next, select the Main.storyb From project navigator, select the project directory and go to Build Phases > Link Binary With Libraries and  
+Figure: Add MapKit framework to project This will add the MapKit framework to your project. In the storyboard, drag a MapKit View and a button into the view.
+Figure: Add MapKit View and Button to storyboard Add the statements in bold to your ViewController.swift file - import UIKitimport MapKit class ViewController: UIViewController {    @IBOutlet weak var mapView: MKMapView!    @IBAction func showLocation(sender: AnyObject) {    }    override func viewDidLoad() {       super.viewDidLoad()   } 
+
+--- Page 58 ---
+} Explanation import MapKit This line imports the MapKit framework. The MapKit View and all the map related functionalities come from th @IBOutlet weak var mapView: MKMapView! We declare an outlet for the MapKit View. Be sure to connect the outlet with with the MapKit View in  thestoryb    @IBAction func showLocation(sender: AnyObject) {    } We next declare an action. Connect this action with the button in the storyboard. At this point, if you run the app, you will have a working app that shows your current location! If you are runnin  
+Figure: The app showing map of your location Now let's further improve our app. Add the CoreLocation framework to your project.  
+Figure: Add CoreLocation framework Next, add the codes in bold into ViewController.swift file - import UIKitimport MapKitimport CoreLocation 
+
+--- Page 59 ---
+class ViewController: UIViewController, CLLocationManagerDelegate {    @IBOutlet weak var mapView: MKMapView!    var lm: CLLocationManager = CLLocationManager()    @IBAction func showLocation(sender: AnyObject) {    }    override func viewDidLoad() {       super.viewDidLoad()        let authStatus: CLAuthorizationStatus = CLLocationManager.authorizationStatus()        if authStatus == .NotDetermined {           lm.requestWhenInUseAuthorization()           return       }        lm.delegate = self       lm.desiredAccuracy = kCLLocationAccuracyBest       lm.distanceFilter = kCLDistanceFilterNone       lm.startUpdatingLocation()        mapView.mapType = MKMapType.Hybrid   } } Explanation import CoreLocation We first import the CoreLocation framework to work with location data. class ViewController: UIViewController, CLLocationManagerDelegate { We want our ViewController class to be notified when the device's location is updated. So we declare ViewContr var lm: CLLocationManager = CLLocationManager() We create a new instance of CLLocationManager class. This CLLocationManager class instance will be used to let authStatus: CLAuthorizationStatus =  CLLocationManager.authorizationStatus()      if authStatus == .NotDetermined {         lm.requestWhenInUseAuthorization()         return     } We need the user's permission to access his location data. This is new as of iOS 8. This permission is asked only Open the Info.plist file and right click somewhere inside Info.plist and choose Add Row. For the key, type NSL 
+
+--- Page 60 ---
+Figure: Add new row to Info.plist file lm.delegate = selflm.desiredAccuracy = kCLLocationAccuracyBest With the LocationManager, you can set the desired accuracy of the positioning. Do note that the higher the accu lm.distanceFilter = kCLDistanceFilterNone You can also set distance filter which is the distance the device must move before an update in position occurs. lm.startUpdatingLocation() Finally, you start the location update. mapView.mapType = MKMapType.Hybrid This determines the map type. We set it as hybrid type here, but you can also choose Satelite or Standard as well locationManager(didUpdateToLocation: fromLocation:) method Next, add the following method to ViewController.swift file -    func locationManager(manager: CLLocationManager!, didUpdateToLocation newLocation: CLLocation!, fro       var span = MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta:  0.001)       var region = MKCoordinateRegion(center: newLocation.coordinate, span:  span)       mapView.setRegion(region, animated: true)   } Explanation The locationManager(didUpdateToLocation: fromLocation:) delegate method is called when an update in locati    var span = MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001)   var region = MKCoordinateRegion(center: newLocation.coordinate, span: span)   mapView.setRegion(region, animated: true) With the above codes, we get our new current location with the argument newLocation and set the map's region  
+Running the App When you run the app, you will see that it asks for accessing location permission. 
+
+--- Page 61 ---
+Figure: App asking for location permission This permission will be asked only once. Go ahead and click Allow. You will next see the hybrid map zooming  
+Figure: Showing hybrid map 
+Displaying Annotations In Maps
+ We will further improve the app by having a pin on our location. The pin is called an 'Annotation'. Add the following instance variable to ViewController.swift file, right below where you declared CLLocationMa var annotation: MKPointAnnotation = MKPointAnnotation() Also add the following code within locationManager(didUpdateToLocation: fromLocation:) method, below the annotation.title = "I am here!"annotation.coordinate = newLocation.coordinatemapView.showAnnotations([annotation], animated: true) If you run the app now, the map will show a pin at your location. If you click the pin, it will show the text 'I am   
+
+--- Page 62 ---
+Figure: Showing annotation to the map Explanation var annotation: MKPointAnnotation = MKPointAnnotation() The above line declares an MKPointAnnotation class instance and assigns that to the variable annotation. We de annotation.title = "I am here!" We set the title attribute of annotation as “I am here!”. This is the text shown in a bubble when you click the pin annotation.coordinate = newLocation.coordinate The coordinate attribute of annotation determines where the annotation should appear. We set that to the newLo mapView.showAnnotations([annotation], animated: true) Finally, we show the annotation in the map. 
+Reverse Geo-Coding
+ We shall further improve our location based app to reverse geo-code the GPS coordinates to return us the actual address. Open ViewController.swift file and add two more instance variables - var geocoder = CLGeocoder()var location: CLLocation? The first variable creates an instance of the CLGeocoder class and stores the reference in the variable geocoder. coding. The location variable will hold the latest location of the user. This variable is defined as an optional, bec Next, add the following line of code within the locationManager(didUpdateToLocation: fromLocation:) method location = newLocation As you can see, you are updating the location variable with the new location obtained. Finally, update the showLocation() action with following code -    @IBAction func showLocation(sender: AnyObject) {       if let location = location {
+
+--- Page 63 ---
+           geocoder.reverseGeocodeLocation(location, completionHandler: {               placemarks, error in               if error == nil && !placemarks.isEmpty {                   var placemark = placemarks.last as CLPlacemark                   var locationString = "\(placemark.locality) \(placemark.postalCode), \(placemark.country)"                   self.annotation.subtitle = locationString               }           })       }   } Explanation We first check if the location variable has any value - if let location = location { Remember that the location variable is 'optional?' This means that the location variable can have either any valid    geocoder.reverseGeocodeLocation(location, completionHandler: {       placemarks, error in       if error == nil && !placemarks.isEmpty {           var placemark = placemarks.last as CLPlacemark           var locationString = "\(placemark.locality) \(placemark.postalCode),  \(placemark.country)"           self.annotation.subtitle = locationString       }   }) The above piece of code performs the reverse geo-code operation and gets the address of location variable's coordinates. The location variable is passed to the revecoder returns a valid address. Sometimes it might fail (because of no recognized address at the user's current loc if error == nil && !placemarks.isEmpty { In case we have a valid response from the geo-coder, the placemarks parameter will be an array which may contain more than one address. For us, we simply t var placemark = placemarks.last as CLPlacemark Next, we extract info from placemark to construct the address - var locationString = "\(placemark.locality) \(placemark.postalCode),  \(placemark.country)" Finally, we set the address to the annotation variable's subtitle property - self.annotation.subtitle = locationString Notice the self keyword before the annotation instance variable. While you can access instance variables with th 
+Running the App Run the app and click the 'Show Location' button. If you click the annotation pin now, you will see that the revercoded address shows up. 
+
+--- Page 64 ---
+Figure: Running finished app    
+
+--- Page 65 ---
+Chapter 12 - Taking Photos and Accessing Photo Library
+In this chapter, we will create an app that can retrieve photos from the photo library of your iOS device and show
+Figure: Running the app 
+Getting Started Create a new iPhone Single View application and name it as PhotoGrabber. In the storyboard, drag an ImageVie
+Figure: Add UI controls to view Open the ViewController.swift file and replace its content with the following code - import UIKit class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {    @IBOutlet weak var imageView: UIImageView!    @IBAction func choosePhotoFromLibrary(sender: AnyObject) {       let imagePicker = UIImagePickerController()       imagePicker.sourceType = .PhotoLibrary       imagePicker.delegate = self       presentViewController(imagePicker, animated: true, completion: nil)   }    @IBAction func takePhotoFromCamera(sender: AnyObject) {       let imagePicker = UIImagePickerController()       imagePicker.sourceType = .Camera       imagePicker.delegate = self       presentViewController(imagePicker, animated: true, completion: nil)   }    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, edi       imageView.image = image
+
+--- Page 66 ---
+       dismissViewControllerAnimated(true, completion: nil)   }    func imagePickerControllerDidCancel(picker: UIImagePickerController) {       dismissViewControllerAnimated(true, completion: nil)   } } 
+Connecting Outlets and Actions Connect the outlet to the imageview and the two buttons to the choosePhotoFromLibrary and takePhotoFromCa 
+Explanation of Code class ViewController: UIViewController, UIImagePickerControllerDelegate,  UINavigationControllerDelegate As you can see, the ViewController class conforms both UIImagePickerControllerDelegate and UINavigationCo    @IBAction func choosePhotoFromLibrary(sender: AnyObject) {       let imagePicker = UIImagePickerController()       imagePicker.sourceType = .PhotoLibrary       imagePicker.delegate = self       presentViewController(imagePicker, animated: true, completion: nil)   } The choosePhotoFromLibrary action is called when a user clicks the 'Access Photo Library' button. Within this  As you can see, after we create the UIImagePickerController instance, all we need to do is to configure the picke Take a look at the following line - imagePicker.sourceType = .PhotoLibrary The sourceType of picker is set to PhotoLibrary, which means that picker will let the user pick an image from th If you take a look at the other action method, takePhotoFromCamera, you will see that, the code is exactly the s    @IBAction func takePhotoFromCamera(sender: AnyObject) {       let imagePicker = UIImagePickerController()       imagePicker.sourceType = .Camera       imagePicker.delegate = self       presentViewController(imagePicker, animated: true, completion: nil)   } Since the takePhotoFromCamera method will handle taking images using the device's camera, the sourceType o Next, we add two delegate methods.    func imagePickerControllerDidCancel(picker: UIImagePickerController) {       dismissViewControllerAnimated(true, completion: nil)   } This delegate method is called when user cancels the image picking operation. We simply dismiss the image pic    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, edi       imageView.image = image       dismissViewControllerAnimated(true, completion: nil)   }
+
+--- Page 67 ---
+ This delegate method is called when a user selects an image from the photo library (or captured image taken thro 
+Running the App Within the simulator, you obviously cannot test the camera functionality. For that, you will need a real iOS devic Whatever the case, either take a photo with your device's camera, or just click the “Access Photo Library” butto 
+ Figure: Running Application   
+
+--- Page 68 ---
+Chapter 13 - Accessing the Address Book
+We will be creating an app that accesses the phone's address book and display the contact's image (if any) and hi
+Getting Started Create a new Single View iPhone application and name it as AddressBook. Click AddressBook from project navigator and select the tab Build Phases. Under the section titled Link Binar  
+Figure: Add frameworks to project Select both the AddressBook.framework and AddressBookUI.framework and click Add. Both these frameworks  
+Figure: Linked AddressBook and AddressBookUI frameworks Next, drag a UIImageView, a UILabel and a button into the storyboard view. Rename the button label as 'Pick a 
+Figure: Add UI controls to storyboard We will let the user pick a contact from the address book by clicking the 'Pick a Contact' button. The label will s Open the ViewController.swift file and declare two outlets for the name label and imageview - @IBOutlet weak var photo: UIImageView! @IBOutlet weak var nameLabel: UILabel! Don't forget to connect the outlets to the imageview and label. Next, add the following action to ViewController.swift file, which will allow the user to select a contact from the    @IBAction func selectContact(sender: AnyObject) {       var picker = ABPeoplePickerNavigationController()       picker.peoplePickerDelegate = self       presentViewController(picker, animated: true, completion: nil)
+
+--- Page 69 ---
+   } Connect the button to the selectContact action. Explanation of Code var picker = ABPeoplePickerNavigationController() This line creates a new ABPeoplePickerNavigationController instance and assigns that to the variable named pic picker.peoplePickerDelegate = self We then set the ViewController class as the delegate of people picker navigation controller. presentViewController(picker, animated: true, completion: nil) Finally, we present the people picker navigation controller view. 
+Adding Delegates
+ Open the ViewController.swift file and modify the ViewController class declaration line to conform ABPeoplePi  class ViewController: UIViewController, ABPeoplePickerNavigationControllerDelegate { Next, add the following delegate method to the ViewController class -    func peoplePickerNavigationController(peoplePicker: ABPeoplePickerNavigationController!, didSelectPerso       var contactName = ABRecordCopyValue(person, kABPersonFirstNameProperty).takeRetainedValue() as St       nameLabel.text = contactName        if ABPersonHasImageData(person) {           photo.image = UIImage(data: ABPersonCopyImageData(person).takeRetainedValue() as NSData)       }       dismissViewControllerAnimated(true, completion: nil)   } The above delegate method, peoplePickerNavigationController(didSelectPerson:) is called when user selects a c Explanation of Code var contactName = ABRecordCopyValue(person,  kABPersonFirstNameProperty).takeRetainedValue() as String The above code gets the first name of the selected contact and typecast that as a string value which is then assign nameLabel.text = contactName This sets the text property of nameLabel to the value assigned to contactName variable. if ABPersonHasImageData(person) {         photo.image = UIImage(data:  ABPersonCopyImageData(person).takeRetainedValue() as NSData)     } Not all contact of your address book has an image. So we first check whether the selected contact has an image.  dismissViewControllerAnimated(true, completion: nil) Finally, we dismiss the contact picker view controller.
+
+--- Page 70 ---
+ 
+Running the App If you run the app and click on the button, you will now be able to select a contact to display. Congratulations! Y   
+
+--- Page 71 ---
+Chapter 14 - Using the AccelerometeriPhone and iPads have the Accelerometer built in it. The Accelerometer detects the movement and tilting of the  
+Getting Started Create a new Single View iPhone application and name it as Direction. Singe click Main.storyboard file and drag a new label into the view.
+Figure: Add label to storyboard Open the ViewController.swift file and add an outlet for the label - @IBOutlet weak var orientation: UILabel! Connect the outlet with label. Now, add the following code in bold to ViewController.swift file - import UIKitimport CoreMotion class ViewController: UIViewController { @IBOutlet weak var orientation: UILabel!var motionManager = CMMotionManager() override func viewDidLoad() {     super.viewDidLoad()      if motionManager.accelerometerAvailable {         let queue = NSOperationQueue()         motionManager.startAccelerometerUpdatesToQueue(queue, withHandler: {(data: CMAccelerometerData!, e              if data.acceleration.x > 0.5 {                 self.orientation.text = "Right side"             } else if data.acceleration.x < -0.5 {                 self.orientation.text = "Left side"             } else if data.acceleration.y > 0.5 {                 self.orientation.text = "Upside down"             } else if data.acceleration.y < -0.5 {                 self.orientation.text = "Standing up"             } else if data.acceleration.z > 0.5 {                 self.orientation.text = "Face down"             } else if data.acceleration.z < -0.5 {                 self.orientation.text = "Face up"             }         })     }
+
+--- Page 72 ---
+}} In the above code, we import CoreMotion framework and use CMMotionManager to detect tilt of the device. Running the App Deploy the project to a device and notice that the message on the label changes to the orientation of the device. Explanation    import CoreMotion In order to use the accelerometer functionality, we need to import the CoreMotion framework.    var motionManager = CMMotionManager() The CMMotionManager is the gateway to the motion services provided by the iOS framework. Since we work w    if motionManager.accelerometerAvailable { Before we run any accelerometer specific code, we make sure the accelerometer feature is available on the devic    let queue = NSOperationQueue()    motionManager.startAccelerometerUpdatesToQueue(queue, withHandler:       {(data: CMAccelerometerData!, error: NSError!) in        if data.acceleration.x > 0.5 {           self.orientation.text = "Right side"       } else if data.acceleration.x < -0.5 {           self.orientation.text = "Left side"       } else if data.acceleration.y > 0.5 {           self.orientation.text = "Upside down"       } else if data.acceleration.y < -0.5 {           self.orientation.text = "Standing up"       } else if data.acceleration.z > 0.5 {           self.orientation.text = "Face down"       } else if data.acceleration.z < -0.5 {           self.orientation.text = "Face up"       }   }) The startAccelerometerUpdatesToQueue(withHandler:) instance method of CMMotionManager delivers accele What you need to know is, when there is any accelerometer update, the if-else-if code block above  which simply updates the label based on accelerometer data will run. To understand the above if-else-if conditions, have a look at the following figure -
+When a tilt is detected, based on the x,y,z coordinates, we select the appropriate message to be displayed in the l
+
+--- Page 73 ---
+ 
+Device Movement
+ We have sensed the tilting of the device. But what about the movement of it? We will extend our application by changing the text of the label when the device is suddenly moved in a particul Update the viewDidLoad() method of ViewController.swift with the following code -    override func viewDidLoad() {       super.viewDidLoad()        if motionManager.accelerometerAvailable {           let queue = NSOperationQueue()            motionManager.startAccelerometerUpdatesToQueue(queue, withHandler: {(data: CMAccelerometerData                if data.acceleration.x > 1.3 {                   self.orientation.text = "Right"               } else if data.acceleration.x < -1.3 {                   self.orientation.text = "Left"               } else if data.acceleration.y > 1.3 {                   self.orientation.text = "Forward"               } else if data.acceleration.y < -1.3 {                   self.orientation.text = "Backward"               } else if data.acceleration.z > 1.3 {                   self.orientation.text = "Up"               } else if data.acceleration.z < -1.3 {                   self.orientation.text = "Down"               }           })       }   } Explanation We increase the magnitude of measurement from 0.5 to 1.3 such that only a movement large enough can trigger  Running the App Deploy and run the project on your device. Notice that the text changes when you move the device. If the chang    
+
+--- Page 74 ---
+Appendix A - Deploying your App to a Device Other than testing your apps on the simulator, it is important to know how to deploy them on an actual device. F First, you need to sign up for the paid iOS developer program which costs $99 per year. You can do so at:  https:    
+Figure: Enroll to iOS developer program Before you can run your app on iOS devices, you need to digitally sign it with something called a Development  Any iOS device you want to use with Xcode must be registered with your Developer Program account. In the fo 
+Connecting Your iOS Device
+ Unlike previous versions, with Xcode 6, creating certificates and provisioning profiles isn't as difficult. First, co 
+Figure: Connect iOS device to your Mac using USB cable On the left, you can see a list of devices used for development. From this list select your device. If its the first tim The device page of Xcode will be refreshed and you will be able to use your device for development. If you get  
+Setting Up a Developer Program Account with Xcode
+ In this section, we assume you have already registered and paid for the iOS Developer program. Otherwise do th From Xcode's menu bar, select Xcode → Preferences → Accounts. 
+
+--- Page 75 ---
+Figure: Accounts tab Next, add your Apple ID. Click the + button at the bottom left corner of accounts tab and choose Add Apple ID  
+Figure: Add Apple ID Enter your username and password for your iOS developer program. If you have correctly entered your credentiright corner of the accounts window. This will bring up another panel -  
+Figure: Signing identities and provisioning profiles This panel lists your signing identities (certificates) and provisioning profiles. This panel is currently empty. Youleft corner and Xcode will try to contact the iOS Dev Center to fetch any certificates and provisioning profiles th 
+
+--- Page 76 ---
+Figure: Certificate signing request In order to deploy the app to your device, you only need a development certificate. You will later need a distribu Within a few moments, Xcode will automatically register your device with your Developer Program account, cr Now close the accounts window and return to the Devices window. Right click on your device name from the le 
+Figure: Provisioning profiles installed on your device The Team Provisioning Profile has a wildcard App ID (*) which means that this provisioning profile can be used Though its not necessary you can also login to your iOS Dev Center website to check your provisioning profiles https://developer.apple.com/devcenter/ios/index.action 
+Deploying an App on to your Device
+ To start deploying your app to a device, select the connected device beside the Run button. 
+Figure: Select device to deploy your app Click the Run button to launch the app. You should get a popup with the question “codesign wants to sign using If something goes wrong, make sure you check the above steps carefully and try again. If you need further help, https://developer.apple.com/library/mac/documentation/IDEs/Conceptual/AppDistributionGuide/LaunchingYou   
+
+--- Page 77 ---
+Appendix B - Submitting to the App Store To prepare submitting your app to the App Store, you need to use a distribution certificate instead of a developm Instead of a development provisioning profile, you will need a distribution provisioning profile. We will go thro Login to the iOS dev center with your Apple ID - https://developer.apple.com/ios/ Under the iOS developer Program, click 'Certificates, Identifiers & Profiles' -  
+Figure: Select Certificates, Identifiers & Profiles From the next page, under the iOS Apps section, select Provisioning Profiles -
+Figure: Select Provisioning Profiles Click the + button to create a new provisioning profile - 
+Figure: Create new provisioning profile You need to select the type of provisioning profile you are going to create. Under the distribution section, select  
+
+--- Page 78 ---
+Figure: Select App Store for new provisioning profile The next step will ask you to select an App ID. Since you don't have an App ID created yet, you will need to cre  
+Figure: Select App ID for provisioning profile App IDs are used to identify applications. Enter a description for the App ID. It can be anything! 
+Figure: Enter App ID description The App ID Prefix field will be automatically generated for you. For App ID Suffix field, select Wildcard App ID and enter the value as com.yourdomainname.* (Replace com.yourdomainname with your own domain in reverse domain notation. This should match the organ The asterisk (*) at the end of the above value signifies that this single App ID can be used for all your apps. You could also have selected an Explicit App ID. In that case, you have to create an individual App ID for each a com.yourdomainname.appname1com.yourdomainname.appname2... If your app uses any special feature (like iCould), then you will have to create an Explicit App ID. Click the Continue button and then complete the App ID creation process. Now, back to the provisioning profile creation process. From the left panel, select Provisioning Profiles → Dist
+
+--- Page 79 ---
+Figure: Select App ID for provisioning profile Select the App ID you created earlier and click continue. In the next step, you will select the certificate.  
+Figure: Select certificate You should see the distribution certificate your created from Xcode (in 'Deploying app to your device' chapter).  The next step will let you generate the provisioning profile.
+Figure: Generate provisioning profile Give a profile name and click Generate. At this stage, your provisioning profile will be ready for download. 
+Figure: Download provisioning profile Download the provisioning profile and double click the downloaded file to install it. From Xcode, go to the Preferences → Accounts → View Details and you will see that, the provisioning profile 
+
+--- Page 80 ---
+Figure: Provisioning profile Now you have the distribution provisioning profile set up. From the project navigator, click the project name and go to 'Build Settings'. Under the Code Signing → Code Signing Identity → Release → Any iOS SDK, select iOS Distribution. 
+Figure: Set code signing identity Now from the Xcode toolbar device selection dropdown, select iOS Device (or if your device is connected, selec  
+Figure: Select Edit Scheme... From the next screen, select Archive from the left panel and choose Build Configuration as 'Release' and ensure 
+Figure: Select Build Configuration Click the 'Close' button. To submit to the App Store, click on Product → Archive.  
+
+--- Page 81 ---
+Figure: Archive the project Your app should appear in the Archives section of the Organizer. 
+Figure: App shown in Archives You can proceed to 'Validate' and 'Submit' your app to App Store. Further details about submitting your app to the App store (eg. icons) are beyond the scope of this book. They ar      
+
+--- Page 82 ---
+Author’s Note
+Hello and thank you for reading our book. We
+would love to get your feedback, learning what you
+liked and didn't for us to improve. Please feel free
+to email us at support@i-ducate.com
+If you didn't like the book, please email us and let
+us know how we could improve it. This book can
+only get better thanks to readers like you.
+If you like the book, I would appreciate if you
+could leave us a review too.
+Thank you and all the best to your learning
+journey in iOS application development.
+
+--- Page 83 ---
+Table of Contents
+Title Page
+Copyright © 2015 by PawPrints Learning Technologies
+Introduction
+Chapter 1 - Getting Started
+Downloading Xcode From The Apple Developer Website
+Downloading Xcode From The Mac App Store
+Overview of Xcode
+Chapter 2 - Outlets and Actions (I)
+A Simple Alert App
+Adding some Swift code
+Connecting our Button to Code
+Chapter 3 - Outlets and Actions (II)
+A Simple Calculator App
+Adding Outlets
+Connecting the Outlets
+Implementing The Action Method
+Connecting Action to Button
+Chapter 4 - Using the SegmentedControl and WebView
+A Simple Photo Switcher App
+Chapter 5 - Animating Images using Sliders
+A Simple Animating Images App
+Adding a Slider
+Chapter 6 - Switching Between Views
+Passing Values Between Views
+What About Navigating Between Multiple Views?
+Creating Segues
+Chapter 7 - Using the TabBar Controller
+Adding Another Tab
+Chapter 8 - Creating TableViews
+Designing The TableViewCell
+UITableViewController Delegate Methods
+Creating A Details View
+Passing Values From The TableView to the Detailed View
+Chapter 9 - Detecting Touches and Taps
+Chapter 10 - Detecting Gestures
+Chapter 11 - Building Location Based Apps
+Displaying Annotations In Maps
+
+--- Page 84 ---
+Reverse Geo-Coding
+Chapter 12 - Taking Photos and Accessing Photo Library
+Chapter 13 - Accessing the Address Book
+Adding Delegates
+Chapter 14 - Using the Accelerometer
+Device Movement
+Appendix A - Deploying your App to a Device
+Connecting Your iOS Device
+Setting Up a Developer Program Account with Xcode
+Deploying an App on to your Device
+Appendix B - Submitting to the App Store
+Author’s Note

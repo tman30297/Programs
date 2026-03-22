@@ -1,0 +1,2538 @@
+--- Page 2 ---
+Take Control of iOS 18 and iPadOS 18
+(1.0)
+Josh Centers
+Copyright © 2024, Josh Centers. All rights reserved.
+ISBN: 978-1-990783-55-5
+OceanofPDF.com
+
+--- Page 3 ---
+Table of Contents
+1. Read Me First
+1. Updates and More
+2. Introduction
+3. iOS 18 and iPadOS 18 Quick Start
+4. Upgrade to iOS 18 or iPadOS 18
+1. Check Your iPhone for Compatibility
+2. Check Your iPad for Compatibility
+3. Back Up Your Device
+4. Install the Upgrade
+5. Meet Apple Intelligence
+1. Learn to Love Siri Again
+2. Refine Your Writing with Apple Intelligence
+3. Discover Other Apple Intelligence Functions
+4. Create Memory Movies with Apple Intelligence
+5. Create Images with Apple Intelligence
+6. Edit Images with Apple Intelligence
+6. Tweak the Home Screen
+1. Lock and Hide Apps
+2. Turn an App Shortcut into a Widget
+3. Customize the Home Screen
+7. Relearn Control Center
+1. Customize Control Center
+2. Discover Control Center Functions
+8. Make Sense of the New Photos
+1. View Your Photos
+
+--- Page 4 ---
+2. Access Your Albums
+9. Do More with Messages
+1. Add Text Effects
+2. Use an Emoji or Sticker Tapback
+3. Send a Message to Be Sent Later
+4. Send Messages via Satellite
+5. Understand RCS Support
+10. Surf Safari’s New Reader
+1. Explore the Page Menu
+2. Peruse the Redesigned Reader
+11. Try the Passwords App
+1. Explore the Passwords Home Screen
+2. Add or Edit a Password
+3. Share Passwords with Others
+4. Autofill Passwords
+12. Take Notes Further
+1. Record Audio in Notes
+2. Attach Files to Notes
+3. Use Math Notes in Notes
+4. Add Collapsible Sections
+5. Highlight Text
+6. Try Smart Script
+13. Hike with Maps
+1. Understand the Library
+2. Search Here
+3. Explore Topographic Maps and Trail Networks
+4. Create Custom Walking and Hiking Routes
+14. Power Up Calculator
+1. Convert with Calculator
+
+--- Page 5 ---
+2. Use Math Notes in Calculator
+3. View Calculator History
+15. Journal with Journal
+1. Sort and Search Journal Entries
+2. Add Journal Widgets to the Home Screen
+3. View Journal Stats
+4. Journal for Wellbeing
+16. Discover Other App Changes
+1. Calendar
+2. Files
+3. Fitness+
+4. Freeform
+5. Home
+6. Mail
+7. Music
+8. Phone
+9. TV
+10. Wallet
+17. Discover Other System Changes
+1. Accessibility
+2. AirPods
+3. Apple ID Is Now Apple Account
+4. Game Mode
+5. Contact Sharing
+6. Emergency SOS Live Video
+7. Flashlight
+8. iPad
+9. Paste Links Over Text
+10. SharePlay
+18. About This Book
+
+--- Page 6 ---
+1. Ebook Extras
+2. About the Author
+3. About the Publisher
+19. Copyright and Fine Print
+1. Title Page
+2. Cover
+3. Table of Contents
+OceanofPDF.com
+
+--- Page 7 ---
+Read Me First
+Welcome to Take Control of iOS 18 and iPadOS 18, version 1.0, published
+in August 2024 by alt concepts. This book was written by Josh Centers and
+edited by Joe Kissell.
+This book covers the new features of iOS 18 and iPadOS 18 to give iPhone
+and iPad veterans a quick start for all of the new features these operating
+systems have to offer.
+If you want to share this ebook with a friend, we ask that you do so as you
+would with a physical book: “lend” it for a quick look, but ask your friend
+to buy a copy for careful reading or reference. Discounted classroom and
+user group copies are available.
+Copyright © 2024, Josh Centers. All rights reserved.
+Updates and More
+You can access extras related to this ebook on the web (use the link in
+Ebook Extras, near the end; it’s available only to purchasers). On the
+ebook’s Take Control Extras page, you can:
+Download any available new version of the ebook for free, or buy any
+subsequent edition at a discount.
+
+--- Page 8 ---
+Access the book in both PDF and EPUB formats. (Learn about reading
+on mobile devices on our Device Advice page.)
+Read the ebook’s blog. You may find new tips or information, as well as
+a link to an author interview.
+If you bought this ebook from the Take Control website, it has been added
+to your account, where you can download it in other formats and access any
+future updates.
+OceanofPDF.com
+
+--- Page 9 ---
+Introduction
+Henry Ford famously said the Model T was available in “any color the
+customer wants, as long as it’s black.” Steve Jobs maintained a similar
+stance during his long reigns at Apple. On the hardware front, the fewer
+models Apple could offer, the better. Apple software under Jobs was
+“opinionated.” Customization was set aside to focus on consistency and
+simplicity.
+For better or worse, that philosophy is officially out the window with iOS
+18 and iPadOS 18. Much has been spoken of Apple Intelligence, but after a
+whirlwind summer with these new releases, I’ve identified three key themes
+most users will experience: Customization, customization, and
+customization. Here are three major examples:
+The Home Screen is more customizable than ever. Icons and widgets are
+no longer constrained to a predefined grid. You now arrange them
+however you please. You can also apply color filters to app icons,
+completely overriding the designer’s vision.
+Control Center is now completely customizable. You can add and
+remove controls to your heart’s content, and if you run out of room, you
+can add multiple pages to swipe between.
+Even Photos has a certain degree of customization. You can customize
+the new single-screen interface to move things around as you like.
+
+--- Page 10 ---
+I worry that these changes will cause massive confusion for users because
+there’s no longer a shared, consistent experience. An individualized iOS
+experience is a more fragmented one.
+However, this is clearly what the market is craving. iOS customization is
+one of the hottest topics on TikTok and other social networks. In many
+ways, it hearkens back to the old days of computing when users skinned
+and themed software to suit their tastes. For better or worse, iOS 18 and
+iPadOS 18 are uniquely yours.
+OceanofPDF.com
+
+--- Page 11 ---
+iOS 18 and iPadOS 18 Quick Start
+iOS 18 and iPadOS 18’s features can be split into three broad categories:
+increased customization, new intelligence features, and minor updates to
+existing apps and features:
+Customize iOS 18 and iPadOS 18:
+Tweak the Home Screen with new theming and app-placement options.
+Relearn Control Center, which is now 100% customizable.
+Get smarter with iOS 18 and iPadOS 18:
+Meet Apple Intelligence and the AI features coming to Apple’s high-end
+devices.
+Surf Safari’s New Reader with new features like voice transcripts of
+articles and Apple Intelligence summaries.
+Check out new Accessibility features like Vocal Shortcuts, Eye Tracking,
+and Music Haptics.
+Check out new and overhauled apps:
+Make Sense of the New Photos and its new single-screen interface.
+Try the Passwords App, which is Apple’s built-in password-management
+solution.
+
+--- Page 12 ---
+Power Up Calculator with new features like conversions and Math
+Notes.
+Explore updates to old favorites:
+Do More with Messages like adding Text Effects, custom Tapback
+responses, scheduling messages for later, and RCS messaging with
+Android phones.
+Hike with Maps, taking advantage of its new hiking trails feature.
+Journal with Journal with new features to organize your journal and track
+your journaling stats.
+Take Notes Further with voice recordings, Math Notes, highlighting, and
+collapsible sections.
+Last but not least: Discover Other App Changes and Discover Other
+System Changes for other improvements that didn’t belong elsewhere.
+OceanofPDF.com
+
+--- Page 13 ---
+Upgrade to iOS 18 or iPadOS 18
+Before you proceed with the upgrade, you should know if your devices can
+support iOS 18 and iPadOS 18, what to do before you update, and, of
+course, how to perform the update.
+Check Your iPhone for Compatibility
+iOS 18 runs on any of these iPhone models:
+iPhone 11 series or later
+iPhone XS series
+iPhone SE (2nd generation or later)
+However, certain features require more than the bare minimum hardware:
+Apple Intelligence: Apple’s new artificial intelligence features require
+an iPhone 15 Pro, iPhone 15 Pro Max, or later.
+Messages via Satellite: This feature lets you send iMessages over
+satellite when you don’t have an internet connection, and it requires an
+iPhone 14 or later.
+Siri Interactions: These let you shake or nod your head to respond to
+requests, and they require AirPods Pro (2nd generation) and later.
+Personalized spatial audio for gaming: Many newer games will
+support the personalized spatial audio feature, which is available on
+
+--- Page 14 ---
+AirPods (3rd generation), AirPods Pro, and AirPods Max.
+Live audio transcription in Notes: You can record voice memos in
+Notes and have them transcribed on the iPhone 12 and later.
+Enhance dialog: This is a new feature in the TV app that makes it easier
+to understand what people are saying. It’s available in compatible
+content using built-in speakers, wired headphones, AirPods, and other
+Bluetooth-connected speakers and headphones on iPhone 11 and later.
+HomeKit guest access: Home now lets you give guests access to
+automated locks. It requires a HomePod or Apple TV operating as a
+Home hub and a Matter lock that supports schedules.
+HomeKit hands-free unlock: You can now automatically unlock
+HomeKit locks as you draw near them with an iPhone 11 and later, and
+compatible Ultra Wideband locks.
+Eye tracking: This is a new accessibility feature that lets you control
+your iPhone with your eyes, and it’s available on iPhone 12 and later, as
+well as the iPhone SE (3rd generation).
+Music Haptics: This feature vibrates the phone along with whatever
+music is playing, and it’s available on iPhone 12 and later.
+Check Your iPad for Compatibility
+iPadOS runs on any of these iPad models:
+iPad Pro (M4)
+iPad Pro 12.9-inch (3rd generation and later)
+
+--- Page 15 ---
+iPad Pro 11-inch (1st generation and later)
+iPad Air (3rd generation and later, including M2)
+iPad (7th generation and later)
+iPad mini (5th generation and later)
+Some features require more hardware:
+Apple Intelligence: M1 processor or later.
+Siri Interactions: AirPods Pro (2nd generation) and later.
+Personalized Spatial Audio for gaming: Available on AirPods (3rd
+generation), AirPods Pro, and AirPods Max.
+Notes live audio transcription: iPhone 12 and later.
+Smart Script: This is a new Notes feature that learns your handwriting
+style and makes it more legible. It’s available on:
+iPad Pro (M4)
+iPad Pro 12.9-inch (5th generation and later)
+iPad Pro 11-inch (3rd generation and later)
+iPad Air (M2)
+iPad Air 10.9-inch (4th generation and later)
+iPad (10th generation)
+iPad mini (6th generation)
+Eye tracking: Available on:
+iPad Pro (M4)
+iPad Pro 12.9-inch (5th generation and later)
+iPad Pro 11-inch (3rd generation and later)
+
+--- Page 16 ---
+iPad (10th generation)
+iPad Air (M2)
+iPad Air (3rd generation and later)
+iPad mini (6th generation).
+Guest access: Available with a HomePod or Apple TV operating as a
+home hub alongside a Matter lock that supports schedules.
+Back Up Your Device
+Before upgrading to iOS 18 or iPadOS 18, it’s imperative that you back up
+the data on your device, which you can either do with iCloud or with a Mac
+or Windows PC.
+Backing Up with iCloud
+I recommend iCloud backup as I’ve found it to be better supported by
+Apple than backing up to a local computer, and as such it tends to work
+better and be more reliable. To back up with iCloud:
+1. Go to Settings > Your Name > iCloud > iCloud Backup.
+2. Enable Back Up This iPhone or Back Up This iPad if it’s not already
+enabled, and then tap Back Up Now.
+Under the Back Up Now option, it should say when the last backup was
+successfully completed. Make sure your backup is recent before
+proceeding.
+
+--- Page 17 ---
+Note: iCloud Backup pretty much requires paying for extra storage through iCloud+. The cheapest
+tier is usually plenty for backing up a couple of devices.
+Backing Up to a Mac
+Here’s how to back up locally to your Mac:
+1. Connect your iPhone or iPad to your Mac with a USB cable.
+2. Open Finder on the Mac.
+3. Click your device in Finder’s sidebar.
+4. If prompted, click Trust on your Mac and tap Trust on your iPhone or
+iPad. Enter your device passcode if necessary.
+5. Click the General tab in Finder and select”Back up all of the data on
+your iPhone/iPad to this Mac.”
+6. Click Back Up Now.
+Backing Up to a Windows PC
+To back up to a Windows PC, you’ll need to first install iTunes. Then:
+1. Connect your iPhone or iPad to your PC with a USB cable.
+2. Open iTunes.
+3. If prompted, click Continue on your PC and tap Trust on your iPhone or
+iPad. Enter your device passcode if necessary.
+4. Click the device icon in the upper-left corner of the iTunes window.
+
+--- Page 18 ---
+5. Go to Summary in the sidebar and select This Computer.
+6. Click Back Up Now.
+Install the Upgrade
+Installing the upgrade to iOS 18 or iPadOS 18 is simple enough:
+1. Go to Settings > General > Software Update.
+2. Tap either Install Now or Download and Install.
+Note: If you don’t have enough room on your device, you’ll be prompted to offload some apps until
+after the install. Your app data is be saved, the apps are temporarily deleted, and then automatically
+reinstalled with your data after the update.
+It will take a while to download and install the update. If Apple’s servers are
+especially busy, you may have to be patient. Here are some tips:
+1. Set aside at least a couple of hours for the update to download, verify,
+and install.
+2. Perform the update in the off hours—maybe as you lie down for bed.
+3. Update only one device at a time.
+4. Keep your device plugged in to AC power.
+When the update is complete, you’re taken through a series of prompts
+informing and asking about various features. My only general
+
+--- Page 19 ---
+recommendation here is to deny anything related to analytics or data
+collection. Besides the possible (albeit mild) privacy implications, it’s an
+unnecessary drain on processing and battery power.
+OceanofPDF.com
+
+--- Page 20 ---
+Meet Apple Intelligence
+The hot topic right now is AI—that’s right, Apple Intelligence. On the one
+hand, it’s Apple’s marquee feature this season. On the other, it’s limited to
+only a handful of devices—see Check Your iPhone for Compatibility and
+Check Your iPad for Compatibility.
+There’s a lot of confusion and misinformation about Apple Intelligence,
+unfortunately due in part to the way Apple announced it. Apple Intelligence
+doesn’t just piggyback on OpenAI’s GPT technology—though Apple
+Intelligence will be able to integrate with GPT and similar models down the
+road. For much of Apple Intelligence, Apple uses their own internal
+technology, either processed on your device, or—when that isn’t possible—
+through Apple’s Private Cloud Compute technology, which privately and
+securely processes your requests on a remote server.
+Apple Intelligence is baked into many aspects of iOS 18—specifically, iOS
+18.1, though not all of the promised features will arrive even with that
+update. Expect more features to roll out throughout the lifespan of iOS 18.
+Note: In the iOS 18.1 developer beta, you had to opt in to the Apple Intelligence beta, even if you
+owned a compatible device. If that’s still in the case once released, you can join the waitlist in
+Settings > Apple Intelligence & Siri.
+
+--- Page 21 ---
+Learn to Love Siri Again
+The most obvious Apple Intelligence-related improvements come to Siri.
+First, the interface is slightly different. The now-familiar Siri orb is gone.
+Instead, when Siri is invoked, the edges of the screen light up with a
+multicolored glow.
+For now, Siri’s improved intelligence is rather subtle. Siri can understand
+you better if you stutter or change your mind in mid-sentence. It can better
+follow multiple queries. For instance, you can ask how long it takes to drive
+to Yosemite, what the weather is like there, and what food places are
+nearby, and Siri can keep up with you and keep things in context.
+Siri now also has product knowledge baked in. You can ask it things like
+“How do I turn off a Focus” or “How do I schedule a text message for
+later?” (Figure 1)
+
+--- Page 22 ---
+Figure 1: You can ask Siri how to use your Apple device.
+In the future, Siri will draw upon Apple Intelligence and other technologies
+like GPT for smarter and better results. Siri will be able to search and
+interact with the information on your device to save time through two
+methods:
+Personal Context: Siri will be able to pull data from your device to help
+with actions and answer questions. For instance, it will be able to look
+up information you have stored in your email or in a note.
+Onscreen awareness and app actions: Siri will be able to interact
+directly with elements displayed on your screen and let you take actions
+in apps without opening them.
+
+--- Page 23 ---
+TYPE TO SIRI
+For years, Apple has clumsily tried to integrate Siri and Spotlight search so you can type Siri queries.
+With Apple Intelligence, Apple has finally cracked it with the new Type to Siri feature. Simply
+double-tap on the bottom edge of the screen and an Ask Siri field appears (Figure 2).
+Figure 2: You can now type directly to Siri with Apple Intelligence.
+Type in your Siri query just as if you were speaking it and tap the send 
+ button to submit it. Just
+like regular Siri, you can ask follow-up questions. Swipe up from the bottom of the screen to dismiss
+it.
+Refine Your Writing with Apple Intelligence
+One reason AI has taken off is that it can improve your writing, or even do
+your writing for you. Apple Intelligence in iOS 18.1 offers three new
+features to help you write better and more efficiently Proofread, Rewrite,
+
+--- Page 24 ---
+and Writing Tools. To access them, select some text you have drafted. The
+three options appear in the QuickType bar above your keyboard (Figure 3).
+Figure 3: Select text and the Apple Intelligence writing tools appear above your keyboard.
+Proofread with Apple Intelligence
+The Proofread option scans your text for misspellings, grammatical errors,
+and other potential missteps. It applies the changes automatically,
+underlining where it has made changes.
+A panel at the bottom lets you adjust the edit. Tap the up and down arrows
+to cycle through the changes. If you don’t like the changes, tap Use Original
+to override the currently selected change. Tap the Original button to
+alternate between the original text and the Apple Intelligence edit (Figure
+4).
+
+--- Page 25 ---
+Figure 4: Apple Intelligence’s Proofread feature scans for grammatical, spelling, and tone
+issues and makes edits automatically.
+When you’re finished, tap Done to accept the changes or Revert to undo
+them.
+Rewrite with Apple Intelligence
+The Rewrite option in iOS 18.1 automatically rewrites text to be clearer. A
+panel appears at the bottom, with fewer options than the Proofread panel.
+
+--- Page 26 ---
+Here you can tap Retry to give it another go or Original to see the changes.
+Again, tap Revert to undo the changes or Done to accept them (Figure 5).
+Figure 5: Rewrite is practically automatic. There’s little to do here.
+Leverage Writing Tools
+Proofread and Rewrite are a bit oversimplified. If you tap the Apple
+Intelligence 
+ icon in the QuickType bar, it reveals the Writing Tools panel,
+with a full range of writing and editing options (Figure 6).
+
+--- Page 27 ---
+Figure 6: The Writing Tools panel exposes all the text tools Apple Intelligence has to offer.
+We’ve already covered the Proofread and Rewrite options. Let’s explore the
+others:
+Friendly: This rewrites the text for a friendlier tone. The controls are the
+same as for the Rewrite command above (Figure 5).
+Professional: This rewrites for a professional tone.
+Concise: The Concise option rewrites to cut out all filler and get to the
+point.
+Summary: This creates a summary of the text. The panel at the bottom
+displays the summary, and lets you either copy it, replace the selected
+text with the summary, or share it with others (Figure 7).
+
+--- Page 28 ---
+Figure 7: You can choose whether to send the summary elsewhere or replace the
+existing text.
+Key Points: Much like the Summary option, Key Points creates a bullet
+list summarizing the text (Figure 8).
+Figure 8: Key Points makes bullet points of your text, ideal for emails to busy people.
+
+--- Page 29 ---
+List: This converts the text to a bullet list with controls identical to
+Figure 5.
+Table: This takes the high points of your text and puts them into a table
+with controls identical to Figure 5.
+Take Advantage of Smart Replies
+The QuickType bar has suggested text for years, but the Apple Intelligence
+Smart Replies feature takes it to the next level. In Messages and Mail,
+automated responses based on the context of the message appear in a purple
+hue (Figure 9). Tap one to insert it as a response.
+Figure 9: Smart Replies help save time answering questions.
+Discover Other Apple Intelligence Functions
+Apple Intelligence in iOS 18.1 has many other tricks up its sleeve. Here’s a
+sample of what to look for.
+
+--- Page 30 ---
+Summarizing Mail and Messages
+A new feature in Mail—and allegedly in Messages—is the new Summarize
+feature, which summarizes long emails and messages. Be on the lookout for
+the Summarize 
+ icon.
+In Mail, brief email summaries now appear below the subject line in your
+Inbox (Figure 10).
+Figure 10: Mail summarizes messages in your Inbox.
+While viewing an email, tap the Summarize button in the upper-right corner
+to display a summary of the email at the top of the screen (Figure 11).
+
+--- Page 31 ---
+Figure 11: Mail can summarize an email.
+Spotting Priority Emails and Priority Notifications
+Mail identifies what it thinks are important emails, places them at the top of
+your Inbox, and labels them priority (Figure 12). It does the same for what
+it perceives to be important system notifications.
+Figure 12: AI spotlights emails and notifications it thinks you need to see.
+
+--- Page 32 ---
+Reducing Interruptions
+Alongside Priority Notifications, Apple Intelligence offers a new Focus
+mode called Reduce Interruptions, which tries to intelligently filter your
+notifications so you only get what’s important. For example, a message
+from your spouse might make the cut, but a social media notification may
+not.
+You can enable Reduce Interruptions from Control Center (see Relearn
+Control Center). Like any other Focus, you can adjust its settings in
+Settings > Focus > Reduce Interruptions.
+Recording and transcribing phone calls
+You can now record phone calls to the Notes app, and Apple Intelligence
+creates a transcript automatically.
+During a call, tap the recording 
+ icon in the upper-left corner to record a
+call. Be sure to tell the other party first, because after a brief countdown, it
+announces that the call will be recorded.
+After that announcement, you receive a Notes notification you can tap to
+open the note with the recording to add additional notes. A recording box
+the appears on the call screen, with a stop 
+ button for when you want to
+stop the recording—that also triggers an announcement that recording has
+ended (Figure 13).
+
+--- Page 33 ---
+Figure 13: You can take notes about the call as it records.
+
+--- Page 34 ---
+To view your recording afterward, open the Notes app. A special section is
+set aside for Call Recordings. Tap a note to see the recording embedded
+inside, along with an Apple Intelligence summary of the conversation
+(Figure 14).
+Figure 14: Call Recording has its own section in Notes. Tap the related note to see the call
+embedded inside.
+Tap the play 
+ button to play back the call recording. You can tap the gray
+area of the embedded recording to open it full-screen, which reveals the
+transcript 
+ button, which you can tap to see the transcript. The transcript
+follows along with the recording as it plays, and you can tap a word to jump
+to that section.
+Also see Record Audio in Notes.
+
+--- Page 35 ---
+Transcribing Voice Memos
+The Voice Memos app now automatically transcribes your recordings. Look
+for the transcript icon on a recording. To view the transcript:
+1. Tap the recording to expand it.
+2. Tap the audio 
+ icon.
+3. Tap the transcript 
+ icon to reveal the transcript.
+While viewing the transcript, you can select text as you normally would. As
+you scroll through the transcript, a Search button appears that lets you
+search the transcript.
+If you scroll up and tap the play 
+ icon, the transcript follows along with
+the audio, and you can tap a word to jump to that section of the recording.
+Create Memory Movies with Apple Intelligence
+Apple Intelligence in iOS 18.1 can create a Memory Movie in response to a
+simple text description:
+1. Open Photos.
+2. Scroll down to Memories.
+3. Tap “Describe a memory…” under Create a Memory Movie.
+Alternatively, you can tap Create next to Memories (Figure 15).
+4. Enter a description and tap the send 
+ button.
+
+--- Page 36 ---
+5. Photos makes a big show of searching through your photo library. When
+it’s done thinking, it shows your new Memory Movie.
+Figure 15: You can create Memory Movies with a simple description of what you want it to
+include. It offers personalized suggestions to get you started.
+Create Images with Apple Intelligence
+There are two more Apple Intelligence features still in the works that let
+you create images in future versions of iOS 18/iPadOS 18:
+Image Wand: With this, you can draw a rough sketch in notes, and then
+circle it with the Image Wand tool to transform it into an Apple
+Intelligence-generated image.
+
+--- Page 37 ---
+Genmoji: The Genmoji feature will let you use Apple Intelligence
+prompting to create your own emojis.
+Edit Images with Apple Intelligence
+Starting in iOS 18.1, an Apple Intelligence feature called Clean Up lets you
+“magically” delete unwanted objects in photos. Here’s how to try it:
+1. Open a photo in the Photos app.
+2. Tap the edit 
+ icon.
+3. Tap Clean Up 
+.
+Then either brush, circle, or tap the elements you want to replace, which are
+erased and then filled in with an AI approximation of what it thinks should
+be there. Sometimes this works amazingly well. Somethings the results can
+be horrific.
+OceanofPDF.com
+
+--- Page 38 ---
+Tweak the Home Screen
+iOS 18 and iPadOS 18 introduce many new options to adjust your Home
+Screen. You can now lock and even hide sensitive apps from prying eyes.
+You can easily transform an app shortcut into a widget and back again. And
+there are many new options for customization.
+Tip: You can now position apps and widgets anywhere you like on the Home Screen, without any
+forced arrangement.
+Lock and Hide Apps
+You can lock apps so they cannot be opened without authenticating with
+Face ID or Touch ID, which adds an extra layer of security to sensitive apps
+related to things like banking and journaling.
+Additionally, you can also hide an app so that it doesn’t appear on the
+Home Screen. Instead, it’s moved to an obscured Hidden folder in the App
+Library that cannot be viewed without Face ID or Touch ID authentication
+(Figure 16).
+
+--- Page 39 ---
+Figure 16: You can store sensitive apps in the mysterious Hidden folder of the App Library.
+To lock or hide an app:
+1. Touch and hold an app icon.
+2. Tap Require Face/Touch ID.
+3. Choose either Require Face/Touch ID or Hide and Require Face/Touch
+ID. The former merely locks the app; the latter hides it.
+4. Authenticate with Face ID or Touch ID.
+5. If you also chose to hide the app, tap Hide App.
+To remove the lock or unhide the app:
+1. Touch and hold the app’s icon. Hidden apps are found in the App Library
+in the Hidden folder.
+2. Choose Don’t Require Face/Touch ID from the menu.
+
+--- Page 40 ---
+Turn an App Shortcut into a Widget
+If an app has an associated widget, you can now quickly transform the app’s
+icon into a widget and vice versa on the Home Screen:
+1. Touch and hold the app’s icon on the Home Screen.
+2. Near the top of the menu, tap one of the icons for the app icon 
+ or
+widgets 
+ 
+  (Figure 17).
+Figure 17: The icons in the second row let you choose whether to display the app on the
+Home Screen as an icon or one of two sizes of widget.
+Customize the Home Screen
+iOS 18 and iPadOS 18 introduce new ways to style and theme your Home
+Screen. Touch and hold an empty section of the Home Screen, tap Edit in
+the upper-left corner, and choose Customize.
+
+--- Page 41 ---
+Here are the new options and what they do:
+Small vs. large: At the top are two tabs labeled small and large. The
+small icons are the traditional smaller app icons with app names
+underneath. Tap large and the icons grow in size without the app name
+(Figure 18).
+Figure 18: Large icons eschew the app name for a bigger icon.
+Dark mode icons: Additionally, you can set a dark theme for icons.
+Automatic sets this automatically depending on whether you’re in Light
+Mode or Dark Mode. Dark makes the icons dark—for instance, white
+backgrounds become black (Figure 19).
+Tapping the sun 
+ icon while dark is enabled darkens the wallpaper as
+well. Choosing Light displays the icons as you’re used to them.
+
+--- Page 42 ---
+Figure 19: How Dark Mode icons look.
+Tinted: The Tinted option lets you add a custom tint to all app icons
+(Figure 20). The sliders let you adjust the color and hue of the icons.
+Again, the sun 
+ icon darkens the wallpaper.
+Figure 20: You can add a custom color tint to your app icons.
+Additionally, you can use the color 
+ picker to choose a color from your
+wallpaper so the icon tint matches your background:
+1. Tap the color 
+ picker.
+2. The screen blurs and a color 
+ picker grid appears on screen.
+
+--- Page 43 ---
+3. Drag the color picker around the screen to pick a color. The selected
+color is shown in the innermost square.
+4. When you let go of the color picker, whatever color is in that center
+square is selected as the icon tint.
+OceanofPDF.com
+
+--- Page 44 ---
+Relearn Control Center
+Apple has completely redesigned Control Center in iOS 18 and iPadOS 18
+to be 100% customizable. Previously, you could add and remove certain
+controls, but many were baked in—whether you used them or not. Control
+Center now has multiple pages you can switch among by swiping up and
+down on the screen.
+In the long run, the new Control Center will be a blessing, but for now it
+means taking time to set things up how you want them and retraining your
+muscle memory.
+To access Control Center on iPhones without Home buttons and on iPads,
+swipe down from the upper-right corner of the screen (Figure 21). On
+iPhones with Home buttons, swipe up from the bottom of the screen.
+
+--- Page 45 ---
+Figure 21: Control Center gives you quick access to network settings, brightness, audio
+controls, and more. To see additional options, touch and hold a control.
+Tip: Tap the Power 
+ icon in Control Center to reveal the “slide to power off” slide. This also
+temporarily disables Face ID and Touch ID.
+Customize Control Center
+Control Center is composed of three types of controls: buttons, sliders, and
+platters (groups of buttons). As you resize those controls, they may change
+shape. For instance, a slider might turn into a button.
+
+--- Page 46 ---
+You can touch and hold many Control Center controls to reveal a panel with
+more functions.
+Control Center is completely customizable: you can add, remove, and
+rearrange any controls you want. Also, you can have multiple pages in
+Control Center you can swipe through—as many as will fit on the screen.
+To customize Control Center, touch and hold an empty spot on the screen.
+Then you can:
+Add a control: Tap Add a Control at the bottom of the page and tap one
+of the controls.
+Add a screen 
+ : Tap the new screen 
+ icon to the right of Control
+Center (or swipe to the bottom) and add a control.
+Move a control: Touch, hold, and drag the control to a new position.
+Resize a control: Touch, hold, and drag the drag handle in the lower-
+right corner of the control.
+Delete a control 
+ : Tap the delete 
+ button on a control.
+Remove a screen: Delete all the controls from that screen.
+Exit edit mode: Swipe up from the bottom of the screen.
+Discover Control Center Functions
+Here are the control categories, which controls are in each one, and what
+each of the controls do.
+
+--- Page 47 ---
+Note: Since many of the controls can be resized, and they change shape and form as they’re resized, I
+explain the various control functions but have to be a little vague about their positioning.
+Accessibility Controls
+The Accessibility section has a small subset of the accessibility features:
+Accessibility Shortcuts 
+: Tap this icon to quickly access Accessibility
+features. You can choose what appears here in Settings > Accessibility >
+Accessibility Shortcut.
+Assistive Access 
+: Assistive Access presents a simplified version of the
+interface with big buttons and limited gestures. If Assistive Access has
+been set up in Settings > Accessibility > Assistive Access, this button
+enables it. However, once Assistive Access is on, you can’t access
+Control Center, so you have to triple-click the side/top button to turn it
+off.
+Guided Access 
+: The Guided Access control enables Guided Access
+for the current app, which limits the device to display only that one app.
+Until Guided Access is turned off, the user is stuck in the designated app,
+which is handy for young children. Set it up in Settings > Accessibility >
+Guided Access.
+Live Speech 
+: Live Speech lets you type things and have them
+sounded out. If Live Speech is enabled in Settings > Accessibility > Live
+
+--- Page 48 ---
+Speech, this button triggers it, which adds a text bubble on the screen
+you can type into.
+Capture
+Capture collects all the ways your device can accept visual input:
+Camera 
+: Tap this button to open the Camera app. Touch and hold it
+to reveal specific Camera modes that vary depending on device.
+Magnifier 
+ : Tap this button to open the super-handy Magnifier feature,
+which uses your camera like a magnifying glass, letting you zoom in on
+small text and other hard-to-see things. On newer devices it also has a
+Detection Mode that can identify objects and read signs.
+Scan Code 
+: Tap this button to open a scanner for QR codes. The
+Camera app can read those codes.
+Clock
+The Clock controls let you set alarms and timers, and access the stopwatch:
+Alarm 
+: Tap this button to open the Clock app to the Alarm tab. Touch
+and hold to reveal a menu where you can create an alarm, start a
+stopwatch, or start a timer.
+Stopwatch 
+: Tap this button to open the Clock app to the Stopwatch
+tab. Touch and hold to reveal a menu where you can create an alarm,
+start a stopwatch, or start a timer.
+
+--- Page 49 ---
+Timer 
+ : Tapping this button opens up the Clock app to the Timer tab.
+Handy for cooking! Touch and hold to quickly set a timer between one
+minute and two hours.
+Connectivity
+The Connectivity platter lets you quickly turn various networking features
+of your device on and off. There are also separate controls for Airplane
+Mode, Cellular Data, Personal Hotspot, and Satellite. Here’s what all the
+controls here do:
+Airplane Mode 
+: Tap this button to turn off all radios except for
+Bluetooth. An airplane 
+ icon appears in the upper-left corner of the
+screen, on the status bar, when Airplane mode is on.
+Note: Once you turn on Airplane mode, you can re-enable Wi-Fi and/or Bluetooth, so an airplane
+ icon in your status bar does not necessarily mean all connections are disabled.
+Use Airplane mode to comply with airline regulations or to reduce
+battery usage.
+AirDrop 
+ : Tap this button to choose who can send you AirDrop
+content: no one, only your contacts, or everyone. Contacts Only is a safe
+choice, because you can receive AirDrop content from people you know,
+but won’t get nefarious stuff from strangers.
+Wi-Fi 
+ : Tap this button to turn Wi-Fi connectivity off or on.
+
+--- Page 50 ---
+Cellular Data 
+: Tap the this button to disable all cellular connectivity,
+including voice.
+Bluetooth 
+: Tap this button to enable or disable it. If you’re not using
+Bluetooth, leave it off to save battery.
+Personal Hotspot 
+: If you have an iPhone—or an iPad with a cellular
+radio—and your carrier supports this feature, tap this button to share
+your device’s cellular connection over Wi-Fi. Your other devices can
+connect to your iPhone or iPad like any other Wi-Fi access point.
+Devices signed in to your iCloud account can connect without a
+password. Other devices require the password, which you can find on
+your Personal Hotspot device in Settings > Personal Hotspot.
+Warning! If your cellular data plan has a cap, you could blow through it quickly using Personal
+Hotspot!
+Satellite 
+: This triggers the satellite messaging features available in the
+iPhone 14 and later like Emergency SOS via satellite and Send Messages
+via Satellite.
+VPN 
+: A VPN is a virtual private network, which reroutes your online
+connection—often for security purposes. If you have one set up in
+Settings > General > VPN & Device Management, this button enables
+whichever VPN is selected there.
+
+--- Page 51 ---
+Display & Brightness
+Here are the display-related controls in Control Center:
+Brightness 
+  
+ : Adjust the slider to a comfortable level. You can also
+automatically keep the brightness at an appropriate level: visit Settings >
+Accessibility > Display & Text Size to access the Auto-Brightness
+switch.
+Touch and hold the brightness slider to reveal three other buttons:
+Dark Mode 
+: Tap this button to turn Dark Mode on and off.
+Night Shift 
+: Night Shift warms the colors of your display to make
+it easier to sleep. Tap the button once to either schedule Night Shift or
+manually turn it on until 7 A.M. Tap it again to turn Night Shift off.
+You can adjust Night Shift settings in Settings > Display &
+Brightness > Night Shift.
+True Tone 
+ : True Tone (available on select devices) adjusts the
+display to maintain consistent color presentation in different lighting
+situations.
+Orientation Lock 
+  : Tap this button to lock the screen’s orientation
+and prevent it from rotating when you physically rotate the device.
+Screen Mirroring 
+ : Tapping this button lets you select an AirPlay
+receiver to mirror your device’s screen to. To stop mirroring, tap Screen
+Mirroring again and tap Stop Mirroring.
+Note: For more about AirPlay, read my book Take Control of Apple TV.
+
+--- Page 52 ---
+Screen Recording 
+: Tap this button to begin recording your screen
+after a three-second countdown. The control’s icon turns red while
+recording. Tap it again to stop. Touch and hold the control to reveal
+options for where to send the recording and to turn the microphone on or
+off, which is handy if you want to narrate your screen recording.
+Text Size 
+: Slide up and down to increase or decrease the system text
+size. Tap the text size control to reveal a full-screen slider that also lets
+you switch between controlling text size in all apps or only the current
+one.
+Focus
+Tap the button to choose a Focus, or tap the icon 
+ on the button to enable
+the currently selected Focus, which prevents notification alerts, FaceTime
+calls, and phone calls from disturbing you with noise, vibration, or your
+screen’s backlight. Timers and alarms set in the Clock app override Do Not
+Disturb.
+Hearing Accessibility
+Apple has a special section just for hearing accessibility features:
+Background Sounds 
+: Background sounds is like a white noise
+generator for your device. Tap this button to turn on the sound. Touch
+and hold it to select different sounds and change the volume.
+
+--- Page 53 ---
+Headphone Accommodations 
+: This setting lets you customize the
+sound settings for Apple and Beats earbuds and headphones, which you
+can tune in Settings > Accessibility > Audio & Visual > Headphone
+Accommodations. Tapping this button in Control Center lets you enable
+or disable it individually for phone sounds and media.
+Headphone Levels 
+: This control displays the current volume of your
+headphone audio, in decibels.
+Hearing 
+: This button gives you access to several settings at once:
+Background Sounds, Headphone Accommodations, and Live Listen.
+Left-Right Stereo Balance 
+: You can adjust the balance between the
+left and right audio channels in Settings > Accessibility > Audio &
+Visual. The Left-Right Stereo Balance button toggles the setting.
+Live Captions 
+: Live Captions enables or disables a floating window
+that listens for audio on your device and transcribes it in the window.
+Live Listen 
+: If you have AirPods connected, this button lets you
+toggle the Live Listen feature, which turns your AirPods into a listening
+device, with the iPhone or iPad acting as a microphone.
+Music Haptics 
+: This button enables a feature that vibrates the phone
+to the tune of whatever music is playing, so the hearing impaired can still
+experience it. Try Music Haptics.
+Sound Recognition 
+: This button triggers an accessibility feature that
+listens for certain sounds—like alarms, crying babies, glass breaking,
+and pets—and alerts you if your device hears them. Tap it once to turn
+on the feature. Touch and hold to select the sounds to listen for. Siri
+
+--- Page 54 ---
+doesn’t work when Sound Recognition is enabled. Adjust settings in
+Settings > Accessibility > Sound Recognition.
+Home Controls
+If you have HomeKit home automation accessories, the Home 
+ controls
+give you quick access to controlling your accessories and scenes. Check out
+Take Control of Apple Home Automation for a complete guide to HomeKit.
+There are three Home controls, of which two are labeled Home. Here’s
+what each one does:
+The first Home control is a platter that tries to show you the accessories
+and scenes it thinks you’ll want to use at any given time. Tap the icon on
+an accessory’s button to turn it on or off. Tap the button outside the icon
+to see advanced controls, such as light brightness. The larger you make
+this control, the more accessories and scenes it shows.
+The second one, named Scene or Accessory, is a widget that lets you
+create a custom shortcut any accessory or scene you want. Tap it before
+dismissing editing mode to change what the button controls.
+The second Home 
+ control just opens the Home app. Touch and hold it
+to see a quick menu of scenes.
+
+--- Page 55 ---
+Motor Accessibility
+Control Center provides shortcuts to several accessibility features focused
+on motor function:
+Apple Watch Mirroring (iPhone only) 
+: If you have an Apple Watch
+connected, tapping this button reveals a panel that shows your watch’s
+display on the iPhone’s screen.
+AssistiveTouch 
+: AssistiveTouch lets you emulate button presses and
+gestures from a control panel. Tap this button to display a floating white
+ button on the screen that you can tap to reveal the menu. You can
+customize the menu in Settings > Accessibility > Touch >
+AssistiveTouch.
+Control Nearby Devices 
+: Tap this button and choose another Apple
+device, like a nearby iPhone, that you’d like to control remotely.
+Controls for that device are displayed on screen.
+Eye Tracking 
+: This activates a feature for newer iPhones that lets you
+control an onscreen pointer with your eyes. Tapping this engages a
+calibration mode that you can’t exit—you must stare at a moving dot on
+the screen until the process is finished. See Control Your Device with
+Your Eyes.
+Full Keyboard Access 
+ : This feature lets you control onscreen
+elements with an external keyboard—either connected via USB or paired
+over Bluetooth in Settings > Bluetooth.
+
+--- Page 56 ---
+Switch Control 
+ : This feature lets you control your device with an
+external switch. Onscreen elements are slowly cycled through and you
+can use the switch to activate them. You can set this up in Settings >
+Accessibility > Switch Control.
+Voice Control 
+ : This button audibly reads onscreen elements and
+anything you tap to select.
+Notes
+Control Center offers a couple of controls for the Notes app:
+Notes 
+: Tapping this button while your device is unlocked opens the
+Notes app. But tap it while your phone is locked to create an Instant
+Note, which is like a regular note, except that it’s accessible from the
+Lock Screen for an amount of time set in Settings > Notes > Access
+Notes from Lock Screen.
+Touch and hold the Notes button to reveal these options:
+New Note 
+: Open Notes with a new note.
+New Checklist 
+: Open a new note with a checklist already created.
+New Photo 
+: Create a new note and open the Camera to capture an
+image for the note.
+Scan Document 
+: Scan a document with the camera and add it to a
+note.
+Tip: To learn much more about Notes, see my book Take Control of Notes.
+
+--- Page 57 ---
+Quick Note 
+: Tap this button to open a window that lets you jot down
+a note without having to open the Notes app and tap an icon to create a
+new note. These notes are saved to the Quick Notes folder in the Notes
+app.
+Now Playing
+The media platter lets you control background audio, such as music and
+podcasts, as well as playback on AirPlay devices like the Apple TV and
+HomePod. The platter shows the following:
+Track information: For music, the platter shows the track and artist.
+When playing a podcast, it shows the episode title and the show name.
+Skip buttons: When playing music, these display as previous 
+ and
+next track 
+ buttons. If a podcast is playing, they appear as skip 
+ 
+buttons, which are handy for catching a line you missed or bypassing
+ads. Other apps may present different icons here.
+Play/Pause: These buttons 
+/
+  simply play or pause the audio.
+Output: Tap the Output 
+ icon in the upper-right corner to choose an
+audio or AirPlay video output.
+Tapping the platter reveals three more controls:
+Favorite: Add 
+ this track to your Apple Music favorites.
+Scrubber: This shows how far you are into an audio track and the total
+duration. Drag the white knob to change the playback position.
+
+--- Page 58 ---
+Volume: Drag the white knob to adjust the playback volume.
+Tap Control Other Speakers & TVs and then tap a device to switch to
+controlling that device. Even after exiting that screen, the Media Platter’s
+controls continue affecting that device until you switch it.
+Remote
+Tap Apple TV Remote 
+ to reveal a virtual remote that you can use to
+control your Apple TV HD or Apple TV 4K. You can select which device
+you control at the top of the screen.
+Shortcuts
+These two controls give you quick access to any app or shortcut. To set
+these controls, tap one after placing it on the screen but before leaving edit
+mode and then choose the app or shortcut you want that control to open.
+Open App 
+: Tapping this button opens the associated app.
+Shortcuts 
+: This button triggers the selected shortcut.
+Sounds
+These two controls let you recognize music or adjust the system volume:
+
+--- Page 59 ---
+Recognize Music 
+: What’s the name of that tune? This turns on built-
+in Shazam song recognition, which listens to a song through the
+microphone and tries to identify it. (Apple owns Shazam.)
+Volume 
+: Adjust the system volume to a comfortable level. Touch and
+hold the slider to see a larger volume control on an iPhone.
+Translate
+The translate 
+ button just opens the Translate app.
+Utilities
+Announce Notifications 
+: If you have AirPods or CarPlay paired with
+a device, this feature audibly announces notifications as you receive
+them.
+Calculator 
+ : Tap this button to open the Calculator app. Touch and
+hold it to reveal an option to copy the last Calculator result.
+Feedback Assistant 
+: While running beta operating systems, this
+button appears to help you report problems.
+Flashlight 
+: Tapping Flashlight turns on the LED flash on iPhones and
+iPads that have one, turning your device into a flashlight. Press it to
+reveal a slider that lets you adjust the flashlight’s brightness.
+Low Power Mode 
+ : Turns Low Power Mode on or off. Low Power
+Mode turns off or adjusts certain features to maximize battery life, like
+
+--- Page 60 ---
+decreasing screen brightness, locking the screen after 30 seconds,
+disabling 5G, and turning off background app refresh.
+Keyboard Brightness 
+ (iPad only): This can adjust the keyboard
+brightness on an Apple Magic Keyboard, but no other model.
+Print Center 
+ : If you have an AirPrint-capable printer that works with
+iOS and iPadOS, this button shows the print queue.
+Stage Manager 
+ : This button appears only on compatible iPads.
+Tapping it triggers the Stage Manager feature, which lets you display
+multiple windows on screen at once. Touch and hold it to reveal options
+to show or hide Recent App and the Dock.
+Vision Accessibility
+As with the other accessibility categories, Apple has a special Control
+Center section for vision:
+Classic Invert 
+: This feature inverts every color on screen, including
+in photos and videos. Consider Smart Invert instead.
+Color Filters 
+: This feature places a colored filter over your screen.
+You can set the color, hue, and intensity of the color filter in Settings >
+Accessibility > Display & Text Size > Color Filters.
+Dim Flashing Lights 
+: When this is enabled, the screen dims
+automatically whenever flashing lights are detected on screen.
+Hover Text 
+ : This feature puts a magnifier on the screen that you can
+drag around to see small things better.
+
+--- Page 61 ---
+Hover Typing 
+ : This feature displays a black box on screen that
+shows whatever you are typing. The idea is that you can change the
+colors and fonts to make it easier to see what you’re typing, which you
+can adjust in Settings > Accessibility > Keyboards & Typing > Hover
+Typing.
+Increase Contrast 
+: Tapping this button makes background colors
+lighter and foreground colors darker.
+Live Recognition 
+: The Live Recognition feature in Measure can
+identify doors and other objects and announce them audibly.
+Reduce Motion 
+: This setting reduces visual effects that simulate
+motion.
+Reduce Transparency 
+: This setting reduces onscreen transparency
+effects, replacing them with plain gray.
+Reduce White Point 
+: This effectively reduces your overall screen
+brightness, even more so than the Brightness control, which can make
+your device more comfortable in dark rooms.
+Smart Invert 
+: This inverts all the colors on screen except for photos
+and media, so it looks much better than Classic Invert.
+Speak Screen 
+ : Tapping this button takes you to Settings >
+Accessibility > Spoken Content. If you enable Speak Screen there, the
+Speak Screen button reads out loud the contents of your screen. A black
+box appears with playback controls.
+Vehicle Motion Cues 
+: Do you get carsick when reading? Vehicle
+Motions Cues aims to fix that by placing small dots on the screen
+
+--- Page 62 ---
+designed to offset the sensory conflict that causes carsickness. Tap this
+button and choose either On or Only in Vehicle.
+VoiceOver 
+ : This feature speaks out onscreen visual elements and
+anything you tap. Tapping this button turns VoiceOver on and off. Be
+aware that gestures work differently when VoiceOver is enabled.
+Zoom 
+: Tapping this button displays on onscreen magnifying glass that
+you can move by touching, holding, and dragging its edges.
+Voice Memos
+Tap the Voice Memos 
+ button to start a recording. A box with a stop 
+button briefly appears in case you tapped this by accident. To stop the
+recording after that, you have to open the Voice Memos app and press stop
+. To access the Voice Memos app while recording, tap the time at the
+upper-left corner of the iPhone screen or the microphone 
+ icon at the
+upper-right corner of the iPad screen.
+Wallet Controls
+Wallet 
+  (iPhone only): Tap Wallet to open the Wallet app. Touch and
+hold for shortcuts like payment methods and recent transactions.
+Tap to Cash (iPhone only) 
+: This feature lets you pay a friend with
+Apple Cash by touching one iPhone to another. Tap this button to trigger
+it.
+
+--- Page 63 ---
+Watch
+Tap Ping Watch 
+  to have your paired Apple Watch make a beacon noise
+so you can find it.
+OceanofPDF.com
+
+--- Page 64 ---
+Make Sense of the New Photos
+Oh boy. Apple has redesigned the Photos app practically from the ground
+up, and you’re either going to love it or hate it. Apple seems to going for
+two objectives here:
+Making the app more customizable, following the theme of iOS 18 and
+iPadOS 18.
+Eliminating tabs in Photos, at least on iPhones
+On iPhones, everything in Photos is now contained in one long continuous
+screen. You open the app and see all your photos, then you have to keep
+scrolling down to access your albums. It’s very similar on iPads, except the
+sidebar is still there to help you quickly jump to an album or collection.
+Tip: Photos has long had premade albums based on the type of image, like panoramas and
+screenshots. These are greatly expanded in iOS 18 to include things like documents, photos with
+handwriting, illustrations, QR codes, and receipts.
+To be blunt, I still find this interface confounding, but here I attempt to help
+you make sense of it. See Take Control of Photos for full coverage.
+Note: If your device supports Apple Intelligence, you can use it to automatically assemble Memory
+Movies. See Create Memory Movies with Apple Intelligence.
+
+--- Page 65 ---
+View Your Photos
+When you first open Photos, everything seems normal. You see your
+standard grid of photos, and tabs at the bottom let you switch between
+years, months, or all photos. However, this view now has some new tricks:
+note the new sort 
+ button in the bottom-left corner when you’re viewing
+all photos.
+Tip: To quickly jump to the bottom of your photos, tap the tab of the view you’re in. So if you’re in
+the Months view and have scrolled up, you can tap Months to jump back to the bottom—your most
+recent photos.
+Here are some tricks for viewing and filtering all photos:
+Zoom in and out: Pinch in or out with two fingers to show more or
+fewer photos. You can zoom all the way into a single photo (or video).
+Filter out screenshots: Tap the sort 
+ button, tap View Options, and
+then deselect Show Screenshots. Poof, they disappear from view! You
+can go back and select Show Screenshots to make them reappear.
+View only certain types of images: Tap the sort button, tap Filter, and
+select the types of images you want:
+All Items
+Favorites
+Edited (photos and videos you have edited)
+
+--- Page 66 ---
+Photos
+Videos
+Screenshots
+You can mix and match these as you like (except for All Items, of
+course) to find the specific images you want.
+Sort images: Tap the filter button and you can either sort by recently
+added or date captured.
+Filter shared images: If you share a library with others, you can include
+or exclude it from view by tapping the filter button, View Options, and
+then selecting or deselecting Show Shared with You. You can also chose
+whether or not to show the Shared Library Glyph.
+View images in their original aspect ratios: Finally, in View Options,
+you can tap Aspect Ratio Grid to view the images in their original aspect
+ratio instead of everything being made square.
+Is it starting to make sense? Let’s venture forth.
+Access Your Albums
+Once you scroll past your grid of photos at the top, you enter a section of
+photos where Apple semi-randomly displays various albums, collections,
+and Memories as if the Photos app were a social media feed.
+Here are a few tips for taming the chaos:
+
+--- Page 67 ---
+Show all items in a collection: When you scroll down and see
+something like Albums, it only shows a random assortment of the
+albums. Tap the arrow 
+ next to a header to view everything in that
+collection.
+Pin a collection: There’s a section called Pinned Collections that hovers
+somewhere near the top which lets you swipe left and right through
+selected collections. Tap Modify and you can add a collection by tapping
+the plus 
+ button. Tap Any 
+ Collection to add any album or collection
+to your pinned collections.
+Show or hide collections: Scroll to the bottom of Photos and tap
+Customize & Reorder. Tap a collection to select it or deselect it. You can
+also reorder them by touching, holding, and dragging the grab handle 
+.
+OceanofPDF.com
+
+--- Page 68 ---
+Do More with Messages
+Messages receives incremental changes this year, with more text formatting
+options, more-flexible Tapback responses, message scheduling, satellite
+messages, and long-awaited support for RCS.
+Tip: If you have a device that supports Apple Intelligence, you can also take advantage of Smart
+Replies in Messages. See Take Advantage of Smart Replies.
+Add Text Effects
+You can style any individual letter, word, or emoji in an iMessage, or the
+entire message itself. While composing an iMessage in the Messages app,
+tap the new text effects 
+  icon above the keyboard to reveal a panel
+(Figure 22, ahead) of effect options:
+Bold 
+Italic 
+Underline 
+Strikethrough 
+Big enlarges the text for emphasis.
+Small shrinks the text for a subtle impact.
+Shake makes the text shake as if saying, “no.”
+Nod animates the text to nod in agreement.
+
+--- Page 69 ---
+Explode makes the text expand in an arc and explode off the screen.
+Ripple creates a ripple effect starting from the first character.
+Bloom enlarges and bolds the text one character at a time.
+Jitter vibrates the text with nervous energy.
+Figure 22: You can apply text effects to only the text you select.
+There are two ways to apply these effects:
+
+--- Page 70 ---
+Tap an effect to select it before you start typing.
+Select the text and then tap the desired effect. To select the text, double
+tap to select a word and then drag the blue drag handles to select what
+you want (Figure 23).
+Figure 23: You can apply text effects to only the text you select.
+To remove the effect: select the text and apply the same effect again. To
+remove it from a single character, it’s often easier to select the entire word,
+
+--- Page 71 ---
+apply an effect, and then tap that effect again to remove it.
+Use an Emoji or Sticker Tapback
+Tapback responses were introduced with iOS 10 and let you offer quick,
+wordless responses to iMessages. It was a neat idea at the time, but the
+responses were limited to only: heart, thumbs up, thumbs down, “ha ha,”
+exclamation, and question mark.
+Most other messaging apps let you respond with any emoji, and now so
+does Messages. Touch and hold a received message in Messages to see a
+bubble with tapback responses—note that the old designs have been
+refreshed. You can swipe from right to left to reveal more options, which
+include commonly used emojis (Figure 24).
+
+--- Page 72 ---
+Figure 24: You can now use any emoji to quickly respond to messages.
+To instead add a custom emoji, swipe left to right all the way to the end, tap
+the emoji 
+ icon, and choose an emoji from the menu.
+You can also tap Add Sticker from the menu to choose any installed sticker
+as a Tapback response.
+
+--- Page 73 ---
+Send a Message to Be Sent Later
+You can now schedule iMessages to send up to two weeks in advance,
+which is useful for things like wishing a friend a happy birthday. It doesn’t
+mater whether your device is powered on or online when the scheduled
+time arrives; it will be sent regardless.
+Here’s how to schedule an iMessage:
+1. While in a conversation and after composing a message, tap the plus 
+button.
+2. Choose Send Later from the menu (Figure 25, left).
+3. Choose your date and time with the date picker (Figure 25, right).
+Figure 25: Choose Send Later from the menu and then select a time with the date
+picker.
+
+--- Page 74 ---
+4. Tap the send 
+ button.
+The scheduled message “floats” in the conversation, denoted by a bubble
+with a white background and a dashed blue outline. To change the time or
+delete the message, tap Edit above the message and then choose either Edit
+Time or Delete Message (Figure 26).
+Figure 26: The scheduled message “floats” in the conversation until its sent or canceled.
+Send Messages via Satellite
+The iPhone 14 and later can send messages through a satellite link when
+you have no other connectivity. Read that last point again, because sending
+a message via satellite isn’t even an option unless you have zero
+connectivity: No cellular, no Wi-Fi, and you see SOS in the upper-right
+corner. Also, you can only send messages via satellite, not receive them.
+
+--- Page 75 ---
+When you try to send a message with no connectivity, a notification appears
+with a button that says Use Messages via Satellite (Figure 27).
+Figure 27: When you attempt to send a message with no connectivity, you’re prompted to
+use Messages via Satellite.
+iOS then guides you through connecting to the satellite. Satellite
+connections don’t work like cellular or Wi-Fi (Figure 28):
+Satellites orbit the planet, and there isn’t always one available. iOS
+tracks this and tells you when you have to wait—usually no more than a
+minute.
+Satellite communications are by line of sight, which means that you have
+to point your iPhone toward the satellite and there can’t be obstructions
+like buildings or trees.
+
+--- Page 76 ---
+Figure 28: iOS 18 guides you through the satellite connection process, which requires line
+of sight. However, there isn’t always a satellite available.
+Follow the prompts to connect. Once you’re connected, a screen appears
+letting you choose whether to send a message, send your location, contact
+roadside assistance, or contact emergency services. Tap Messages, and the
+Messages app opens. The text field will say “Text Message • Satellite.”
+Compose your message as usual, hit the send 
+ button, and—if needed—
+iOS again guides you through connecting to the satellite.
+
+--- Page 77 ---
+Understand RCS Support
+Rich Communication Services (RCS) is an industry standard alternative to
+iMessage and is intended to replace older SMS and MMS messaging
+protocols.
+What this effectively means is that texting with Android users should
+improve dramatically, with support for read receipts and rich media like
+voice messages and high-resolution images.
+Even though Apple now supports RCS, your carrier also has to support it.
+You can tell by going to Settings > Apps > Messages. If there is an RCS
+Messaging switch, then you’re good—be sure to turn on the switch if it’s
+not on already.
+Another way you can tell: open a conversation with an Android user and
+look at the message field. In an SMS message, it will read “Text Message •
+SMS.” In an RCS message it will say, “ “Text Message • RCS.”
+OceanofPDF.com
+
+--- Page 78 ---
+Surf Safari’s New Reader
+Safari sees only three notable, yet interconnected, changes in iOS 18 and
+iPadOS 18:
+A new Page 
+ Menu for accessing content blockers, extensions, page
+search, text size, and other options, along with the new Page Highlights
+and Reader features
+Page Highlights, which uses artificial intelligence to summarize page
+content, offer audio versions of web articles, and other features
+A redesigned Reader that is part of Page Highlights and accessible from
+the new page menu
+Explore the Page Menu
+Tap the Page Menu 
+ icon to:
+Listen to an AI-generated audio reading of the page or show the Reader
+Turn off content blockers (in case they present a problem viewing the
+page)
+Access settings for installed Safari extensions
+Search 
+ the current page
+Decrease 
+ or increase 
+ the page’s text size
+
+--- Page 79 ---
+While viewing the Page Menu, tap the more 
+ button at the bottom to see
+additional actions:
+Page Actions: Things like the Privacy Report, requesting the desktop
+version of a site, and printing the page
+Tab Actions: Favorite a site, add a bookmark, and so on
+Website Settings: Set specific settings for that website that apply
+whenever you view a page from that site:
+Request the desktop version
+Automatically use Reader
+Use (or don’t use) content blockers
+Open links in a specific profile
+Set permissions for the camera, microphone, and location
+Additionally, you can add shortcuts to anything on this screen to the
+Page Menu:
+1. Tap Edit.
+2. Tap the add 
+ button by an entry to add it to the Page Menu.
+3. Tap the remove 
+ button to remove it from the Page Menu.
+Peruse the Redesigned Reader
+The Reader has been redesigned to accommodate new Apple Intelligence
+features. To access it, touch and hold the Page Menu 
+ icon while reading
+an article.
+
+--- Page 80 ---
+While in Reader, tap the Page Menu 
+ icon (which temporarily replaces the
+Page Menu 
+ icon) to see options to change the font and color scheme
+(Figure 29).
+Figure 29: Reader lets you adjust the style or listen to an audio version of the article.
+To leave Reader, tap the Reader 
+ icon.
+While viewing Reader, you can usually tap Summarize at the top to see an
+Apple Intelligence-generated summary of the page (Figure 30).
+
+--- Page 81 ---
+Figure 30: Reader can now summarize articles.
+Another new option in Reader is Listen to Page, which reads the article out
+loud. To access playback controls, tap the Page Menu 
+ icon to reveal
+pause 
+, go back 
+, and go forward 
+ icons. You can also use the typical
+media controls on the Lock Screen and in Control Center.
+OceanofPDF.com
+
+--- Page 82 ---
+Try the Passwords App
+Apple has slowly been building up their password-management capabilities
+for years. With this round of operating system updates, Passwords is
+breaking out of the Settings app and moving to an app of its own for iOS,
+iPadOS, and macOS.
+Passwords supports sharing password groups with friends and family,
+generating new passwords, storing two-factor authentication (2FA) codes,
+and managing passkeys.
+Explore the Passwords Home Screen
+The main difference between the Passwords app and the old settings menu
+is that it opens to a nice home screen with a search bar, entry categories, and
+access to shared password groups. Here’s what each category contains:
+All: Tap this to see all of your password entries. On the All screen, tap
+the Sort 
+ icon to reveal a menu of sorting options.
+Passkeys: This screen shows all your passkeys. A passkey is a secure
+token that takes the place of a password. Instead of typing a password,
+you authenticate with Face ID or Touch ID, which is easier and more
+secure.
+Many websites now offer passkey login options, usually in addition to a
+password, though every site handles this differently. Often, you are
+
+--- Page 83 ---
+prompted to create a passkey when you log in, and it’s securely stored in
+Passwords.
+Codes: Many sites now encourage or require two-factor authentication
+(2FA), which usually equates to a constantly changing code that you
+have to enter alongside a password. The Codes screen shows all these
+codes, and you can tap the add 
+ icon to create a new one from a
+provided code or by scanning a QR code.
+Wi-Fi: This stores the passwords of Wi-Fi networks you have connected
+to in Settings > Wi-Fi.
+Security: The Security screen lists passwords that should be changed,
+either because they’re weak or reused or have been compromised. Tap a
+password to see the recommendation, which usually provides a Change
+Password button to send you to the page to reset that site’s password
+(Figure 31).
+
+--- Page 84 ---
+Figure 31: Passwords can alert you about compromised passwords you should change.
+Deleted: This screen shows any passwords you have deleted, which are
+retained for 30 days before vanishing forever. To rescue a password on
+the Recently Deleted screen, tap it and then tap Recover.
+Add or Edit a Password
+Usually, iOS and iPadOS guides you through creating and storing a
+password when creating a new login in Safari. But you often need to return
+to edit that password to change it, add a note, or add a 2FA code. It’s also
+good to know how to create a password entry from scratch:
+1. Tap All.
+2. Tap the add 
+ icon to add a new password, or tap an existing password
+to edit it and then tap Edit.
+
+--- Page 85 ---
+Either way, the fields are the same:
+Website, App, or Label: This is just the name of the password. It can be
+whatever you want but should be descriptive so you can find it.
+User Name: The name you use to log in, usually an email address.
+Password: If the field is blank, Passwords will automatically generate a
+secure password. You can delete it and add your own.
+Group: If you have shared groups set up, you can assign one here to
+share it with other people.
+Notes: Any secure notes you would like to add. This is a good place to
+add recovery keys, and security questions with answers.
+Annoyingly, there are certain fields you can’t access while creating a new
+password, so you have to return and edit it:
+Set Up Verification Code: Tap this if you’re setting up 2FA for a login.
+Typically you do this on the site’s security settings page, and the site
+provides a code (which you can enter by typing into the Setup Key field
+and tapping Use Setup Key,) or it displays a QR code (which you can
+scan by tapping Scan QR Code with Camera).
+Tip: To copy the 2FA code, open the password entry, tap Verification Code, and then tap Copy
+Verification Code in the popover.
+
+--- Page 86 ---
+Change Password: This button doesn’t change your password in the
+app. Instead, it takes you to the website to change your password there,
+which should be picked up by Safari, which prompts you to update your
+password.
+Tip: You can change the saved password for an entry by tapping into the password’s field.
+Website: This is the URL or URLs where you want to be prompted to
+autofill this password. Two tips I can offer here:
+You can keep tapping Add Website to add additional associated URLs
+for that password. This is especially handy for Microsoft properties,
+because they love having multiple domains that use the same login
+information, like microsoft.com, live.com, xbox.com,
+and linkedin.com.
+Make the URLs as plain as possible. So instead of entering the URL
+as outlook.live.com, which will only work on the Microsoft
+Outlook site, set the URL to live.com, which will work with all
+live.com subdomains.
+Share Passwords with Others
+You can share any password or passkey over AirDrop by opening it and
+then tapping the share 
+ icon. However, it’s much better to set up a group
+for sharing passwords to keep them in sync.
+
+--- Page 87 ---
+Note: To add someone to a group, they must have a device running iOS 17, iPadOS 17, macOS
+Sonoma, or later, and they must be in your contacts.
+To create a new password group:
+1. On the main screen of Passwords, tap the New Group 
+ icon.
+2. Enter a group name on the New Shared Group screen.
+3. Tap Add People to add others to the group. Enter a name from your
+contacts, tap their entry, and then tap Add.
+4. Back on the New Shared Group screen, tap Create.
+5. You’re notified if you have any incompatible devices. Tap Continue.
+6. You’re presented with a list of your passwords. Tap the ones you want to
+move to the new group and tap Move to finish.
+Here are common actions for shared password groups:
+Change a password’s group: While viewing a password, tap Edit and
+then Group as described above.
+Add a member to a group: From the main Passwords screen, tap the
+group, tap X Members, and then tap Add People.
+Remove a member from a group: From the main Passwords screen, tap
+the group, tap X Members, tap the person to remove, and then tap
+Remove From Group.
+Delete a group: From Password’s main screen, tap the group, tap X
+Members, and then tap Delete Group. After the group is deleted, the
+
+--- Page 88 ---
+passwords you shared return to your private collection and you lose
+access to the passwords others shared with you.
+Autofill Passwords
+Your device can manage passwords for websites and apps, or help you fill
+in passwords from your favorite password manager—either Apple’s
+Passwords or another, like 1Password.
+To set up password autofill to use a third-party app, go to Settings >
+General > AutoFill & Passkeys and enable the apps you’d like to access
+passwords from, such as 1Password, Proton Pass, or Passwords.
+When you log in to a website or app, if iOS or iPadOS recognizes that you
+have an associated login, it prompts you to use that login and you’ll have to
+verify with Face ID or Touch ID. Different login options appear in the
+QuickType bar above the keyboard. You can tap the key 
+ icon to see all
+available logins.
+OceanofPDF.com
+
+--- Page 89 ---
+Take Notes Further
+Dedicated Notes users may notice a small change right away: the camera 
+icon in the toolbar has been replaced with a paperclip 
+ icon, which reflects
+new features in notes: the capability to record audio and attach files directly
+to a note. There are some other goodies to explore as well…
+Record Audio in Notes
+You can now directly record voice memos inside a note. Here’s how:
+1. Tap the paperclip 
+ icon.
+2. Choose Record Audio from the menu.
+3. Tap the red record 
+ button to start recording.
+4. You can tap the pause 
+ button to temporarily stop recording. Tap
+Resume to continue.
+5. While recording, you can tap the transcript 
+ button to view a live
+transcript of your recording.
+6. To name a recording, tap the more 
+ button, choose Rename, and type in
+a new name. Tap outside the text field to set the name.
+7. When you’re finished with the recording, tap Done.
+To play back a recording inside a note, tap Play on the note. Controls appear
+for pause 
+, 15 seconds back 
+, and 15 seconds forward 
+.
+
+--- Page 90 ---
+Attach Files to Notes
+It’s now easy to attach images and files from your device’s storage and
+iCloud Drive:
+1. Tap the paperclip 
+ icon.
+2. Choose Attach File from the menu.
+3. Browse for the file you want to attach.
+4. Tap the file to insert it into the note.
+Some file types work better than others. Images and PDFs neatly embed
+into a note, but other file types, such as EPUB, may prompt you to open
+them in a more appropriate app, like Books.
+Use Math Notes in Notes
+If you’re like me and use Notes for everything, you might find yourself
+using it to write down financial information like bill amounts or taxes due
+instead of using a spreadsheet or calculator.
+Thankfully, Apple has recognized us and our plight with a new feature
+called Math Notes, which lets you perform calculations inside a note, either
+by typing them out or even writing them freehand.
+Let’s examine some examples of what you can do with Math Notes.
+
+--- Page 91 ---
+Typing Math Notes
+Let’s start with some very simple examples. Try typing something like this
+in a note: 4x4=. After the equals sign (=), Notes autofills the answer in
+yellow (Figure 32). Tap Return on the keyboard to insert the answer into
+the note. If you tap outside the calculation, it will lose the result, so be sure
+to tap Return to insert it.
+
+--- Page 92 ---
+Figure 32: Notes can do basic arithmetic, unit conversions, and even simple equations.
+You can also insert the answer from the QuickType bar above the keyboard.
+It also usually offers some other options, like reformatting the equation. For
+
+--- Page 93 ---
+instance, it can transform 2/3+4/5= into 2÷3+4÷5=.
+Note: This calculation feature works systemwide. For example, if you type a formula like 2+3=
+into a message, QuickType suggests 2+3=5.
+You can do conversions as well. Try typing something like 4
+tablespoons in cups = and it will autofill 0.25 cups.
+Math Notes also understands variables. You can type:
+a=5
+b=2
+And then type a+b= to autofill 7.
+Play around and see what else Math Notes can do!
+Writing Math Notes
+You can write out and solve equations by hand as well. This works on both
+iPhone and iPad, but works best with an iPad paired with an Apple Pencil.
+Tap the markup button, choose any drawing tool, and then draw out your
+equation, making sure to draw an equals sign at the end. Wait a second and
+then a popover appears with the detected equation and “Solve.” (Figure 33)
+
+--- Page 94 ---
+Tap the popover and the answer is autofilled in a simulation of your own
+handwriting!
+Figure 33: Notes can even solve handwritten math problems.
+Add Collapsible Sections
+It’s long been a best practice in long notes to divide your note into headings
+and subheadings. Now it’s an even better practice, because you can
+“collapse” the contents under a heading or subheading, which temporarily
+hides the contents. This makes it much easier to handle very long notes.
+As a reminder, to create headings: tap the format 
+ icon and choose Title,
+Heading, or Subheading. Those formats are applied to whatever line your
+insertion point is in, regardless of what text is selected.
+Once you have headings in place, tap on a heading to reveal the collapse
+arrow and then tap the arrow to collapse 
+ or expand 
+ a section (Figure
+
+--- Page 95 ---
+34).
+Figure 34: On the left, the Subheading is collapsed. On the right, it’s expanded.
+Here are the rules for how it works:
+When a heading is collapsed, it folds in all content between that heading
+and the next, including subheadings.
+When a subheading is collapsed, it folds in all content up to the next
+heading or subheading.
+Highlight Text
+Highlight is a new formatting option that colors text and its background to
+draw attention to it. To try it, select existing text, or, before you start typing
+
+--- Page 96 ---
+text:
+1. Tap the format 
+ icon in the toolbar to reveal the formatting panel.
+2. Note the new highlight 
+ button in the panel and the color button next to
+it.
+3. Tap the color button and choose a color from the menu. Note that when
+you choose a color, it turns highlighting on automatically.
+To remove highlighting, select the highlighted text and then tap the
+highlight 
+ button again.
+Try Smart Script
+Smart Script automatically corrects your handwriting to make it more
+legible. First, be sure your iPad supports it—see Check Your iPad for
+Compatibility. It’s easy to try:
+1. Open a note.
+2. Tap the Markup 
+ button.
+3. Tap the more 
+ button on the Markup palette.
+4. Enable Auto-refine Handwriting.
+5. Now write something with your finger or Apple Pencil and watch your
+iPad automatically clean up your handwriting.
+
+--- Page 97 ---
+OceanofPDF.com
+
+--- Page 98 ---
+Hike with Maps
+Apple is heavily emphasizing the new hiking features in Maps: topographic
+maps for hiking trails in the United States and Japan, along with custom
+hiking trails. However, most of us will better appreciate the small features
+that have flown under the radar. Apple has consolidated saved locations into
+a new feature called the Library, and it has finally made it easy to search
+near a location far away from you.
+Understand the Library
+Previously, Maps had a Favorites section that stored places you had saved.
+Then Apple added custom city guides, which made things a little messy.
+Now Apple has combined those two features into a new yet familiar one
+called Library that saves all of your saved places, guides, trails, and pinned
+locations.
+To visit the Library, swipe up on the search panel to reveal the Library
+section. To see everything in your Library, tap where it says “X Places • X
+Guides • X Routes.”
+To add a location to a map, after looking it up in Maps, tap the add 
+button
+on its navigation panel, which turns into a checkmark 
+. After adding a
+location, an Add a Note option appears in the navigation panel. Tap it to add
+
+--- Page 99 ---
+a short note about the place, which is displayed underneath its listing in the
+Library (Figure 35).
+Figure 35: Notes you add to saved places appear in the Library. It’s a helpful reminder to
+yourself of why you added it!
+Search Here
+Here’s an annoyance with Maps: you zoom in on a place you’re traveling to
+and try to search for something nearby, like a restaurant, only for it to show
+results near your current location. Thankfully, iOS 18 and iPadOS 18 fix
+this.
+Try searching for something nearby, like “sushi.” As you scroll around the
+map, results for your search pop up around the location you’re currently
+viewing. A “Search here button” might also appear—tapping it gives more
+thorough search results in the area you’re viewing (Figure 36). Likewise, if
+you “travel” to a distant location in Maps and search for a term, like
+“pizza,” it will show pizza joints near the place you are viewing in Maps.
+
+--- Page 100 ---
+Figure 36: A “Search here” button often appears in a remote location to help you further
+refine your search.
+Explore Topographic Maps and Trail Networks
+Maps now features known hiking trails, and you can also customize your
+own trails. They’re available all over Japan and the United States, including
+all 63 U.S. national parks.
+Tip: Search for “trails” and tap the Trails suggestion to discover nearby hiking trails.
+On the map, you want to look for four green icons:
+National Parks 
+: Tap a national park to see listings for available hikes
+in that park (Figure 37). Tap More to see a full list of available hikes.
+
+--- Page 101 ---
+Figure 37: National park listings contain popular hiking trails.
+Numbers 
+: Indicates multiple trails. Zoom in to see them individually.
+Trails 
+: These represent predefined trails. Tap a trail to view its route
+on the map (Figure 38).
+
+--- Page 102 ---
+Figure 38: Trails are predefined paths you can follow.
+Tap a hike to see it outlined on the map, along with information about:
+Distance
+Elevation, including variation
+The estimated time to complete
+
+--- Page 103 ---
+Trailheads 
+: These indicate jumping-off points for hikes. Tap a
+trailhead to view a list of predefined trails near the trailhead or to create
+a custom route.
+Tip: Tap Download while viewing a location to download the map for offline use.
+Create Custom Walking and Hiking Routes
+To plan a custom route, you need to find a trailhead, identified on the map
+with a green icon with a sign 
+ on it. You can also search Maps for
+“trailhead” to find some. Tap that green 
+ icon and then tap Create a
+Custom Route in the navigation panel.
+Maps display a map with the started point centered, and a Create a Custom
+Route panel at the bottom. Gray and white lines indicate possible hiking
+and walking paths. Tap somewhere along that path to add a waypoint. you
+can keep tapping to add multiple waypoints along a route.
+As you add points to the trail, the navigation panel changes to reflect
+distance, time, and elevation changes (Figure 39).
+
+--- Page 104 ---
+Figure 39: Creating a custom path in Maps.
+Tip: If you add a point by mistake, tap the undo 
+ button. You can also tap a point and choose
+Remove Point from the menu.
+There are three options to complete a trail: Reverse, Out & Back, and Close
+Loop. In my testing, Reverse (which swaps start and end points) and Out &
+
+--- Page 105 ---
+Back (which has you turn around at the end point and return to the start) are
+sometimes the only options available, with Close Loop available only when
+you specify points along a path that can be made into a loop.
+OceanofPDF.com
+
+--- Page 106 ---
+Power Up Calculator
+The Calculator app gets a love of love in iOS 18 and iPadOS 18 (yes, it’s
+now on the iPad!) with a new Math Notes feature, a conversion calculator, a
+dedicated delete 
+ key, and calculator history.
+Tip: To switch among calculator types, tap the calculator 
+ key to reveal a menu. This is how you
+now switch to the Scientific calculator on your iPhone, instead of rotating into landscape orientation.
+Convert with Calculator
+The Calculator app now has a built-in conversion function. To access it, tap
+the calculator 
+ key, choose either Basic or Scientific, and then turn on
+Convert.
+When in Convert mode, Calculator shows two numbers in the display
+(Figure 40, left). Just pick one and then tap the unit designation, denoted by
+double 
+ arrows. This reveals a vast menu of conversion units separated by
+category, such as currency, data, energy, fuel, force, temperature, time,
+volume, and weight. You can also search conversion units, which is good
+because the menu is overwhelming (Figure 40, center and right).
+
+--- Page 107 ---
+Figure 40: Left: The conversion calculator in action. Middle and right: Examples of the
+many units supported.
+Once you select a conversion unit in one result field, repeat the same steps
+for the other field. Be sure to choose a unit in the same category, otherwise
+the category for the other field will change (you can’t convert bytes to
+kilograms, come on now).
+Once your units are set, tap the number in one result field to see the
+conversion in the other field.
+Finally, you can perform calculations in either field. For example, let’s say
+you’re converting 30 days into minutes, but then want to see how many
+minutes are in 31 days. You can tap the 30, tap +, and then tap 1 to
+transform that into 31 and then see the result in minutes as well.
+
+--- Page 108 ---
+Use Math Notes in Calculator
+I won’t cover Math Notes here in depth because it works the same as in the
+Notes app—see Use Math Notes in Notes. However, I want to touch on
+how Math Notes in Calculator interacts with the Notes app.
+Note: Notes you create in the Calculator appear in the Notes app, but not vice versa.
+To create a Math Note in Calculator, tap the calculator 
+ key and choose
+Math Notes from the menu, which reveals a list of math notes (which will
+be empty the first time you use it). Tap the new note 
+ icon to create a new
+math note. Or, tap an existing math note to edit it.
+Again, the notes you create in the Calculator app appear in the Notes app
+and you can then edit those notes in Notes. However, your formatting
+options in Calculator are limited to just titles, regular text, and drawing. If
+you apply a different style in Notes, you see it in Calculator, but can’t
+change it.
+View Calculator History
+Finally, you can view your calculation history, which is handy for looking
+up previous results, which you can then alter or copy to paste elsewhere.
+
+--- Page 109 ---
+Note: Calculator history only displays completed calculations completed with the equals (=) key.
+To view history on an iPhone, tap the menu 
+ icon. On an iPad, tap the
+sidebar icon. Tap a calculation to return to it. You can also touch and hold a
+calculation to reveal a menu that lets you copy either the expression
+(equation) or the result.
+OceanofPDF.com
+
+--- Page 110 ---
+Journal with Journal
+The Journal app was introduced with iOS 17.2, but even with its late
+arrival, some key features were missing—like search! While there still isn’t
+an iPad app, the Journal app gets some essential updates in iOS 17.
+Sort and Search Journal Entries
+Tapping the search 
+ button reveals a Search field where you can search by
+title or content of a journal entry. Additionally, you can filter your journal
+entries by:
+Bookmarked: This only shows journal entries that have been
+bookmarked.
+Photos: Tap this to see only entries with photos.
+Places: This option shows only entries with map locations.
+Text Only: This filters out everything that has an attachment.
+Add Journal Widgets to the Home Screen
+The Journal app now has widgets for the Lock Screen and Home Screen for
+both writing prompts and quick access to the Journal app (Figure 41).
+
+--- Page 111 ---
+Figure 41: Journal offers Lock Screen and Home Screen widgets for quick entries.
+To add a widget to the Home Screen:
+1. Touch and hold an empty spot on the Home Screen until you enter
+“jiggle mode.”
+2. Tap Edit in the upper-left corner.
+3. Tap Add Widget.
+4. Scroll down and tap Journal.
+5. Swipe left to view the different widget options.
+6. Tap Add Widget to add a widget to the Home Screen.
+To add a widget to the Lock Screen:
+1. Touch and hold an empty spot on the Lock Screen until it “shrinks in.”
+2. Tap Customize.
+3. Tap Lock Screen.
+
+--- Page 112 ---
+4. Tap the widget area under the time.
+5. In the Add Widgets panel, scroll down and tap Journal.
+6. Swipe left and right to cycle through the available widgets. Tap one to
+add it to the Lock Screen.
+View Journal Stats
+The Journal app now shows three stats at the top of the screen (Figure 42):
+The number of entries you’ve recorded so far this year.
+The number of words you’ve written in the current year.
+How many days you’ve journaled this year.
+Figure 42: Journal tracks your entries, words written, and days journaled.
+You can tap any of these to see an Insights panel that shows your streaks
+(number of days in a row you’ve journaled), various stats, and a calendar of
+your journal entries. You can tap any date on the calendar that has a dot.
+
+--- Page 113 ---
+Journal for Wellbeing
+Apple has added wellness-oriented features to Journal. While recording a
+journal entry, you can tap the state of mind 
+ icon to record your current
+mood (Figure 43). Then:
+1. Slide the slider toward Very Unpleasant or Very Pleasant depending on
+your mood.
+2. Tap Next.
+3. Tap the feelings that best describe your mood. Tap Show More to reveal
+more feelings.
+4. Tap the things having the biggest impact on your mood.
+5. Tap Done.
+
+--- Page 114 ---
+Figure 43: Journal lets you log your mental well-being.
+You also can set it so you can record your time spent journaling as wellness
+minutes in the Health app, along with your state of mind: Go to Settings >
+Apps > Health > Data Access & Devices > Journal and turn on Mindful
+Minutes and State of Mind.
+OceanofPDF.com
+
+--- Page 115 ---
+Discover Other App Changes
+Many apps see important changes in iOS 18 and iPadOS 18, but not enough
+changes to warrant an entire chapter dedicated to them. This chapter covers
+those miscellaneous changes.
+Calendar
+Calendar for iOS has a redesigned month view that displays the agenda for
+the selected day at the bottom of the screen so you can view the entire
+month and an individual day at the same time. The new month view also
+shows your scheduled reminders for that day (Figure 44).
+
+--- Page 116 ---
+Figure 44: The old month view (left) vs. the new month view (right).
+You can now also create reminders directly from the Calendar app by
+tapping the add 
+ icon and then the Reminders tab.
+Files
+You can now erase an external disk using the Files app, including choosing
+the file system format:
+1. With a storage device attached, touch and hold it in Files.
+2. Choose Erase from the menu.
+3. Enter a name, tap a format, and tap Erase.
+
+--- Page 117 ---
+You can choose from these formats:
+1. APFS: This is the best format, assuming you’ll only use this device
+with Apple products. You can also choose to encrypt the volume with
+a password.
+2. ExFAT: Pick this if you need interoperability with Windows PCs.
+3. MS-DOS (FAT): This is the oldest but most compatible option.
+However, it has a lot of limitations: no files over 4 GB, partitions
+can’t be larger than 32 GB, and spaces are not allowed in filenames.
+Fitness+
+The Fitness+ app see many changes and new features on iPhones.
+Explore the New Fitness+ Tab
+The Fitness+ tab in the Fitness app has been redesigned. There are now tabs
+at the top: For You, Explore, Library, and Search 
+. For You presents
+personalized workouts, and the option to search workouts is new. Apple
+Fitness+ requires a paid subscription.
+Edit the Summary Screen
+You can now edit the Summary screen to add and remove elements as you
+see fit (except for Activity Rings):
+1. Open Fitness to the Summary screen.
+
+--- Page 118 ---
+2. Scroll down and tap Add Summary.
+3. The Summary screen enters “jiggle mode.” Here you can:
+1. Touch, hold, and drag around elements to rearrange them.
+2. Tap the delete 
+ button on an element to remove it.
+3. Tap Add to see a menu of things you can add to the Summary,
+including data from third-party fitness apps.
+4. Tap Done when finished.
+Customize Activity Rings
+You can now adjust goals and even pause your Activity Rings for a time.
+Open Fitness and tap Activity Rings on the Summary screen.
+You can tap Change Goals to change your daily Move goal. On that screen,
+you can tap Schedule in the upper-right corner to set individual goals for
+each day of the week.
+Also, on the Activity Rings screen, you can tap Pause Rings for the day, the
+rest of the week, or the rest of the month, or set a custom time.
+View Training Load
+Training Load is a new Fitness metric that tallies up the intensity of your
+daily workouts. You can view it by tapping See All Categories > Training
+Load on the Summary screen.
+
+--- Page 119 ---
+Freeform
+You can now make scenes in Freeform. Think of a scene like a bookmark
+that lets you instantly zip back to a certain spot and zoom level on the
+board. This is especially handy for large boards with distinct sections.
+To make a scene on an iPhone:
+1. Open a Freeform board.
+2. Scroll and zoom in on the area you want to capture as a scene.
+3. On an iPhone, tap the more 
+ button and choose Add Scene from the
+menu. On an iPad, tap the Scene button in the lower-left corner of the
+screen, tap the menu 
+ icon, and tap Add Scene.
+After adding a scene, the Scene Navigator appears on the screen. Tap the
+arrows 
+ 
+  to navigate between scenes or tap the menu 
+ icon to reveal a
+menu of scenes. To hide or show the Scene Navigator on an iPhone, tap the
+more 
+ button and select Scene Navigator.
+Tip: You can now invite others to Freeform boards with just a link. Tap the share 
+ icon, scroll the
+app icons from right to left and tap Invite with Link. Enter a contact name, phone number, or email
+address and tap Share Link.
+
+--- Page 120 ---
+Home
+Home has several planned improvements in iOS 18 and iPadOS 18.
+Unfortunately, most have yet to materialize because they either have yet to
+be implemented or third-party support:
+Hands-free unlock: You’ll be able to unlock a HomeKit lock just by
+walking near it. Unfortunately, it won’t support any existing locks, as it
+requires an ultra wide-band chip in the lock. Be on the lookout for those
+to hit the market.
+Guest access: You’ll be able to allow guests access to control select
+accessories in your home without giving them permanent access, you
+can revoke the access easily, and they cannot control your home
+accessories while away from your home. It’s not implemented as of the
+iOS 18.1 developer beta.
+Robot vacuum cleaners: HomeKit will support robot vacuum cleaners.
+Track energy usage: Customers of the Pacific Gas and Electric
+Company in California can connect the Home app to their account to
+track energy usage over time. Here’s how to set it up:
+1. From the Home Screen, tap the More 
+ button.
+2. Tap Home Settings from the menu.
+3. Tap Energy.
+4. Tap Connect Account.
+5. Follow the prompts to set up your PG&E account.
+
+--- Page 121 ---
+Mail
+So far, Mail doesn’t see many changes unless your device can take
+advantage of Apple Intelligence, which grants powerful new writing and
+message summary tools. See Meet Apple Intelligence.
+Music
+The song queueing system in the Music app has been made more obvious.
+It’s been renamed from Playing Next to Queue. When you touch and hold a
+song, instead of tapping Play Last to add it to the queue, you now tap the
+Add to Queue option. The new queue screen (accessed by tapping the queue
+ icon) has larger buttons for shuffle 
+ , repeat 
+, and autoplay 
+, as
+well as a new Clear text label to clear the queue. And there’s now an Add
+Songs to Queue button at the end of the list (Figure 45).
+
+--- Page 122 ---
+Figure 45: The iOS 17 Now Playing screen (left) vs. the iOS 18 Queue screen (right).
+Phone
+The dialer in the Phone app has a couple of upgrades to make it smarter:
+Search in Recents: There is now a Search field on top of the Recents
+tab, where you can search through recent calls by date, keyword, name,
+or phone number.
+Search with the keypad: On the Keypad tab, you can now tap the digits
+to spell out contact names based on the letters on each key. For example,
+you can type 563 to type out “joe.” The top result appears at the top,
+
+--- Page 123 ---
+which you can tap to call. More results underneath, and you can tap to
+see the full list.
+TV
+There are a couple of neat features in the TV app that are exclusive to Apple
+TV+ subscription content:
+Enhance Dialogue: Having trouble understanding what people are
+saying? Tap the screen, tap the audio 
+ button, and choose either Boost
+or Enhance Dialogue from the menu. I’ve listened to both and can’t tell
+the difference, but both make the dialogue clearer, so try them both and
+see which one you prefer.
+Insight: While watching an Apple TV+ show, tap the screen to reveal
+controls and tap the Insight button at the bottom. If it’s available for a
+scene, it displays the actors in the scene and their character names. It’s
+very similar to Amazon’s X-Ray feature.
+Wallet
+The marquee new feature in Wallet is Tap to Cash, which lets you send
+Apple Cash from one iPhone to another by holding them together, much as
+you can initiate an AirDrop exchange.
+Here’s how to initiate Tap to Cash:
+
+--- Page 124 ---
+1. Open Wallet.
+2. Tap your Apple Cash card (available only in the United States).
+3. Tap the Send or Request button.
+4. Tap Tap to Cash.
+5. Enter an amount on the number pad.
+6. Tap Next.
+7. Confirm the transaction with the Side or Home button.
+8. Hold the top of your iPhone near the top of another iPhone or Apple
+Watch.
+Note: Tap to Cash requires both devices to be running iOS 18 or watchOS 11 or later.
+Apple has announced other Wallet features that will roll out over time:
+Apple Pay in any desktop browser: With macOS Sonoma, you can
+now use Apple Pay in any desktop web browser and not just Safari. The
+checkout screen will display a unique round QR code you can scan with
+your iPhone’s camera to complete the payment.
+Credit card rewards and installment payments: Credit card issuers
+will be able to let you cash in point rewards in Wallet. Reward
+redemptions will first be offered by Discover and Synchrony, with other
+Apple Pay-compatible cards being supported by Fiserv.
+Installment plans: Apple has shut down Apple Pay Later. Instead, U.S.
+users will be able to set up installment payments in Wallet through
+
+--- Page 125 ---
+Affirm. Other countries will be supported bank by bank (Figure 46,
+left).
+Redesigned event tickets: Wallet event tickets can offer features like
+custom art, venue maps, and event guides (Figure 46, right).
+Figure 46: Left: You can make purchases in installments. Right: Redesigned event
+tickets with event and venue information. Image credit: Apple.
+
+--- Page 126 ---
+Tap to add new cards: You’ll be able to set up some credit cards in
+Wallet by tapping them against your iPhone.
+OceanofPDF.com
+
+--- Page 127 ---
+Discover Other System Changes
+Here are other, smaller changes in iOS 18 and iPadOS 18.
+Accessibility
+Apple has always placed an emphasis on making iPhones and iPads
+accessible to everyone, and iOS 18 and iPadOS 18 add some next-
+generation features you can appreciate even if you don’t need them right
+now. Make sure your device supports these features first—see Check Your
+iPhone for Compatibility.
+Control Your Device with Your Eyes
+One of the coolest new features is Eye Tracking, which lets you control
+your iPhone or iPad with your eyes. How does that work? Basically, your
+iPhone or iPad shows a small round gray pointer on screen—just like the
+mouse pointer on an iPad—that snaps to tappable elements.
+If you’ve used a mouse or trackpad with an iPad, it works pretty much the
+same. Frankly, I’m terrible at it, but I can at least show you how to set it up
+and give some tips.
+Before you set it up, there are a couple of things to be aware of:
+
+--- Page 128 ---
+It only works well if the device is on a flat, steady surface and you’re
+about one foot away. Otherwise, the pointer wanders all over the place.
+Eye Tracking only moves the pointer around the screen, and it depends
+on other features for interaction, such as:
+AssistiveTouch, which places a small button on the screen that opens
+to a menu of system shortcuts. Set this up in Settings > Accessibility
+> Touch > AssistiveTouch.
+Dwell Control, which lets you trigger onscreen elements by staring at
+them instead of tapping them. It can be configured in Settings >
+Accessibility > Touch > AssistiveTouch.
+The new Vocal Shortcuts feature described above.
+To set up Eye Tracking:
+1. Go to Settings > Accessibility > Eye Tracking.
+2. Before enabling Eye Tracking, get ready. Place your device on a flat
+surface and get ready to spend a minute calibrating it.
+3. When you enable Eye Tracking, the screen blacks out and a colored dot
+appears at various places around the screen. Stare at each dot as it
+appears.
+Once calibration is complete, Eye Tracking is enabled and you can move
+the pointer around with your eyes. It also automatically enables
+AssistiveTouch and Dwell Control, so you can “tap” an item by continuing
+to stare at it.
+
+--- Page 129 ---
+Try Music Haptics
+Music Haptics makes your iPhone pulse and vibrate along with the music.
+Try it out by going to Accessibility > Music Haptics and enabling Music
+Haptics. You can tap Play Sample to get an idea of what it’s like, or just
+play a song in the Music app.
+Try Vocal Shortcuts
+Vocal Shortcuts is a new feature that lets you utter short phrases to perform
+actions, such as triggering a shortcut, returning to the Home Screen, or
+taking a screenshot. It pairs well with the new Eye Tracking feature because
+it can also do things like scroll up and down, which are difficult to perform
+with Eye Tracking.
+To set it up:
+1. Go to Settings > Accessibility > Vocal Shortcuts
+2. Tap Set Up Vocal Shortcuts.
+3. Tap Continue.
+4. Choose an action from the very long list. Scroll Down and Scroll Up are
+good pairings for Eye Tracking.
+5. Enter a name for the custom phrase. For the sake of simplicity, I would
+start with the name of the action, like “Scroll Down.”
+6. Tap Go on the keyboard.
+7. Say the phrase three times when prompted.
+
+--- Page 130 ---
+8. Either tap Continue to finish or tap Add Another to add another action.
+After the shortcut is set up, using it is as simple as saying the command you
+taught it.
+Tip: To delete a Vocal Shortcut, return to Settings > Accessibility > Vocal Shortcuts, tap Edit, and
+then the delete 
+ button next to the shortcut you want to delete. You can also tap Add Action on that
+screen to add another shortcut.
+AirPods
+One change to note right away: your AirPod settings are no longer located
+in Settings > Bluetooth. Instead, they are available near the top of the
+Settings app, listed under whatever you have named them.
+Tip: If your AirPods don’t appear in settings, move the case close to your device and open the lid.
+Before you can use the new AirPods features of iOS 18, iPadOS 18, and
+macOS Sequoia, your AirPods must first update to the appropriate firmware
+version. This happens automatically while the case is charging with the
+AirPods inside.
+You can check your firmware version in Settings > AirPods Name. Scroll to
+the bottom and tap Version to see the firmware version of both the AirPods
+
+--- Page 131 ---
+and the case.
+Here are how to use the new features:
+Adjust Adaptive Audio: iOS 17 introduced Adaptive Audio for AirPods
+Pro (2nd generation), which blends Noise Cancellation and
+Transparency. You can now adjust it to prefer one mode or the other. Go
+to Settings > AirPods Name > Customize Adaptive Audio and move the
+slider between less noise and more noise.
+Nod for yes, shake for no: iOS 18 and iPadOS 18 take advantage of the
+motion sensors in AirPods Pro (2nd generation) to let you silently accept
+or decline calls and other notifications. For instance, if Siri informs you
+of an incoming call, you can nod your head to accept it or shake your
+head to decline it.
+To enable this feature, go to Settings > AirPods Name > Head Gestures
+and enable Head Gestures. While here, you can also swap the direction
+of the functions if you want, so shaking answers a call and nodding
+declines it.
+Spatial Audio in games: Games that support Game Mode can now
+provide Spatial Audio to AirPods (3rd generation), AirPods Pro, and
+AirPods Max. Spatial Audio simulates a surround-sound system, making
+it so that sound appears to come from multiple directions around you.
+Game Mode also reduces latency for more responsive audio.
+Voice Isolation: Apple’s algorithm is now better at reducing background
+microphone noise in Voice Isolation mode. The way to enable Voice
+
+--- Page 132 ---
+Isolation during a call has changed:
+1. Open Control Center during a call.
+2. Tap App Name Controls at the top of Control Center.
+3. Tap Voice Isolation.
+Apple ID Is Now Apple Account
+Apple appears to be moving away from the term Apple ID to refer to your
+online account with Apple, instead opting for the more-descriptive Apple
+Account. You can see this language most prominently in Settings > Your
+Name.
+Game Mode
+Apple has implemented a new Game Mode that kicks on automatically for
+games that support it, letting you know with a notification. Game Mode
+reduces background activity to give as many resources as possible to the
+game, making audio and game controllers more responsive. It also allows
+for Spatial Audio in games that support it.
+Contact Sharing
+A lot of apps want access to your contacts list, whether they need it or not.
+But some apps actually do need access to your contacts, just not all of them.
+So now you can select exactly which contacts you want an app to access:
+
+--- Page 133 ---
+1. Go to Settings > Privacy & Security > Contacts > App Name.
+2. Choose Limited Access.
+3. A screen appears that says No Contacts. Tap Edit to add some.
+4. Tap Contacts to include. A checkmark 
+ appears next to selected
+contacts.
+5. Tap Done when finished.
+Emergency SOS Live Video
+Apple says you can now share live and recorded video with first responders
+during emergency calls. Sorry, we’re not testing this—we’ll take their word
+for it!
+Flashlight
+If you own an iPhone with a Dynamic Island, the new flashlight control
+might be the coolest feature iOS 18 has to offer. When you turn on the
+flashlight, a window appears at the top of the screen with a large flashlight
+icon that you can touch, hold, and drag to adjust the beam. Slide your finger
+up and down to adjust the brightness and side to side to change the focus of
+the beam (Figure 47).
+
+--- Page 134 ---
+Figure 47: Slide your finger around the flashlight’s Dynamic Island window to change the
+output.
+Tap outside the window to dismiss it. To bring it back, tap the flashlight 
+icon in the Dynamic Island while the flashlight is on.
+iPad
+Apps compiled for iPadOS 18 have a redesigned sidebar and tab bar. You
+can experience it in the Music, News, Podcasts, and TV apps, and certainly
+more to come soon.
+Note: The tab bar tends to appear only in portrait orientation.
+The tab bar and sidebar are designed to be two halves of the same whole.
+You can tap the toggle sidebar 
+ icon while the tab bar is showing to
+
+--- Page 135 ---
+transform the tab bar to the sidebar. Likewise, you can tap the hide sidebar
+ icon while the sidebar is showing to transform the sidebar into the tab
+bar.
+Note: The tab bar portion doesn’t appear in Music, but you can edit the sidebar as described in
+Music.
+You can now also edit both the sidebar and the tab bar. With the sidebar
+displayed, tap Edit to rearrange and delete items. If the tab bar items are
+jiggling, you can touch, hold, and drag them to rearrange them as well.
+Paste Links Over Text
+Until now, making hyperlinks in iOS and iPadOS was a pain; you had to
+copy a URL, select the anchor text, and then scroll around to find Insert
+Link in the popover menu. Now you can copy a URL, and then select text
+in an app like Mail or Notes and tap Paste from the popover to keep the
+selected text but add a link to the URL on your clipboard.
+SharePlay
+Screen sharing in SharePlay now makes remote technical support easy,
+thanks to three new features.
+
+--- Page 136 ---
+First, you can ask another user to share their screen with you. Doing so
+brings up a notification they can tap to share their screen so that they don’t
+have to figure out how to do it. Here’s how:
+1. While in a FaceTime call, tap the screen to reveal the control panel if it’s
+not already displayed.
+2. Tap the Share 
+ button.
+3. Tap Ask to Share.
+4. The other person receives a notification. They should tap the purple
+Share button.
+Second, you can draw on the other person’s screen. Tap the screen sharing
+window to make their screen full-screen on your device. Then you can tap
+on their screen to produce little circles. You can also draw lines on the
+screen to point to what you need them to tap.
+Tip: Tapping the zoom 
+ button toggles the capability to tap and draw on the other person’s screen.
+To move away from screen sharing, open the App Switcher and switch to
+another window. However, to end screen sharing without hanging up, the
+person sharing their screen must tap the Share 
+ button again.
+
+--- Page 137 ---
+Finally, you can take full control of the other person’s screen from an iPad.
+While viewing another person’s screen, tap the screen sharing window to
+make it full screen, and then tap the finger 
+ icon. Then person on the other
+end sees a notification—once they tap Allow, you can fully interact with
+their screen.
+OceanofPDF.com
+
+--- Page 138 ---
+About This Book
+Thank you for purchasing this Take Control book. We hope you find it both
+useful and enjoyable to read. We welcome your comments.
+
+--- Page 139 ---
+Ebook Extras
+You can access extras related to this ebook on the web. Once you’re on the
+ebook’s Take Control Extras page, you can:
+Download any available new version of the ebook for free, or buy a
+subsequent edition at a discount.
+Access the book in both PDF and EPUB formats. (Learn about reading
+on mobile devices on our Device Advice page.)
+Read the ebook’s blog. You may find new tips or information, as well as
+a link to an author interview.
+Find out if we have any update plans for the ebook.
+If you bought this ebook from the Take Control website, it has been
+automatically added to your account, where you can download it in other
+formats and access any future updates.
+
+--- Page 140 ---
+MORE TAKE CONTROL BOOKS
+This is but one of many Take Control titles! We have books that cover a wide range of technology
+topics, with extra emphasis on Macs and other Apple products.
+You can buy Take Control books from the Take Control online catalog as well as from venues such as
+Amazon and the Apple Books Store. But it’s a better user experience and our authors earn more when
+you buy directly from us. Just saying…
+Our ebooks are available in two formats, PDF and EPUB, which are viewable on any computer,
+smartphone, tablet, or e-reader. All are DRM-free.
+About the Author
+Josh Centers is a Content Marketing Manager at TextExpander and editor-
+in-chief of Unprepared.life. He is also the author of Take Control of Notes,
+Take Control of Apple TV, and Take Control of Apple Home Automation,
+and coauthor of Take Control of Preview with Adam Engst. He has been
+featured in USA Today, Macworld, Scientific American, the Washington
+
+--- Page 141 ---
+Post, Boing Boing, the Wirecutter, and other publications, as well as on
+Comedy Central, HuffPost Live, and Voice of America.
+Josh lives in Tennessee with his wife and children.
+Acknowledgments
+Thanks to Joe Kissell who helped make this book a reality; my wife for
+putting up with me as I wrote this book; and Jesus Christ, who makes all
+things possible.
+About the Publisher
+alt concepts, publisher of Take Control Books, is operated by Joe Kissell
+and Morgen Jahnke, who acquired the ebook series from TidBITS
+Publishing Inc.’s owners, Adam and Tonya Engst, in 2017. Joe brings his
+decades of experience as author of more than 60 books on tech topics
+(including many popular Take Control titles) to his role as Publisher.
+Morgen’s professional background is in development work for nonprofit
+organizations, and she employs those skills as Director of Marketing and
+Publicity. Joe and Morgen live in Saskatoon, Saskatchewan, Canada, with
+their two children.
+Credits
+Publisher: Joe Kissell
+
+--- Page 142 ---
+Editor: Joe Kissell
+Cover design: Sam Schick of Neversink
+Logo design: Geoff Allen of FUN is OK
+OceanofPDF.com
+
+--- Page 143 ---
+Copyright and Fine Print
+Take Control of iOS 18 and iPadOS 18
+ISBN: 978-1-990783-55-5
+Copyright © 2024, Josh Centers. All rights reserved.
+alt concepts, 419 8B-3110 8th St. East, Saskatoon, SK S7H 0W2 Canada
+Why Take Control? We designed Take Control electronic books to help
+readers regain a measure of control in an oftentimes out-of-control universe.
+With Take Control, we also work to streamline the publication process so
+that information about quickly changing technical topics can be published
+while it’s still relevant and accurate.
+Our books are DRM-free: This ebook doesn’t use digital rights
+management in any way because DRM makes life harder for everyone. So
+we ask a favor of our readers. If you want to share your copy of this ebook
+with a friend, please do so as you would a physical book, meaning that if
+your friend uses it regularly, they should buy a copy. Your support makes it
+possible for future Take Control ebooks to hit the internet long before you’d
+find the same information in a printed book. Plus, if you buy the ebook,
+you’re entitled to any free updates that become available.
+Remember the trees! You have our permission to make a single print copy
+of this ebook for personal use, if you must. Please reference this page if a
+
+--- Page 144 ---
+print service refuses to print the ebook for copyright reasons.
+Caveat lector: Although the author and alt concepts have made a
+reasonable effort to ensure the accuracy of the information herein, they
+assume no responsibility for errors or omissions. The information in this
+book is distributed “As Is,” without warranty of any kind. Neither alt
+concepts nor the author shall be liable to any person or entity for any
+special, indirect, incidental, or consequential damages, including without
+limitation lost revenues or lost profits, that may result (or that are alleged to
+result) from the use of these materials. In other words, use this information
+at your own risk.
+It’s just a name: Many of the designations in this ebook used to distinguish
+products and services are claimed as trademarks or service marks. Any
+trademarks, service marks, product names, or named features that appear in
+this title are assumed to be the property of their respective owners. All
+product names and services are used in an editorial fashion only, with no
+intention of infringement. No such use, or the use of any trade name, is
+meant to convey endorsement or other affiliation with this title.
+We aren’t Apple: This title is an independent publication and has not been
+authorized, sponsored, or otherwise approved by Apple Inc. Because of the
+nature of this title, it uses terms that are registered trademarks or service
+marks of Apple Inc. If you’re into that sort of thing, you can view a
+complete list of Apple Inc.’s registered trademarks and service marks.
+
+--- Page 145 ---
+OceanofPDF.com

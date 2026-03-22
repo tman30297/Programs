@@ -1,0 +1,671 @@
+#!/usr/bin/env python3
+"""
+Brain - Personal Knowledge Hub
+A shared knowledge system for voice memos, YouTube transcripts, notes, and semantic search.
+"""
+
+import argparse
+import json
+import os
+import sqlite3
+import subprocess
+import sys
+import tempfile
+from datetime import datetime
+from pathlib import Path
+from typing import Optional
+
+import sounddevice as sd
+
+# Configuration
+BRAIN_DIR = Path("/media/tony/Drive2/Brain")
+DB_PATH = BRAIN_DIR / "brain.db"
+NOTES_DIR = BRAIN_DIR / "notes"
+TRANSCRIPTS_DIR = BRAIN_DIR / "transcripts"
+GRAPH_FILE = BRAIN_DIR / "graph.json"
+
+# Ensure directories exist
+BRAIN_DIR.mkdir(parents=True, exist_ok=True)
+NOTES_DIR.mkdir(exist_ok=True)
+TRANSCRIPTS_DIR.mkdir(exist_ok=True)
+
+# Initialize database
+def init_db():
+    """Initialize SQLite database with metadata tables."""
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    
+    # Notes table
+    c.execute('''CREATE TABLE IF NOT EXISTS notes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        content TEXT NOT NULL,
+        author TEXT DEFAULT 'unknown',
+        source TEXT DEFAULT 'manual',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        tags TEXT,
+        title TEXT
+    )''')
+    
+    # Transcripts table
+    c.execute('''CREATE TABLE IF NOT EXISTS transcripts (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT,
+        url TEXT,
+        content TEXT NOT NULL,
+        author TEXT DEFAULT 'unknown',
+        source TEXT DEFAULT 'youtube',
+        duration TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        tags TEXT
+    )''')
+    
+    # Knowledge graph edges
+    c.execute('''CREATE TABLE IF NOT EXISTS graph_edges (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        from_note_id INTEGER,
+        to_note_id INTEGER,
+        relationship TEXT,
+        FOREIGN KEY (from_note_id) REFERENCES notes(id),
+        FOREIGN KEY (to_note_id) REFERENCES notes(id)
+    )''')
+    
+    conn.commit()
+    conn.close()
+
+
+def get_db():
+    """Get database connection."""
+    return sqlite3.connect(DB_PATH)
+
+
+# Voice Recording
+def record_voice(duration: int = 30, sample_rate: int = 16000) -> Optional[Path]:
+    """Record audio from microphone and save as WAV."""
+    print(f"🎙️  Recording for {duration} seconds... Press Ctrl+C to stop early.")
+    print("Recording... (Press Enter to stop)")
+    
+    try:
+        # Record audio
+        audio = sd.rec(duration * sample_rate, samplerate=sample_rate, channels=1, dtype='int16')
+        sd.wait()
+        
+        # Save to temp file
+        temp_file = tempfile.NamedTemporaryFile(suffix='.wav', delete=False)
+        subprocess.run([
+            'ffmpeg', '-y', '-f', 's16le', '-ar', str(sample_rate),
+            '-ac', '1', '-i', '-', temp_file.name
+        ], input=audio.tobytes(), capture_output=True)
+        
+        return Path(temp_file.name)
+    except Exception as e:
+        print(f"Error recording: {e}")
+        return None
+
+
+def transcribe_audio(audio_path: Path) -> Optional[str]:
+    """Transcribe audio using faster-whisper."""
+    try:
+        from faster_whisper import WhisperModel
+        
+        print("🧠 Transcribing with Whisper...")
+        model = WhisperModel("base", device="cpu", compute_type="int8")
+        segments, info = model.transcribe(str(audio_path))
+        
+        text = " ".join([segment.text for segment in segments])
+        return text.strip()
+    except Exception as e:
+        print(f"Error transcribing: {e}")
+        return None
+
+
+def voice_memo(author: str = "Tony", tags: str = ""):
+    """Record a voice memo, transcribe, and save."""
+    audio_path = record_voice()
+    if not audio_path:
+        return
+    
+    text = transcribe_audio(audio_path)
+    if not text:
+        print("Failed to transcribe audio")
+        return
+    
+    # Save note
+    conn = get_db()
+    c = conn.cursor()
+    c.execute(
+        "INSERT INTO notes (content, author, source, tags, title) VALUES (?, ?, ?, ?, ?)",
+        (text, author, "voice", tags, f"Voice Memo {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+    )
+    note_id = c.lastrowid
+    conn.commit()
+    conn.close()
+    
+    # Save to text file
+    note_file = NOTES_DIR / f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_voice.md"
+    note_file.write_text(f"# Voice Memo - {datetime.now()}\n\n{text}\n\nTags: {tags}\n")
+    
+    # Index in QMD
+    index_in_qmd(str(note_file), "voice")
+    
+    print(f"✅ Voice memo saved! (ID: {note_id})")
+    print(f"📝 Preview: {text[:200]}...")
+    
+    # Cleanup
+    audio_path.unlink()
+
+
+# YouTube Import
+def download_youtube_audio(url: str) -> Optional[Path]:
+    """Download audio from YouTube using yt-dlp."""
+    try:
+        temp_file = tempfile.NamedTemporaryFile(suffix='.wav', delete=False)
+        temp_wav = temp_file.name
+        temp_file.close()
+        
+        # Download best audio
+        subprocess.run([
+            'yt-dlp', '-x', '--audio-format', 'wav',
+            '-o', temp_wav, url
+        ], capture_output=True)
+        
+        # Find the actual file (yt-dlp may change extension)
+        wav_path = Path(temp_wav.replace('.wav', '.wav'))
+        for f in Path('.').glob('*.wav'):
+            if 'temp' in f.name or f.stat().st_size > 1000:
+                return f
+        
+        return wav_path
+    except Exception as e:
+        print(f"Error downloading YouTube: {e}")
+        return None
+
+
+def transcribe_youtube(url: str, author: str = "YouTube", tags: str = "") -> Optional[dict]:
+    """Download and transcribe YouTube video."""
+    print(f"📺 Downloading: {url}")
+    
+    try:
+        # Get video info
+        result = subprocess.run([
+            'yt-dlp', '--print', '%(title)s|%(duration)s', url
+        ], capture_output=True, text=True)
+        
+        title = "YouTube Video"
+        duration = ""
+        if result.returncode == 0 and result.stdout.strip():
+            parts = result.stdout.strip().split('|')
+            title = parts[0] if parts else "YouTube Video"
+            duration = parts[1] if len(parts) > 1 else ""
+        
+        # Download audio
+        with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as tf:
+            temp_wav = tf.name
+        
+        subprocess.run([
+            'yt-dlp', '-x', '--audio-format', 'wav',
+            '-o', temp_wav, url
+        ], capture_output=True)
+        
+        # Find the file
+        wav_file = Path(temp_wav)
+        if not wav_file.exists():
+            # yt-dlp might have changed the extension
+            potential = Path(temp_wav.replace('.wav', '.opus'))
+            if potential.exists():
+                wav_file = potential
+        
+        # Convert to correct format if needed
+        if wav_file.exists():
+            # Transcribe
+            text = transcribe_audio(wav_file)
+            wav_file.unlink()
+            
+            if text:
+                # Save to DB
+                conn = get_db()
+                c = conn.cursor()
+                c.execute(
+                    "INSERT INTO transcripts (title, url, content, author, source, duration, tags) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                    (title, url, text, author, "youtube", duration, tags)
+                )
+                trans_id = c.lastrowid
+                conn.commit()
+                conn.close()
+                
+                # Save to file
+                trans_file = TRANSCRIPTS_DIR / f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{title[:30]}.md"
+                trans_file.write_text(f"# {title}\n\nURL: {url}\n\nDuration: {duration}\n\n## Transcript\n\n{text}\n")
+                
+                # Index in QMD
+                index_in_qmd(str(trans_file), "youtube")
+                
+                return {"id": trans_id, "title": title, "text": text[:500]}
+        
+        return None
+    except Exception as e:
+        print(f"Error processing YouTube: {e}")
+        return None
+
+
+def youtube_import(urls: list, author: str = "YouTube", tags: str = ""):
+    """Import multiple YouTube URLs."""
+    for url in urls:
+        print(f"\n--- Processing: {url} ---")
+        result = transcribe_youtube(url, author, tags)
+        if result:
+            print(f"✅ Saved: {result['title']}")
+        else:
+            print(f"❌ Failed: {url}")
+
+
+# QMD Indexing
+def index_in_qmd(file_path: str, content_type: str = "note"):
+    """Index a file in QMD for semantic search."""
+    try:
+        subprocess.run([
+            'qmd', 'index', 'add',
+            '--root', str(BRAIN_DIR),
+            '--path', file_path,
+            '--collection', 'brain'
+        ], capture_output=True)
+    except Exception as e:
+        print(f"Warning: Could not index in QMD: {e}")
+
+
+# Search
+def search(query: str, limit: int = 5):
+    """Search using QMD semantic search."""
+    try:
+        result = subprocess.run([
+            'qmd', 'search', query,
+            '--root', str(BRAIN_DIR),
+            '--collection', 'brain',
+            '-n', str(limit)
+        ], capture_output=True, text=True)
+        
+        print("\n🔍 Search Results:\n")
+        print(result.stdout if result.stdout else "No results found.")
+    except Exception as e:
+        # Fallback to SQLite search
+        print(f"QMD search failed, using SQLite: {e}")
+        search_sqlite(query, limit)
+
+
+def search_sqlite(query: str, limit: int = 5):
+    """Fallback SQLite search."""
+    conn = get_db()
+    c = conn.cursor()
+    
+    # Search in notes and transcripts
+    c.execute("""
+        SELECT 'note' as type, id, title, content FROM notes 
+        WHERE content LIKE ? OR title LIKE ?
+        UNION ALL
+        SELECT 'transcript' as type, id, title, content FROM transcripts 
+        WHERE content LIKE ? OR title LIKE ?
+        LIMIT ?
+    """, (f"%{query}%", f"%{query}%", f"%{query}%", f"%{query}%", limit))
+    
+    results = c.fetchall()
+    conn.close()
+    
+    if results:
+        print(f"\n🔍 Found {len(results)} results:\n")
+        for r in results:
+            print(f"[{r[0]}] #{r[1]}: {r[2]}")
+            print(f"   {r[3][:150]}...")
+            print()
+    else:
+        print("No results found.")
+
+
+# Knowledge Graph
+def show_graph():
+    """Display knowledge graph in terminal."""
+    if not GRAPH_FILE.exists():
+        print("📊 No knowledge graph yet. Add notes and link them!")
+        return
+    
+    graph = json.loads(GRAPH_FILE.read_text())
+    print("📊 Knowledge Graph:\n")
+    
+    # Show nodes (notes/transcripts)
+    print("Nodes:")
+    for node in graph.get("nodes", []):
+        print(f"  - {node['id']}: {node['title']} ({node['type']})")
+    
+    # Show edges
+    print("\nConnections:")
+    for edge in graph.get("edges", []):
+        print(f"  {edge['from']} --[{edge['relationship']}]--> {edge['to']}")
+
+
+def show_graph_html():
+    """Generate and open HTML visualization of knowledge graph."""
+    conn = get_db()
+    c = conn.cursor()
+    
+    # Get all notes
+    c.execute("SELECT id, title, source, created_at FROM notes ORDER BY created_at DESC")
+    notes = c.fetchall()
+    
+    # Get all transcripts  
+    c.execute("SELECT id, title, source, created_at FROM transcripts ORDER BY created_at DESC")
+    transcripts = c.fetchall()
+    
+    # Load graph edges
+    edges = []
+    if GRAPH_FILE.exists():
+        graph_data = json.loads(GRAPH_FILE.read_text())
+        edges = graph_data.get("edges", [])
+    
+    # Build nodes for visualization
+    nodes = []
+    for n in notes:
+        nodes.append({"id": f"n{n[0]}", "label": n[1][:30], "type": "note", "title": n[1]})
+    for t in transcripts:
+        nodes.append({"id": f"t{t[0]}", "label": t[1][:30], "type": "transcript", "title": t[1]})
+    
+    # Build edges
+    link_data = []
+    for e in edges:
+        # Find node labels
+        from_node = next((n for n in nodes if str(n["id"]) == f"n{e['from']}" or str(n["id"]) == f"t{e['from']}"), None)
+        to_node = next((n for n in nodes if str(n["id"]) == f"n{e['to']}" or str(n["id"]) == f"t{e['to']}"), None)
+        if from_node and to_node:
+            link_data.append({
+                "source": from_node["id"],
+                "target": to_node["id"],
+                "relationship": e.get("relationship", "related")
+            })
+    
+    # If no explicit edges, create auto-links based on tags/keywords
+    if not edges and len(nodes) > 1:
+        # Auto-connect similar notes by checking content
+        for i, node in enumerate(nodes):
+            if node["type"] == "note":
+                c.execute("SELECT content, tags FROM notes WHERE id = ?", (node["id"].replace("n", ""),))
+                row = c.fetchone()
+                if row:
+                    content_words = set(row[0].lower().split()[:20])
+                    tags = row[1] if row[1] else ""
+                    # Find related nodes
+                    for j, other in enumerate(nodes[i+1:]):
+                        if other["type"] == "note":
+                            c.execute("SELECT content, tags FROM notes WHERE id = ?", (other["id"].replace("n", ""),))
+                            row2 = c.fetchone()
+                            if row2:
+                                other_words = set(row2[0].lower().split()[:20])
+                                common = content_words & other_words
+                                if len(common) > 3:  # More than 3 common words
+                                    link_data.append({
+                                        "source": node["id"],
+                                        "target": other["id"],
+                                        "relationship": f"shares: {', '.join(list(common)[:3])}"
+                                    })
+    
+    conn.close()
+    
+    # Generate HTML
+    # Calculate bounds for auto-zoom
+    node_count = len(nodes)
+    canvas_width = max(1200, node_count * 80)
+    canvas_height = max(800, node_count * 60)
+    
+    html = f'''<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Brain Knowledge Graph</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        * {{ box-sizing: border-box; }}
+        body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 20px; background: #1a1a2e; color: #eee; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }}
+        h1 {{ color: #00d9ff; margin: 0 0 10px 0; font-size: 24px; }}
+        p {{ margin: 0 0 10px 0; color: #888; }}
+        #container {{ flex: 1; border: 1px solid #333; border-radius: 8px; background: #16213e; position: relative; overflow: hidden; }}
+        #graph {{ width: 100%; height: 100%; }}
+        .node circle {{ stroke: #fff; stroke-width: 2px; cursor: pointer; }}
+        .node text {{ font-size: 13px; fill: #eee; pointer-events: none; }}
+        .link {{ stroke: #ff6b6b; stroke-opacity: 0.8; }}
+        .legend {{ margin-top: 10px; display: flex; gap: 20px; align-items: center; }}
+        .legend-item {{ display: flex; align-items: center; gap: 5px; font-size: 14px; }}
+        .legend circle {{ stroke: #fff; stroke-width: 2px; }}
+        .note {{ fill: #00d9ff; }}
+        .transcript {{ fill: #ff6b6b; }}
+        .tooltip {{ position: fixed; background: #333; padding: 12px; border-radius: 6px; max-width: 350px; display: none; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }}
+        .tooltip strong {{ color: #00d9ff; display: block; margin-bottom: 5px; }}
+        .tooltip small {{ color: #888; }}
+    </style>
+</head>
+<body>
+    <h1>🧠 Brain Knowledge Graph</h1>
+    <p>📝 Notes: {len(notes)} | 🔗 Connections: {len(link_data)} | Scroll to pan, drag nodes to move, mouse wheel to zoom</p>
+    <div id="container"><div id="graph"></div></div>
+    <div class="legend">
+        <div class="legend-item"><circle cx="8" cy="8" r="8" class="note"></circle> Notes</div>
+        <div class="legend-item"><circle cx="8" cy="8" r="8" class="transcript"></circle> Transcripts</div>
+    </div>
+    <div class="tooltip" id="tooltip"></div>
+    <script>
+        const nodes = {json.dumps(nodes)};
+        const links = {json.dumps(link_data)};
+        
+        // Get container dimensions
+        const container = document.getElementById('container');
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+        
+        const svg = d3.select('#graph')
+            .append('svg')
+            .attr('width', width)
+            .attr('height', height);
+        
+        const g = svg.append('g');
+        
+        // Add zoom behavior
+        const zoom = d3.zoom()
+            .scaleExtent([0.1, 4])
+            .on('zoom', (event) => {{
+                g.attr('transform', event.transform);
+            }});
+        svg.call(zoom);
+        
+        // Initial transform to center the graph
+        const initialTransform = d3.zoomIdentity.translate(width/4, height/4).scale(0.8);
+        svg.call(zoom.transform, initialTransform);
+        
+        // Force simulation
+        const simulation = d3.forceSimulation(nodes)
+            .force('link', d3.forceLink(links).id(d => d.id).distance(120))
+            .force('charge', d3.forceManyBody().strength(-400))
+            .force('center', d3.forceCenter(width / 2, height / 2))
+            .force('collision', d3.forceCollide().radius(40));
+        
+        // Draw links
+        const link = g.append('g')
+            .selectAll('line')
+            .data(links)
+            .enter().append('line')
+            .attr('class', 'link')
+            .attr('stroke-width', 2);
+        
+        // Draw nodes
+        const node = g.append('g')
+            .selectAll('g')
+            .data(nodes)
+            .enter().append('g')
+            .attr('class', 'node')
+            .call(d3.drag()
+                .on('start', dragstarted)
+                .on('drag', dragged)
+                .on('end', dragended));
+        
+        node.append('circle')
+            .attr('r', 18)
+            .attr('fill', d => d.type === 'note' ? '#00d9ff' : '#ff6b6b')
+            .attr('stroke', '#fff')
+            .attr('stroke-width', 2)
+            .on('click', (event, d) => showTooltip(event, d))
+            .on('dblclick', (event, d) => window.open('/brain/notes/' + d.id + '.md', '_blank'));
+        
+        node.append('text')
+            .attr('dx', 22)
+            .attr('dy', 5)
+            .text(d => d.label)
+            .style('text-shadow', '1px 1px 2px #000');
+        
+        // Update positions on tick
+        simulation.on('tick', () => {{
+            link
+                .attr('x1', d => d.source.x)
+                .attr('y1', d => d.source.y)
+                .attr('x2', d => d.target.x)
+                .attr('y2', d => d.target.y);
+            
+            node.attr('transform', d => `translate(${{d.x}},${{d.y}})`);
+        }});
+        
+        function dragstarted(event) {{
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            event.subject.fx = event.subject.x;
+            event.subject.fy = event.subject.y;
+        }}
+        
+        function dragged(event) {{
+            event.subject.fx = event.x;
+            event.subject.fy = event.y;
+        }}
+        
+        function dragended(event) {{
+            if (!event.active) simulation.alphaTarget(0);
+            event.subject.fx = null;
+            event.subject.fy = null;
+        }}
+        
+        function showTooltip(event, d) {{
+            const tooltip = document.getElementById('tooltip');
+            tooltip.style.display = 'block';
+            tooltip.style.left = (event.clientX + 15) + 'px';
+            tooltip.style.top = (event.clientY + 15) + 'px';
+            tooltip.innerHTML = `<strong>${{d.title || d.label}}</strong><br><small>Type: ${{d.type}} | ID: ${{d.id}}</small>`;
+        }}
+        
+        document.addEventListener('click', (event) => {{
+            if (!event.target.closest('.node') && !event.target.closest('.tooltip')) {{
+                document.getElementById('tooltip').style.display = 'none';
+            }}
+        }});
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {{
+            const w = container.clientWidth;
+            const h = container.clientHeight;
+            svg.attr('width', w).attr('height', h);
+            simulation.force('center', d3.forceCenter(w / 2, h / 2));
+            simulation.alpha(0.3).restart();
+        }});
+    </script>
+</body>
+</html>'''
+    list_parser = subparsers.add_parser("list", help="List notes")
+    list_parser.add_argument("--limit", type=int, default=10, help="Max notes")
+    
+    # Graph command
+    subparsers.add_parser("graph", help="Show knowledge graph (text)")
+    subparsers.add_parser("graph-viz", help="Generate HTML visualization of knowledge graph")
+    
+    # Link command
+    link_parser = subparsers.add_parser("link", help="Link two notes")
+    link_parser.add_argument("from_id", type=int, help="From note ID")
+    link_parser.add_argument("to_id", type=int, help="To note ID")
+    link_parser.add_argument("--rel", default="related", help="Relationship type")
+    
+    args = parser.parse_args()
+    
+    # Initialize DB
+    init_db()
+    
+    # Route command
+    if args.command == "voice":
+        voice_memo(args.author, args.tags)
+    elif args.command == "youtube":
+        youtube_import(args.urls, args.author, args.tags)
+    elif args.command == "search":
+        search(args.query, args.limit)
+    elif args.command == "note":
+        add_note(args.content, args.title, args.author, args.tags)
+    elif args.command == "list":
+        list_notes(args.limit)
+    elif args.command == "graph":
+        show_graph()
+    elif args.command == "graph-viz":
+        show_graph_html()
+    elif args.command == "link":
+        add_link(args.from_id, args.to_id, args.rel)
+    else:
+        parser.print_help()
+
+
+def main():
+    """Main entry point for CLI."""
+    import argparse
+    parser = argparse.ArgumentParser(description="Brain - Personal Knowledge Hub")
+    subparsers = parser.add_subparsers(dest="command", help="Commands")
+    
+    voice_parser = subparsers.add_parser("voice", help="Record voice memo")
+    voice_parser.add_argument("--author", default="Tony", help="Author name")
+    voice_parser.add_argument("--tags", default="", help="Tags")
+    voice_parser.add_argument("--duration", type=int, default=30, help="Duration")
+    
+    yt_parser = subparsers.add_parser("youtube", help="Import YouTube")
+    yt_parser.add_argument("urls", nargs="+", help="URLs")
+    yt_parser.add_argument("--author", default="YouTube")
+    yt_parser.add_argument("--tags", default="")
+    
+    search_parser = subparsers.add_parser("search", help="Search")
+    search_parser.add_argument("query", help="Query")
+    search_parser.add_argument("--limit", type=int, default=5)
+    
+    note_parser = subparsers.add_parser("note", help="Add note")
+    note_parser.add_argument("content", help="Content")
+    note_parser.add_argument("--title", default="")
+    note_parser.add_argument("--author", default="Tony")
+    note_parser.add_argument("--tags", default="")
+    
+    list_parser = subparsers.add_parser("list", help="List notes")
+    list_parser.add_argument("--limit", type=int, default=10)
+    
+    subparsers.add_parser("graph", help="Show graph")
+    subparsers.add_parser("graph-viz", help="Graph visualization")
+    
+    link_parser = subparsers.add_parser("link", help="Link notes")
+    link_parser.add_argument("from_id", type=int)
+    link_parser.add_argument("to_id", type=int)
+    link_parser.add_argument("--rel", default="related")
+    
+    args = parser.parse_args()
+    init_db()
+    
+    if args.command == "voice":
+        voice_memo(args.author, args.tags)
+    elif args.command == "youtube":
+        youtube_import(args.urls, args.author, args.tags)
+    elif args.command == "search":
+        search(args.query, args.limit)
+    elif args.command == "note":
+        add_note(args.content, args.title, args.author, args.tags)
+    elif args.command == "list":
+        list_notes(args.limit)
+    elif args.command == "graph":
+        show_graph()
+    elif args.command == "graph-viz":
+        show_graph_html()
+    elif args.command == "link":
+        add_link(args.from_id, args.to_id, args.rel)
+    else:
+        parser.print_help()
+
+
+if __name__ == "__main__":
+    main()

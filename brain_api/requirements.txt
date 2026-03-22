@@ -1,0 +1,10 @@
+# Brain API Server Dependencies
+# Install with: pip install -r requirements.txt
+
+# Web framework (one is required)
+fastapi>=0.100.0
+uvicorn>=0.23.0
+flask>=2.0.0
+
+# For CORS support (FastAPI)
+starlette>=0.27.0

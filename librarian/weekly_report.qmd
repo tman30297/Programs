@@ -1,0 +1,67 @@
+---
+title: "Weekly Project Vault Report"
+date: last-modified
+format: 
+  html:
+    theme: default
+  md:
+    variant: gfm
+---
+
+```{python}
+import pandas as pd
+from datetime import datetime
+
+csv_path = "/media/tony/Drive2/Programs/librarian/later_list.csv"
+
+try:
+    df = pd.read_csv(csv_path)
+except FileNotFoundError:
+    print("No projects in vault.")
+    quit()
+
+if df.empty:
+    print("No projects saved.")
+    quit()
+
+# Calculate aging
+df['Date Added'] = pd.to_datetime(df['Date Added'])
+df['Days Active'] = (datetime.now() - df['Date Added']).dt.days
+
+def aging_status(days):
+    if days > 60: return "🔴 High (Archive?)"
+    if days > 30: return "🟡 Medium (Review)"
+    return "🟢 Fresh"
+
+df['Aging'] = df['Days Active'].apply(aging_status)
+
+print("## 📋 Project Vault Report\n")
+print(f"Total projects: {len(df)}\n")
+
+# Stale projects (30+ days)
+stale = df[df['Days Active'] > 30]
+if not stale.empty:
+    print("### ⚠️ Stale Projects (30+ days)\n")
+    for _, row in stale.sort_values('Days Active', ascending=False).iterrows():
+        print(f"- **{row['Project Name']}** ({row['Days Active']} days)")
+        print(f"  - Stack: {row['Stack']}")
+        print(f"  - Status: {row['Status']}")
+        print()
+
+# Fresh projects
+fresh = df[df['Days Active'] <= 30]
+if not fresh.empty:
+    print("### 🟢 Fresh Projects\n")
+    for _, row in fresh.iterrows():
+        print(f"- **{row['Project Name']}** ({row['Days Active']} days)")
+        print(f"  - Stack: {row['Stack']}")
+        print()
+```
+
+## Summary
+
+| Metric | Value |
+|--------|-------|
+| Total | {len(df)} |
+| Stale (30+) | {len(stale)} |
+| Fresh | {len(fresh)} |

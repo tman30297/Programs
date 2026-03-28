@@ -62,6 +62,11 @@ async def root():
 async def status():
     return {"status": "ok", "pdf_dir": PDF_DIR}
 
+# Import audit log
+import sys
+sys.path.insert(0, str(Path(__file__).parent))
+from search_log import log_search
+
 @app.post("/search")
 async def search_pdfs(req: SearchRequest):
     pdf_dir = req.directory or PDF_DIR
@@ -84,6 +89,9 @@ async def search_pdfs(req: SearchRequest):
             })
             if len(results) >= req.limit:
                 break
+    
+    # Log the search
+    log_search(req.query, len(results))
     
     return {"query": req.query, "results": results, "total_found": len(results)}
 

@@ -94,6 +94,16 @@ python3 /media/tony/Drive2/Programs/librarian/project_vault.py aging
 
 `/media/tony/Drive2/Programs/librarian/later_list.csv`
 
+## Obsidian Dataview
+
+Add to Obsidian note:
+
+```dataviewjs
+dv.table(["Project Name", "Stack", "Status", "Date Added"],
+  dv.io.csv("/media/tony/Drive2/Programs/librarian/later_list.csv")
+  .sort(p => p["Date Added"], 'desc'))
+```
+
 ## Fields
 
 | Field | Description |

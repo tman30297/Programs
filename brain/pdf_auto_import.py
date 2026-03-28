@@ -229,6 +229,12 @@ TOPICS = [
     ("arduino", "/media/tony/Drive2/IOT/"),
     ("sensor", "/media/tony/Drive2/IOT/"),
     ("iot", "/media/tony/Drive2/IOT/"),
+
+    # Robot/OS
+    ("ros", "/media/tony/Drive2/Robot_OS/"),
+    ("robotics", "/media/tony/Drive2/Robot_OS/"),
+    ("ros2", "/media/tony/Drive2/Robot_OS/"),
+    ("robot", "/media/tony/Drive2/Robot_OS/"),
 ]
 
 import brain

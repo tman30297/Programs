@@ -1,178 +1,200 @@
 #!/usr/bin/env python3
 """
-Voice Assistant with Wake Word Detection
-Uses Picovoice Porcupine for wake word detection + Ollama for AI responses.
+Voice Assistant - Whisper STT + Ollama AI
+Supports both one-shot and continuous wake-word modes.
 
-Setup:
-    pip install pvporcupine pyaudio
-    Download porcupine model from https://github.com/Picovoice/porcupine
-    
 Usage:
-    python3 voice_assistant.py
-    Say "Hey Bob" to activate, then speak your command.
-    Say "stop" to exit.
+    python3 voice_assistant.py          # One-shot mode (press Enter)
+    python3 voice_assistant.py --wake   # Continuous mode (says "hey bob" to activate)
 """
 
-import pvporcupine
-import pyaudio
-import numpy as np
 import subprocess
+import pyaudio
+import wave
+import numpy as np
 import threading
-import speech_recognition as sr
 import time
+from faster_whisper import WhisperModel
 
 # Configuration
-WAKE_WORDS = ["hey bob", "hey bot", "computer"]
 OLLAMA_MODEL = "qwen3:latest"
-RESPONSE_SPEAKER = " espeak "  # Or use pyttsx3 / your TTS
+WAKE_WORD = "hey bob"
+CHUNK_SIZE = 1024
+FORMAT = pyaudio.paInt16
+CHANNELS = 1
+RATE = 16000
+SILENCE_THRESHOLD = 500  # Volume threshold for VAD
 
-# Audio settings
-CHUNK_SIZE = 512
-SAMPLE_RATE = 16000
+# Load Whisper model
+print("Loading Whisper model...")
+WHISPER_MODEL = WhisperModel("base", device="cpu", compute_type="int8")
+print("✓ Whisper ready")
 
 class VoiceAssistant:
     def __init__(self):
         self.running = False
-        self.porcupine = None
-        self.pa = None
-        self.stream = None
-        self.recognizer = sr.Recognizer()
-        self.listening_for_command = False
+        self.hearing_command = False
+        self.audio_buffer = []
+        self.in_speech = False
+        self.silence_count = 0
+    
+    def vad_loop(self):
+        """Continuous VAD + wake word loop."""
+        p = pyaudio.PyAudio()
         
-    def load_porcupine(self):
-        """Initialize Porcupine wake word detector."""
-        try:
-            # Try to load with default keywords
-            # You'll need to download the .ppn file from Picovoice
-            # https://github.com/Picovoice/porcupine/tree/master/python
-            
-            # For now, use a simpler approach with keyword spotting
-            print("Loading wake word detector...")
-            
-            # Try to find porcupine library
-            try:
-                import pvporcupine
-                import os
-                
-                # Get access key from env or use test key
-                access_key = os.environ.get("PORCUPINE_ACCESS_KEY", "")
-                
-                if access_key:
-                    keywords = ["hey bob", "computer"] if len(sys.argv) < 2 else [sys.argv[1]]
-                    self.porcupine = pvporcupine.create(
-                        access_key=access_key,
-                        keywords=keywords
-                    )
-                    print(f"✅ Porcupine loaded with keywords: {keywords}")
-                    return True
-                else:
-                    print("⚠️ No Porcupine access key. Using fallback...")
-                    return self.load_fallback()
-            except ImportError:
-                print("⚠️ pvporcupine not installed. Using fallback...")
-                return self.load_fallback()
-                
-        except Exception as e:
-            print(f"⚠️ Porcupine init failed: {e}")
-            return self.load_fallback()
-    
-    def load_fallback(self):
-        """Simple wake word using speech_recognition keyword spotting."""
-        print("📝 Using keyword spotting fallback")
-        return True
-    
-    def listen_for_wake_word(self):
-        """Main loop - listen for wake word."""
-        print("🎤 Listening for wake word...")
-        print("Say 'Hey Bob' to activate")
+        # Find mic
+        mic_index = None
+        for i in range(p.get_device_count()):
+            dev = p.get_device_info_by_index(i)
+            if dev['maxInputChannels'] > 0:
+                try:
+                    test = p.open(format=FORMAT, channels=CHANNELS, rate=RATE, 
+                                  input=True, input_device_index=i, frames_per_buffer=CHUNK_SIZE)
+                    test.close()
+                    mic_index = i
+                    print(f"✓ Using mic {i}: {dev['name']}")
+                    break
+                except:
+                    continue
+        
+        if mic_index is None:
+            print("❌ No mic found")
+            return
+        
+        stream = p.open(format=FORMAT, channels=CHANNELS, rate=RATE, 
+                      input=True, input_device_index=mic_index, frames_per_buffer=CHUNK_SIZE)
         
         self.running = True
+        print("👂 Listening for 'hey bob'... (continuous mode)")
+        print("   Say 'hey bob' to activate, then speak your command")
+        print("   Say 'stop' to exit")
         
-        # Use PyAudio for continuous listening
-        self.pa = pyaudio.PyAudio()
-        self.stream = self.pa.open(
-            rate=SAMPLE_RATE,
-            channels=1,
-            format=pyaudio.paInt16,
-            input=True,
-            frames_per_buffer=CHUNK_SIZE
-        )
+        frames_buffer = []
         
         while self.running:
             try:
-                # Read audio chunk
-                audio_chunk = self.stream.read(CHUNK_SIZE, exception_on_overflow=False)
-                audio_data = np.frombuffer(audio_chunk, dtype=np.int16)
+                data = stream.read(CHUNK_SIZE, exception_on_overflow=False)
                 
-                # Check for wake word with Porcupine
-                if self.porcupine:
-                    keyword_index = self.porcupine.process(audio_data)
-                    if keyword_index >= 0:
-                        print("👂 Wake word detected!")
-                        self.handle_wake_word()
+                # VAD: check volume
+                audio_np = np.frombuffer(data, dtype=np.int16)
+                volume = np.abs(audio_np).mean()
+                
+                if volume > SILENCE_THRESHOLD:
+                    if not self.in_speech:
+                        print("🎤 Speech detected...")
+                    self.in_speech = True
+                    self.silence_count = 0
+                    frames_buffer.append(data)
                 else:
-                    # Fallback: simple volume-based detection
-                    if np.abs(audio_data).mean() > 5000:  # Threshold for loud sounds
-                        # Could trigger here, but let's just wait for actual speech
-                        pass
+                    if self.in_speech:
+                        self.silence_count += 1
+                        frames_buffer.append(data)
                         
+                        # End of speech - check if wake word
+                        if self.silence_count > 20:  # ~0.6 seconds of silence
+                            if frames_buffer:
+                                # Save and transcribe
+                                wf = wave.open("/tmp/wake.wav", 'wb')
+                                wf.setnchannels(CHANNELS)
+                                wf.setsampwidth(p.get_sample_size(FORMAT))
+                                wf.setframerate(RATE)
+                                wf.writeframes(b''.join(frames_buffer))
+                                wf.close()
+                                
+                                text = self.transcribe("/tmp/wake.wav")
+                                if text:
+                                    print(f"📝 Heard: {text}")
+                                    if WAKE_WORD in text.lower():
+                                        self.handle_wake_word()
+                                
+                                frames_buffer = []
+                            self.in_speech = False
+                            
             except Exception as e:
                 if self.running:
-                    print(f"⚠️ Error in listening loop: {e}")
+                    print(f"Error: {e}")
                 time.sleep(0.1)
         
-        self.cleanup()
+        stream.close()
+        p.terminate()
     
     def handle_wake_word(self):
-        """Wake word detected - now listen for command."""
-        # Play acknowledgment sound
+        """Wake word detected - beep and listen for command."""
         self.play_beep()
+        print("🎯 Listening for command...")
         
-        print("🎯 Ready for command...")
-        self.listen_for_command()
+        # Record command
+        audio_file = self.record_command()
+        if audio_file:
+            text = self.transcribe(audio_file)
+            if text:
+                print(f"📝 Command: {text}")
+                self.process_command(text)
     
-    def listen_for_command(self):
-        """Listen for user command using speech recognition."""
-        with sr.Microphone() as source:
-            self.recognizer.adjust_for_ambient_noise(source, duration=0.5)
+    def record_command(self):
+        """Record a command after wake word."""
+        p = pyaudio.PyAudio()
+        
+        mic_index = 0
+        for i in range(p.get_device_count()):
+            dev = p.get_device_info_by_index(i)
+            if dev['maxInputChannels'] > 0:
+                mic_index = i
+                break
+        
+        stream = p.open(format=FORMAT, channels=CHANNELS, rate=RATE,
+                       input=True, input_device_index=mic_index, frames_per_buffer=CHUNK_SIZE)
+        
+        print("🔴 Recording command...")
+        frames = []
+        silent_frames = 0
+        
+        # Record until silence
+        while silent_frames < 50:  # ~3 seconds max
+            data = stream.read(CHUNK_SIZE, exception_on_overflow=False)
+            frames.append(data)
             
-            try:
-                # Listen for up to 10 seconds
-                audio = self.recognizer.listen(source, timeout=10, phrase_time_limit=10)
-                command = self.recognizer.recognize_google(audio)
-                print(f"📝 Command: {command}")
-                
-                # Process command with AI
-                self.process_command(command)
-                
-            except sr.WaitTimeoutError:
-                print("⏱️ No command heard")
-            except sr.UnknownValueError:
-                print("❓ Couldn't understand")
-            except Exception as e:
-                print(f"⚠️ Recognition error: {e}")
+            audio_np = np.frombuffer(data, dtype=np.int16)
+            if np.abs(audio_np).mean() < SILENCE_THRESHOLD:
+                silent_frames += 1
+            else:
+                silent_frames = 0
+        
+        stream.close()
+        p.terminate()
+        
+        wf = wave.open("/tmp/command.wav", 'wb')
+        wf.setnchannels(CHANNELS)
+        wf.setsampwidth(p.get_sample_size(FORMAT))
+        wf.setframerate(RATE)
+        wf.writeframes(b''.join(frames))
+        wf.close()
+        
+        return "/tmp/command.wav"
+    
+    def transcribe(self, audio_file):
+        """Transcribe audio with Whisper."""
+        try:
+            segments, info = WHISPER_MODEL.transcribe(audio_file, language="en")
+            text = " ".join([seg.text.strip() for seg in segments])
+            return text
+        except Exception as e:
+            print(f"Transcribe error: {e}")
+            return ""
     
     def process_command(self, command):
         """Process command with Ollama AI."""
         command = command.lower().strip()
         
-        # Check for exit commands
-        if command in ["stop", "exit", "goodbye", "shut down"]:
+        if command in ["stop", "exit", "goodbye", "quit"]:
             print("👋 Goodbye!")
             self.running = False
             return
         
-        # Check for simple responses
-        if command in ["hello", "hi", "hey"]:
-            self.speak("Hello! How can I help you?")
-            return
-        
-        # Use Ollama for AI response
         print("🤔 Thinking...")
         try:
             result = subprocess.run(
-                ["ollama", "run", OLLAMA_MODEL],
-                input=f"You are a helpful voice assistant. Respond concisely. Command: {command}",
+                ["ollama", "run", OLLAMA_MODEL, command],
                 capture_output=True,
                 text=True,
                 timeout=60
@@ -180,11 +202,15 @@ class VoiceAssistant:
             
             if result.returncode == 0:
                 response = result.stdout.strip()
+                if ">>>" in response:
+                    response = response.split(">>>")[-1].strip()
                 print(f"💬 AI: {response}")
                 self.speak(response)
             else:
                 self.speak("Sorry, I couldn't process that.")
                 
+        except subprocess.TimeoutExpired:
+            self.speak("Sorry, that took too long.")
         except Exception as e:
             print(f"⚠️ AI error: {e}")
             self.speak("Sorry, something went wrong.")
@@ -192,55 +218,58 @@ class VoiceAssistant:
     def speak(self, text):
         """Convert text to speech."""
         try:
-            # Try espeak first (usually available)
-            subprocess.run(["espeak", text], capture_output=True, timeout=10)
+            subprocess.run(["espeak", text], capture_output=True, timeout=15)
         except:
-            try:
-                # Try pyttsx3
-                import pyttsx3
-                engine = pyttsx3.init()
-                engine.say(text)
-                engine.runAndWait()
-            except:
-                print(f"🔊 Would speak: {text}")
+            print(f"🔊 Would speak: {text}")
     
     def play_beep(self):
         """Play acknowledgment beep."""
         try:
-            # Simple beep using aplay
-            subprocess.run(["aplay", "/usr/share/sounds/alsa/Front_Center.wav"], 
+            subprocess.run(["aplay", "-q", "/usr/share/sounds/alsa/Front_Center.wav"], 
                          capture_output=True, timeout=2)
         except:
             pass
-    
-    def cleanup(self):
-        """Clean up resources."""
-        if self.stream:
-            self.stream.close()
-        if self.pa:
-            self.pa.terminate()
-        if self.porcupine:
-            self.porcupine.delete()
 
-def main():
-    import sys
+def one_shot_mode():
+    """Original one-shot mode - press Enter to listen."""
+    print("\n🎤 One-shot mode selected")
+    print("📦 Using Whisper (local STT) + Ollama (local AI)")
+    print("🎯 Press Enter to start listening, say 'exit' to quit")
     
-    print("🎤 Voice Assistant Starting...")
+    assistant = VoiceAssistant()
     
-    # Check for Porcupine key
-    import os
-    if "PORCUPINE_ACCESS_KEY" not in os.environ:
-        print("ℹ️ To use Porcupine wake word, set PORCUPINE_ACCESS_KEY")
-        print("   Get free key at: https://console.picovoice.com/")
+    while True:
+        input("\nPress Enter to listen...")
+        
+        audio_file = assistant.record_command()
+        if audio_file:
+            text = assistant.transcribe(audio_file)
+            if text:
+                print(f"📝 You said: {text}")
+                result = assistant.process_command(text)
+                if result == "exit":
+                    break
+
+def wake_mode():
+    """Continuous wake-word mode."""
+    print("\n🎤 Wake-word mode selected")
+    print("👂 Say 'hey bob' to activate")
     
     assistant = VoiceAssistant()
     
     try:
-        assistant.listen_for_wake_word()
+        assistant.vad_loop()
     except KeyboardInterrupt:
-        print("\n👋 Stopped by user")
+        print("\n👋 Stopped")
         assistant.running = False
-        assistant.cleanup()
+
+def main():
+    import sys
+    
+    if len(sys.argv) > 1 and sys.argv[1] == "--wake":
+        wake_mode()
+    else:
+        one_shot_mode()
 
 if __name__ == "__main__":
     main()

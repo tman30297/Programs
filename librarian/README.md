@@ -19,7 +19,7 @@ cd /media/tony/Drive2/Programs/librarian
 python3 librarian_api.py
 ```
 
-Service runs on **port 8081**.
+Service runs on **port 8083** (default; configurable)
 
 ## API Endpoints
 

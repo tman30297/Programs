@@ -2,20 +2,16 @@
 """
 PDF Librarian API - FastAPI Service
 
-FastAPI wrapper around pdf_search for HTTP access.
-Provides semantic and keyword search across PDF library.
+FastAPI wrapper for PDF search.
 """
 
 import os
+import io
 from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List, Optional
-import sys
-
-# Add parent to path
-sys.path.insert(0, str(Path(__file__).parent.parent / "pdf_search"))
-from pdf_search import search_pdf, find_pdfs
+from pypdf import PdfReader
 
 app = FastAPI(title="PDF Librarian API", version="1.0.0")
 
@@ -23,34 +19,51 @@ app = FastAPI(title="PDF Librarian API", version="1.0.0")
 PDF_DIR = os.environ.get("PDF_DIR", "/media/tony/Drive2/")
 DEFAULT_LIMIT = 10
 
-class SearchQuery(BaseModel):
+class SearchRequest(BaseModel):
     query: str
     directory: Optional[str] = None
-    limit: Optional[int] = DEFAULT_LIMIT
-    verbose: Optional[bool] = False
+    limit: int = DEFAULT_LIMIT
+    verbose: bool = False
 
-class SearchResult(BaseModel):
-    filename: str
-    path: str
-    pages: List[int]
-    match_count: int
+def find_pdfs(directory: Path) -> List[Path]:
+    return sorted(directory.rglob("*.pdf"))
+
+def is_valid_pdf(file_path: Path) -> bool:
+    """Check if file starts with PDF header."""
+    try:
+        with open(file_path, 'rb') as f:
+            header = f.read(5)
+        return header == b'%PDF-'
+    except:
+        return False
+
+def search_pdf(pdf_path: Path, search_term: str, verbose: bool = False):
+    if not is_valid_pdf(pdf_path):
+        return []
+    try:
+        reader = PdfReader(str(pdf_path))
+        matches = []
+        for page_num, page in enumerate(reader.pages, start=1):
+            try:
+                text = page.extract_text()
+                if text and search_term.lower() in text.lower():
+                    matches.append(page_num)
+            except:
+                continue
+        return matches
+    except:
+        return []
 
 @app.get("/")
 async def root():
-    return {"service": "PDF Librarian API", "version": "1.0.0", "docs": "/docs"}
+    return {"service": "PDF Librarian API", "version": "1.0.0"}
 
 @app.get("/status")
 async def status():
     return {"status": "ok", "pdf_dir": PDF_DIR}
 
-class SearchRequest(BaseModel):
-    query: str
-    directory: Optional[str] = None
-    limit: int = DEFAULT_LIMIT
-
 @app.post("/search")
 async def search_pdfs(req: SearchRequest):
-    """Search PDFs for a query string."""
     pdf_dir = req.directory or PDF_DIR
     dir_path = Path(pdf_dir)
     
@@ -61,13 +74,13 @@ async def search_pdfs(req: SearchRequest):
     pdfs = find_pdfs(dir_path)
     
     for pdf_path in pdfs:
-        has_matches, pages, count = search_pdf(pdf_path, req.query, req.verbose)
-        if has_matches:
+        pages = search_pdf(pdf_path, req.query, req.verbose)
+        if pages:
             results.append({
                 "filename": pdf_path.name,
                 "path": str(pdf_path),
                 "pages": pages,
-                "match_count": count
+                "match_count": len(pages)
             })
             if len(results) >= req.limit:
                 break
@@ -76,4 +89,4 @@ async def search_pdfs(req: SearchRequest):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8081)
+    uvicorn.run(app, host="0.0.0.0", port=8083)

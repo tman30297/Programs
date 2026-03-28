@@ -17,6 +17,7 @@ app = FastAPI(title="PDF Librarian API", version="1.0.0")
 
 # Configuration
 PDF_DIR = os.environ.get("PDF_DIR", "/media/tony/Drive2/")
+PROG_DIRS = ["/media/tony/Drive2/python3/", "/media/tony/Drive2/Rust/"]
 DEFAULT_LIMIT = 10
 
 class SearchRequest(BaseModel):
@@ -61,6 +62,32 @@ async def root():
 @app.get("/status")
 async def status():
     return {"status": "ok", "pdf_dir": PDF_DIR}
+
+@app.post("/search/prog")
+async def search_prog(req: SearchRequest):
+    """Search programming-focused PDFs only."""
+    results = []
+    for prog_dir in PROG_DIRS:
+        dir_path = Path(prog_dir)
+        if not dir_path.exists():
+            continue
+        pdfs = find_pdfs(dir_path)
+        for pdf_path in pdfs:
+            pages = search_pdf(pdf_path, req.query, req.verbose)
+            if pages:
+                results.append({
+                    "filename": pdf_path.name,
+                    "path": str(pdf_path),
+                    "pages": pages[:5],
+                    "match_count": len(pages)
+                })
+                if len(results) >= req.limit:
+                    break
+        if len(results) >= req.limit:
+            break
+    
+    log_search(req.query, len(results))
+    return {"query": req.query, "results": results[:req.limit], "total_found": len(results)}
 
 # Import audit log
 import sys
